@@ -6,22 +6,26 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def sed(data: np.ndarray, samplerate: float) -> tuple[int, int]:
-    _, _, start_index, end_index, _, _, _ = _sed_debug(data, samplerate)
-    return start_index, end_index
+def sed(data: np.ndarray, samplerate: float) -> tuple[float, float]:
+    _, _, start_s, end_s, _, _, _ = _sed_debug(data, samplerate)
+    return start_s, end_s
 
 
-def _sed_debug(data: np.ndarray, samplerate: float):
+def _sed_debug(data: np.ndarray, samplerate: float,
+        pw_threshold_dB: int = -20,
+        zc_window_length_s: float = 0.025,
+        zc_hop_length_s: float = 0.01,
+        zc_margin_s: float = 0.1
+    ):
     # 定数
     nyq = 0.5 * samplerate
     f0_floor = 71  # ref: WORLD (by Masanori MORISE)
     f0_ceil = 800  # ref: WORLD (by Masanori MORISE)
     band_b, band_a = signal.butter(
         4, [f0_floor / nyq, f0_ceil / nyq], btype='band')
-    pw_threshold_dB = -20
-    zc_window_length = int(0.025 * samplerate)
-    # zc_shift_length = int(0.01 * samplerate)
-    zc_margin = int(0.1 * samplerate) 
+    zc_window_length = int(zc_window_length_s * samplerate)
+    zc_hop_length = int(zc_hop_length_s * samplerate)
+    zc_margin = int(zc_margin_s * samplerate) 
     high_pass_filter = signal.firwin(
         31, f0_ceil / nyq, pass_zero=False)
 
@@ -69,7 +73,12 @@ def _sed_debug(data: np.ndarray, samplerate: float):
                 end2 = i
                 break
 
-    return start1, end1, start2, end2, x_power_dB, zc, zc_threshold
+    start1_s = start1 / samplerate
+    end1_s = end1 / samplerate
+    start2_s = start2 / samplerate
+    end2_s = end2 / samplerate
+
+    return start1_s, end1_s, start2_s, end2_s, x_power_dB, zc, zc_threshold
 
 
 def _count_zero_cross(a: np.ndarray) -> int:
