@@ -11,21 +11,22 @@ def sed(data: np.ndarray, samplerate: float) -> tuple[float, float]:
     return start_s, end_s
 
 
-def _sed_debug(data: np.ndarray, samplerate: float,
+def _sed_debug(
+        data: np.ndarray, samplerate: float,
+        win_length_s: float = 0.04,
+        hop_length_s: float = 0.01,
         pw_threshold_dB: int = -20,
-        zc_window_length_s: float = 0.025,
-        zc_hop_length_s: float = 0.01,
         zc_margin_s: float = 0.1
     ):
     # 定数
-    nyq = 0.5 * samplerate
-    f0_floor = 71  # ref: WORLD (by Masanori MORISE)
-    f0_ceil = 800  # ref: WORLD (by Masanori MORISE)
+    nyq: int = int(0.5 * samplerate)
+    f0_floor: int = 71  # ref: WORLD (by Masanori MORISE)
+    f0_ceil: int = 800  # ref: WORLD (by Masanori MORISE)
+    win_length: int = int(win_length_s * samplerate)
+    hop_length: int = int(hop_length_s * samplerate)
+    zc_margin:  int = int(zc_margin_s * samplerate) 
     band_b, band_a = signal.butter(
         4, [f0_floor / nyq, f0_ceil / nyq], btype='band')
-    zc_window_length = int(zc_window_length_s * samplerate)
-    zc_hop_length = int(zc_hop_length_s * samplerate)
-    zc_margin = int(zc_margin_s * samplerate) 
     high_pass_filter = signal.firwin(
         31, f0_ceil / nyq, pass_zero=False)
 
@@ -40,19 +41,21 @@ def _sed_debug(data: np.ndarray, samplerate: float,
     end1 = np.where(power_cond(x_power_dB))[0][-1] \
         if np.any(power_cond(x_power_dB)) else len(x) - 1
 
+    start1_s = start1 / samplerate
+    end1_s = end1 / samplerate
+
     # ゼロクロスのカウント
     x_nr_hpf = signal.filtfilt(high_pass_filter, [1.0], x_nr)
     zc = np.zeros(len(data))
     for i in range(len(data)):
-        zc_start    = int(max(0, i - zc_window_length))
-        zc_end      = int(min(i + zc_window_length, len(data)))
+        zc_start    = int(max(0, i - (win_length / 2)))
+        zc_end      = int(min(i + (win_length / 2), len(data) - 1))
         target = x_nr_hpf[zc_start: zc_end]
-        zc[i] = _count_zero_cross(target)
-    zc_temp = zc[zc_window_length: len(zc) - zc_window_length]
-    zc_threshold = (max(zc_temp) + min(zc_temp)) / 2
+        zc[i] = _count_zero_cross(target) / len(target)
+    zc_threshold = (max(zc) + min(zc)) / 2
     # start 側をスライド
     start2 = 0
-    for i in range(start1, -1, -1):
+    for i in range(start1, -1, -hop_length):
         if 0 < i and zc_threshold <= zc[i]:
             s = zc[i-zc_margin: i]
             j = [j for j, z in enumerate(s) if z <= zc_threshold]
@@ -63,7 +66,7 @@ def _sed_debug(data: np.ndarray, samplerate: float,
                 break
     # end 側をスライド
     end2 = len(data) - 1
-    for i in range(end1, len(data), 1):
+    for i in range(end1, len(data), hop_length):
         if i < len(data) and zc_threshold <= zc[i]:
             s = zc[i: i+zc_margin]
             j = [j for j, z in enumerate(s) if z <= zc_threshold]
@@ -73,8 +76,6 @@ def _sed_debug(data: np.ndarray, samplerate: float,
                 end2 = i
                 break
 
-    start1_s = start1 / samplerate
-    end1_s = end1 / samplerate
     start2_s = start2 / samplerate
     end2_s = end2 / samplerate
 
