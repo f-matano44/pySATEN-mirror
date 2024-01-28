@@ -6,12 +6,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def sed(data: np.ndarray, samplerate: float) -> tuple[float, float]:
-    _, _, start_s, end_s, _, _, _ = _sed_debug(data, samplerate)
+def vsed(data: np.ndarray, samplerate: float) -> tuple[float, float]:
+    _, _, start_s, end_s, _, _, _ = _vsed_debug(data, samplerate)
     return start_s, end_s
 
 
-def _sed_debug(
+def _vsed_debug(
         data: np.ndarray, samplerate: float,
         win_length_s: float = 0.04,
         hop_length_s: float = 0.01,
