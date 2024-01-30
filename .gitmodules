@@ -1,0 +1,3 @@
+[submodule "test/jsut-label"]
+	path = test/jsut-label
+	url = https://github.com/sarulab-speech/jsut-label.git
