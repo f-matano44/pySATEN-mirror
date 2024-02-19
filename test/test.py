@@ -8,15 +8,16 @@ import numpy as np
 
 def _main():
     np.random.seed(0)
-    for snr in [100, 20, 10, 5, 0, -5, -10]:
+    for snr in [20, 15, 10, 5, 0, -5]:
         saten = []
         rvad = []
         print(f"SNR: {snr}")
         for i in tqdm(range(1,101)):
-            ans_s, ans_e = _load_answer(f"./jsut-label/labels/basic5000/BASIC5000_{i:04}.lab")
+            ans_s, ans_e = load_answer(f"./jsut-lab/labels/basic5000/BASIC5000_{i:04}.lab")
             x, fs = sf.read(f"./jsut_ver1.1/basic5000/wav/BASIC5000_{i:04}.wav")
-            x = _gen_noise_signal(x, snr, True)
+            x = gen_noise_signal(x, snr, True)
             S, E = pysaten.vsed(x, fs)
+            E = 0 if S == 0 and 0.01 >= abs(E - len(x) / fs) else E
             saten.append(abs(S - ans_s))
             saten.append(abs(E - ans_e))
             S, E = rvad_fast.vad(x, fs)
@@ -30,7 +31,7 @@ def _main():
         print("")
 
 
-def _load_answer(filename):
+def load_answer(filename):
     ans = []
     with open(filename, 'r') as file:
         for line in file:
@@ -53,10 +54,10 @@ def _wilcoxon_test(list1, list2, alpha=0.05):
     return p_value < alpha
 
 
-def _gen_noise_signal(x, snr, is_white):
+def gen_noise_signal(x, snr, is_white):
     # ノイズを生成（ホワイトノイズまたはピンクノイズ）
     noise = np.random.normal(0, 1, len(x)) \
-        if is_white else _pink_noise(len(signal))
+        if is_white else _pink_noise(len(x))
     # ノイズの長さを信号の長さに合わせる
     noise_padded = _repeat_to_length(noise, len(x))
     # 合成信号の生成
