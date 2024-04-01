@@ -5,7 +5,7 @@ from scipy import signal
 import numpy as np
 from numpy.random import default_rng
 import matplotlib.pyplot as plt
-import statistics as stat
+from librosa.feature import zero_crossing_rate, rms
 
 
 def vsed(data: np.ndarray, samplerate: float) -> tuple[float, float]:
@@ -37,24 +37,24 @@ def _vsed_debug(
     high_b          = signal.firwin(31, f0_floor / nyq, pass_zero=False)
     normalize       = lambda a: (a - a.min()) / (a.max() - a.min())
 
-    # Add white noise
+    # preprocess
+    ## add white noise
     np_random = default_rng(noise_seed)
     white_noise = np_random.normal(0, 1, len(data))
     data = _add_noise_to_signal(data, white_noise, 20)
     data = data if np.all(np.abs(data) <= 1) else data / max(abs(data))
+    ## reduce start and end
+    oneside_win_length = int(win_length / 2)
+    data[: oneside_win_length] = \
+        data[: oneside_win_length] * np.linspace(0, 1, oneside_win_length)
+    data[len(data) - oneside_win_length: ] = \
+        data[len(data) - oneside_win_length: ] * np.linspace(1, 0, oneside_win_length)
 
     # POWER
     x_nr     = nr.reduce_noise(data, samplerate)
     x_nr_bpf = signal.filtfilt(band_b, band_a, x_nr)
-    x_power  = np.zeros(int(np.ceil(len(x_nr_bpf) / hop_length)))
-    for i in range(len(x_power)):
-        idx        = i * hop_length
-        pw_start   = int(max(0, idx - (win_length / 2)))
-        pw_end     = int(min(idx + (win_length / 2), len(data) - 1))
-        target     = x_nr_bpf[pw_start: pw_end]
-        x_power[i] = sum(target ** 2) / len(target)
-    x_power      = normalize(x_power)
-    x_power_mean = stat.mean(x_power)
+    x_power  = normalize(rms(y=x_nr_bpf,
+        frame_length=win_length, hop_length=hop_length)[0] ** 2)
     power_check  = lambda x: pw_threshold < x
     start1:  int = np.where(power_check(x_power))[0][0] \
         if np.any(power_check(x_power)) else 0
@@ -66,14 +66,8 @@ def _vsed_debug(
 
     # ZERO-CROSS
     x_nr_hpf = signal.filtfilt(high_b, [1.0], x_nr)
-    zc       = np.zeros(int(np.ceil(len(data) / hop_length)))
-    for i in range(len(zc)):
-        idx      = i * hop_length
-        zc_start = int(max(0, idx - (win_length / 2)))
-        zc_end   = int(min(idx + (win_length / 2), len(data) - 1))
-        target   = x_nr_hpf[zc_start: zc_end]
-        zc[i]    = _count_zero_cross(target) / len(target)
-    zc           = normalize(zc)
+    zc = normalize(zero_crossing_rate(
+        x_nr_hpf, frame_length=win_length, hop_length=hop_length)[0])
     ## start 側をスライド
     start2 = 0
     for i in range(_my_round(start1_s / hop_length_s), -1, -1):
@@ -114,11 +108,6 @@ def _add_noise_to_signal(signal, noise, desired_snr_db):
     scaling_factor = np.sqrt(signal_power / (desired_snr_linear * noise_power))
     noise_adjusted = noise * scaling_factor
     return signal + noise_adjusted
-
-
-def _count_zero_cross(a: np.ndarray) -> int:
-    sign = np.sign(a)[a != 0 & ~np.isnan(a)]
-    return np.sum(np.abs(np.diff(sign)) != 0)
 
 
 def _my_round(a: float) -> int:
