@@ -11,7 +11,7 @@ import statistics as stat
 
 def vsed(data: np.ndarray, samplerate: float) -> tuple[float, float]:
     _, _, start_s, end_s, _, _, _, _, _\
-        = _vsed_debug(data=data.copy(), samplerate=samplerate)
+        = vsed_debug(data=data.copy(), samplerate=samplerate)
     return start_s, end_s
 
 
@@ -25,7 +25,7 @@ def vsed_debug(
         noise_seed:      int = 0
     ):
     win_length_s = win_length_s if win_length_s is not None else hop_length_s * 4
-    zcs_margin_s  = zcs_margin_s  if zcs_margin_s  is not None else win_length_s
+    zcs_margin_s = zcs_margin_s if zcs_margin_s is not None else win_length_s
 
     # constants
     nyq:        int = int(0.5 * samplerate)
