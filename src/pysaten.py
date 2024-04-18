@@ -11,7 +11,12 @@ import statistics as stat
 
 def vsed(data: np.ndarray, samplerate: float) -> tuple[float, float]:
     _, _, start_s, end_s, _, _, _, _, _\
-        = vsed_debug(data=data.copy(), samplerate=samplerate)
+        = vsed_debug(
+            data=data.copy(),
+            samplerate=samplerate,
+            rms_threshold=None,
+            zcs_threshold=None
+        )
     return start_s, end_s
 
 
@@ -98,9 +103,9 @@ def vsed_debug(
     start2_s = max(0                  , start2 * hop_length_s)
     end2_s   = min(end2 * hop_length_s, len(data) / samplerate)
 
-    feats_t = np.linspace(0, len(x_zcs) * hop_length_s, len(x_zcs))
+    feats_timestamp = np.linspace(0, len(x_zcs) * hop_length_s, len(x_zcs))
     return start1_s, end1_s, start2_s, end2_s, \
-        feats_t, x_rms, rms_threshold, x_zcs, zcs_threshold
+        feats_timestamp, x_rms, rms_threshold, x_zcs, zcs_threshold
 
 
 def _add_noise_to_signal(signal, noise, desired_snr_db):
