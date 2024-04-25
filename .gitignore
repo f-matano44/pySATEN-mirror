@@ -2,4 +2,7 @@
 *.txt
 *.lab
 *.csv
+*.pdf
+/**/blue.py
+/**/pink.py
 __pycache__
