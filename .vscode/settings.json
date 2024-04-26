@@ -4,6 +4,7 @@
         "filtfilt",
         "firwin",
         "irfft",
+        "ndarray",
         "rfft",
         "rfftfreq",
         "samplerate",

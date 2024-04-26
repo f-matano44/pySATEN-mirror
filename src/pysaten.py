@@ -4,14 +4,15 @@ from typing import Optional
 import noisereduce as nr
 import numpy as np
 from librosa import resample
-from librosa.feature import rms, zero_crossing_rate
+from librosa.feature import rms
+from librosa.feature import zero_crossing_rate as zcr
 from numpy.random import default_rng
 from scipy.signal import filtfilt, firwin
 
 
 def vsed(data: np.ndarray, samplerate: int) -> tuple[float, float]:
     _, _, start_s, end_s, _, _, _, _, _ = vsed_debug(
-        data=data, samplerate=samplerate, rms_threshold=0.05, zcs_threshold=0.5
+        data=data, samplerate=samplerate, rms_threshold=0.05, zcr_threshold=0.5
     )
     return start_s, end_s
 
@@ -22,7 +23,7 @@ def vsed_debug(
     win_length_s: Optional[float] = None,
     hop_length_s: float = 0.01,
     rms_threshold: Optional[float] = None,
-    zcs_threshold: Optional[float] = None,
+    zcr_threshold: Optional[float] = None,
     margin_s: Optional[float] = None,
     noise_seed: int = 0,
 ):
@@ -43,7 +44,7 @@ def vsed_debug(
     f0_ceil: int = 800  # from WORLD library
     win_length: int = int(win_length_s * samplerate)
     hop_length: int = int(hop_length_s * samplerate)
-    margin: int = int(margin_s * samplerate)
+    margin: int = int(margin_s / hop_length_s)
     band_b = firwin(31, [f0_floor, f0_ceil], pass_zero=False, fs=samplerate)
     high_b = firwin(31, f0_ceil, pass_zero=False, fs=samplerate)
     rand = default_rng(noise_seed)
@@ -68,68 +69,44 @@ def vsed_debug(
     x_rms = _normalize(rms(y=x_nr_bpf, frame_length=win_length, hop_length=hop_length)[0])
     rms_threshold = stat.mean(x_rms) if rms_threshold is None else rms_threshold
     # start 側をスライド
-    start1 = 0
-    for i in range(len(x_rms)):
-        if 0 < i and rms_threshold <= x_rms[i]:
-            rms_temp_end = min(i + int(margin / hop_length), len(x_rms))
-            rms_temp = x_rms[i:rms_temp_end]  # ->
-            rms_idx = [j for j, r in enumerate(rms_temp) if r < rms_threshold]
-            if rms_idx:  # is not empty
-                i = max(rms_idx)
-            else:
-                start1 = i
-                break
+    start1 = _slide_index(
+        goto_min=False, a=x_rms, start_idx=0, threshold=rms_threshold, margin=margin
+    )
     # end 側をスライド
-    end1 = len(x_rms)
-    for i in range(len(x_rms) - 1, 0, -1):
-        if rms_threshold <= x_rms[i]:
-            rms_temp_end = max(0, i - int(margin / hop_length))
-            rms_temp = x_rms[rms_temp_end:i]  # <-
-            rms_idx = [j for j, r in enumerate(rms_temp) if r < rms_threshold]
-            if rms_idx:  # is not Empty
-                i = min(rms_idx)
-            else:
-                end1 = i
-                break
-
-    start1_s = max(0, start1 * hop_length_s)
-    end1_s = min(end1 * hop_length_s, len(data) / samplerate)
+    end1 = _slide_index(
+        goto_min=True,
+        a=x_rms,
+        start_idx=len(x_rms) - 1,
+        threshold=rms_threshold,
+        margin=margin,
+    )
 
     # ZERO-CROSS
     x_nr_hpf = filtfilt(high_b, 1.0, x_nr)
-    x_zcs = _normalize(
-        zero_crossing_rate(x_nr_hpf, frame_length=win_length, hop_length=hop_length)[0]
-    )
-    zcs_threshold = stat.mean(x_zcs) if zcs_threshold is None else zcs_threshold
+    x_zcr = _normalize(zcr(x_nr_hpf, frame_length=win_length, hop_length=hop_length)[0])
+    zcr_threshold = stat.mean(x_zcr) if zcr_threshold is None else zcr_threshold
     # start 側をスライド
-    start2 = 0
-    for i in range(_my_round(start1_s / hop_length_s), 0, -1):
-        if zcs_threshold <= x_zcs[i]:
-            zcs_temp_end = max(0, i - int(margin / hop_length))
-            zcs_temp = x_zcs[zcs_temp_end:i]
-            zcs_idx = [j for j, z in enumerate(zcs_temp) if z < zcs_threshold]
-            if zcs_idx:  # is not empty
-                i = min(zcs_idx)
-            else:
-                start2 = i
-                break
+    start2 = _slide_index(
+        goto_min=True,
+        a=x_zcr,
+        start_idx=start1,
+        threshold=zcr_threshold,
+        margin=margin,
+    )
     # end 側をスライド
-    end2 = len(x_zcs)
-    for i in range(_my_round(end1_s / hop_length_s), len(x_zcs), 1):
-        if i < len(data) and zcs_threshold <= x_zcs[i]:
-            zcs_temp_end = min(i + int(margin / hop_length), len(x_zcs))
-            zcs_temp = x_zcs[i:zcs_temp_end]
-            zcs_idx = [j for j, z in enumerate(zcs_temp) if z <= zcs_threshold]
-            if zcs_idx:  # is not Empty
-                i = max(zcs_idx)
-            else:
-                end2 = i
-                break
+    end2 = _slide_index(
+        goto_min=False, a=x_zcr, start_idx=end1, threshold=zcr_threshold, margin=margin
+    )
 
+    # RMS
+    start1_s = max(0, start1 * hop_length_s)
+    end1_s = min(end1 * hop_length_s, len(data) / samplerate)
+    # ZCR
     start2_s = max(0, start2 * hop_length_s)
     end2_s = min(end2 * hop_length_s, len(data) / samplerate)
 
-    feats_timestamp = np.linspace(0, len(x_zcs) * hop_length_s, len(x_zcs))
+    feats_timestamp = np.linspace(0, len(x_zcr) * hop_length_s, len(x_zcr))
+
     return (
         start1_s,
         end1_s,
@@ -138,8 +115,8 @@ def vsed_debug(
         feats_timestamp,
         x_rms,
         rms_threshold,
-        x_zcs,
-        zcs_threshold,
+        x_zcr,
+        zcr_threshold,
     )
 
 
@@ -175,5 +152,24 @@ def _add_noise_to_signal(
     return signal + noise_adjusted
 
 
-def _my_round(a: float) -> int:
-    return int(np.floor(a + 0.5))
+def _slide_index(
+    goto_min: bool, a: np.ndarray, start_idx: int, threshold: float, margin: int
+) -> int:
+
+    stop_idx: int = -1 if goto_min else len(a)
+    step: int = -1 if goto_min else 1
+
+    for i in range(start_idx, stop_idx, step):
+        if threshold <= a[i]:
+            a_check_end = max(0, i - margin) if goto_min else min(i + margin, len(a))
+            a_check = a[a_check_end:i] if goto_min else a[i:a_check_end]
+            indices_below_threshold = [j for j, b in enumerate(a_check) if b < threshold]
+            if indices_below_threshold:  # is not empty
+                i = (
+                    min(indices_below_threshold)
+                    if goto_min
+                    else max(indices_below_threshold)
+                )
+            else:  # indices_below_threshold is empty -> finish!!!
+                return i
+    return 0
