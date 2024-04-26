@@ -5,4 +5,5 @@
 *.pdf
 /**/blue.py
 /**/pink.py
+.venv/
 __pycache__
