@@ -4,13 +4,18 @@
         "filtfilt",
         "firwin",
         "irfft",
+        "itako",
         "ndarray",
+        "pysaten",
         "rfft",
         "rfftfreq",
         "samplerate",
         "SATEN",
         "soxr",
-        "vsed"
+        "thres",
+        "tohoku",
+        "vsed",
+        "zundamon"
     ],
     "black-formatter.args": [
         "--line-length",
