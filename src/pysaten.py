@@ -48,19 +48,14 @@ def vsed_debug(
     high_b = firwin(31, f0_ceil, pass_zero=False, fs=samplerate)
     rand = default_rng(noise_seed)
 
-    # preprocess
-    # add blue noise
+    # preprocess: add blue noise
     data_rms = np.sort(rms(y=data)[0])
     noise = _gen_blue_noise(len(data), samplerate, rand)
-    noise_snr = min(20 * np.log10(data_rms[-2] / data_rms[1]), 10)
-    data = _add_noise_to_signal(data, noise, noise_snr)
+    signal_amp = data_rms[-2]
+    noise_amp = data_rms[1]
+    snr = min(20 * np.log10(signal_amp / noise_amp), 10)
+    data = data + noise * (signal_amp / 10 ** (snr / 20))
     data = data if max(abs(data)) <= 1 else data / max(abs(data))
-    # reduce start and end
-    HALF_OF_WINDOW = int(win_length / 2)
-    data[:HALF_OF_WINDOW] = data[:HALF_OF_WINDOW] * np.linspace(0, 1, HALF_OF_WINDOW)
-    data[len(data) - HALF_OF_WINDOW :] = data[len(data) - HALF_OF_WINDOW :] * np.linspace(
-        1, 0, HALF_OF_WINDOW
-    )
 
     # ROOT-MEAN-SQUARE
     x_nr = nr.reduce_noise(data, samplerate)
@@ -138,17 +133,6 @@ def _gen_blue_noise(length: int, fs: int, rand: np.random.Generator) -> np.ndarr
     bl /= np.max(np.abs(bl))
 
     return bl[:length]
-
-
-def _add_noise_to_signal(
-    signal: np.ndarray, noise: np.ndarray, desired_snr_db: np.ndarray
-):
-    desired_snr_linear = 10 ** (desired_snr_db / 10)
-    signal_power = np.mean(signal**2)
-    noise_power = np.mean(noise**2)
-    scaling_factor = np.sqrt(signal_power / (desired_snr_linear * noise_power))
-    noise_adjusted = noise * scaling_factor
-    return signal + noise_adjusted
 
 
 def _slide_index(
