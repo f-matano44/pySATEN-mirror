@@ -24,12 +24,11 @@ def vsed_debug(
     hop_length_s: float = 0.01,
     rms_threshold: Optional[float] = None,
     zcr_threshold: Optional[float] = None,
-    margin_s: Optional[float] = None,
+    margin_s: float = 0.1,
     noise_seed: int = 0,
 ):
     data = data.copy()
     win_length_s = win_length_s if win_length_s is not None else hop_length_s * 4
-    margin_s = margin_s if margin_s is not None else win_length_s * 2
 
     # resample
     SATEN_FS = 96000
