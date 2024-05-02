@@ -3,6 +3,7 @@
 *.lab
 *.csv
 *.pdf
+!requirements*.txt
 /**/blue.py
 /**/pink.py
 .venv/
