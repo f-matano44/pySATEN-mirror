@@ -1,4 +1,5 @@
 import statistics as stat
+import sys
 
 import librosa
 import numpy as np
@@ -7,14 +8,15 @@ from numpy.random import default_rng
 from tqdm import tqdm
 from utils import gen_noise_signal, load_answer
 
-from pysaten import pysaten
+sys.path.append("../src")
+import pysaten
 
 
 def _main():
     rand = default_rng(0)
     result = []
-    for zcr_thres in np.linspace(0.01, 1, 100):
-        for rms_thres in np.linspace(0.005, 0.5, 100):
+    for zcr_thres in np.linspace(0.56, 0.75, 20):
+        for rms_thres in np.linspace(0.01, 0.2, 20):
             this_param = []
             not_abs_error = []
             for i in tqdm(range(1, 101)):
@@ -28,7 +30,7 @@ def _main():
                         f"{dir_wav}/emoNormal{i:03}.wav",
                         sr=None,
                     )
-                    x = gen_noise_signal(x, fs, 25, False, rand, ans_s, ans_e)
+                    x = gen_noise_signal(x, fs, 5, False, rand, ans_s, ans_e)
                     _, _, S, E, _, _, _, _, _ = pysaten.vsed_debug(
                         x, fs, rms_threshold=rms_thres, zcr_threshold=zcr_thres
                     )
@@ -46,7 +48,7 @@ def _main():
             )
             print(f"{rms_thres:.3f}, {zcr_thres:.2f} -> {stat.mean(this_param):.3f}\n")
 
-    pw_csv = "tuning_result.csv"
+    pw_csv = "tuning_result2.csv"
     df = pd.DataFrame(
         result, columns=["rme_threshold", "zcr_threshold", "error_s", "not_abs_error_s"]
     )

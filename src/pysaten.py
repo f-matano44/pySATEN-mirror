@@ -11,8 +11,15 @@ from scipy.signal import filtfilt, firwin
 
 
 def vsed(data: np.ndarray, samplerate: int) -> tuple[float, float]:
+    rms_thres = 0.02
+    zcr_thres = 0.66
+    offset_s = 0.03
     _, _, start_s, end_s, _, _, _, _, _ = vsed_debug(
-        data=data, samplerate=samplerate, rms_threshold=0.05, zcr_threshold=0.5
+        data=data,
+        samplerate=samplerate,
+        rms_threshold=rms_thres,
+        zcr_threshold=zcr_thres,
+        offset_s=offset_s,
     )
     return start_s, end_s
 
@@ -25,6 +32,7 @@ def vsed_debug(
     rms_threshold: Optional[float] = None,
     zcr_threshold: Optional[float] = None,
     margin_s: float = 0.1,
+    offset_s: float = 0,
     noise_seed: int = 0,
 ):
     data = data.copy()
@@ -52,7 +60,7 @@ def vsed_debug(
     data_rms = np.sort(rms(y=data)[0])
     noise = _gen_blue_noise(len(data), samplerate, rand)
     signal_amp = data_rms[-2]
-    noise_amp = data_rms[1]
+    noise_amp = max(data_rms[1], 1e-10)
     snr = min(20 * np.log10(signal_amp / noise_amp), 10)
     data = data + noise * (signal_amp / 10 ** (snr / 20))
     data = data if max(abs(data)) <= 1 else data / max(abs(data))
@@ -85,7 +93,7 @@ def vsed_debug(
         a=x_zcr,
         start_idx=start1,
         threshold=zcr_threshold,
-        margin=margin,
+        margin=0,
     )
     # end 側をスライド
     end2 = _slide_index(
@@ -98,6 +106,9 @@ def vsed_debug(
     # ZCR
     start2_s = max(0, start2 * hop_length_s)
     end2_s = min(end2 * hop_length_s, len(data) / samplerate)
+
+    start2_s -= offset_s
+    end2_s += offset_s
 
     feats_timestamp = np.linspace(0, len(x_zcr) * hop_length_s, len(x_zcr))
 
