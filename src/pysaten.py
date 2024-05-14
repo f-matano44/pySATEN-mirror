@@ -7,7 +7,7 @@ from librosa import resample
 from librosa.feature import rms
 from librosa.feature import zero_crossing_rate as zcr
 from numpy.random import default_rng
-from scipy.signal import filtfilt, firwin
+from scipy.signal import butter, filtfilt
 
 
 def vsed(data: np.ndarray, samplerate: int) -> tuple[float, float]:
@@ -47,13 +47,14 @@ def vsed_debug(
         samplerate = SATEN_FS
 
     # constants
+    nyq = samplerate / 2
     f0_floor: int = 71  # from WORLD library
     f0_ceil: int = 800  # from WORLD library
     win_length: int = int(win_length_s * samplerate)
     hop_length: int = int(hop_length_s * samplerate)
     margin: int = int(margin_s / hop_length_s)
-    band_b = firwin(31, [f0_floor, f0_ceil], pass_zero=False, fs=samplerate)
-    high_b = firwin(31, f0_ceil, pass_zero=False, fs=samplerate)
+    band_b, band_a = butter(4, [f0_floor / nyq, f0_ceil / nyq], btype="band")
+    high_b, high_a = butter(4, [f0_ceil / nyq], btype="high")
     rand = default_rng(noise_seed)
 
     # preprocess: add blue noise
@@ -67,7 +68,7 @@ def vsed_debug(
 
     # ROOT-MEAN-SQUARE
     x_nr = nr.reduce_noise(data, samplerate)
-    x_nr_bpf = filtfilt(band_b, 1.0, x_nr)
+    x_nr_bpf = filtfilt(band_b, band_a, x_nr)
     x_rms = _normalize(rms(y=x_nr_bpf, frame_length=win_length, hop_length=hop_length)[0])
     rms_threshold = stat.mean(x_rms) if rms_threshold is None else rms_threshold
     # start 側をスライド
@@ -84,7 +85,7 @@ def vsed_debug(
     )
 
     # ZERO-CROSS
-    x_nr_hpf = filtfilt(high_b, 1.0, x_nr)
+    x_nr_hpf = filtfilt(high_b, high_a, x_nr)
     x_zcr = _normalize(zcr(x_nr_hpf, frame_length=win_length, hop_length=hop_length)[0])
     zcr_threshold = stat.mean(x_zcr) if zcr_threshold is None else zcr_threshold
     # start 側をスライド
@@ -93,7 +94,7 @@ def vsed_debug(
         a=x_zcr,
         start_idx=start1,
         threshold=zcr_threshold,
-        margin=0,
+        margin=margin,
     )
     # end 側をスライド
     end2 = _slide_index(
