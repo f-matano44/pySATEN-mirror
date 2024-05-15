@@ -1,13 +1,23 @@
+# directory
+.venv/
+.mypy_cache
+__pycache__
+
+# extension
 *.wav
 *.txt
 *.lab
 *.csv
 *.pdf
-!requirements*.txt
+*.zip
+
+# file
 /**/blue.py
 /**/pink.py
-.venv/
+
+# macOS
 .DS_Store
 ._*
-*.zip
-__pycache__
+
+# keep
+!requirements*.txt
