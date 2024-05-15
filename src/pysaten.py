@@ -7,7 +7,7 @@ from librosa import resample
 from librosa.feature import rms
 from librosa.feature import zero_crossing_rate as zcr
 from numpy.random import default_rng
-from scipy.signal import butter, filtfilt
+from scipy.signal import filtfilt, firwin
 
 
 def vsed(data: np.ndarray, samplerate: int) -> tuple[float, float]:
@@ -31,7 +31,7 @@ def vsed_debug(
     hop_length_s: float = 0.01,
     rms_threshold: Optional[float] = None,
     zcr_threshold: Optional[float] = None,
-    margin_s: float = 0.1,
+    zcr_margin_s: float = 0.1,
     offset_s: float = 0,
     noise_seed: int = 0,
 ):
@@ -47,14 +47,17 @@ def vsed_debug(
         samplerate = SATEN_FS
 
     # constants
-    nyq = samplerate / 2
     f0_floor: int = 71  # from WORLD library
     f0_ceil: int = 800  # from WORLD library
     win_length: int = int(win_length_s * samplerate)
     hop_length: int = int(hop_length_s * samplerate)
-    margin: int = int(margin_s / hop_length_s)
-    band_b, band_a = butter(4, [f0_floor / nyq, f0_ceil / nyq], btype="band")
-    high_b, high_a = butter(4, [f0_ceil / nyq], btype="high")
+    zcr_margin: int = int(zcr_margin_s / hop_length_s)
+
+    # filter design
+    band_b = firwin(3001, [f0_floor, f0_ceil], pass_zero=False, fs=samplerate)
+    band_a = 1.0  # iir (butter) <- sometimes unstable
+    high_b = firwin(101, f0_ceil, pass_zero=False, fs=samplerate)
+    high_a = 1.0  # iir (butter) <- sometimes unstable
     rand = default_rng(noise_seed)
 
     # preprocess: add blue noise
@@ -71,34 +74,34 @@ def vsed_debug(
     x_nr_bpf = filtfilt(band_b, band_a, x_nr)
     x_rms = _normalize(rms(y=x_nr_bpf, frame_length=win_length, hop_length=hop_length)[0])
     rms_threshold = stat.mean(x_rms) if rms_threshold is None else rms_threshold
-    # start 側をスライド
-    start1 = _slide_index(
-        goto_min=False, a=x_rms, start_idx=0, threshold=rms_threshold, margin=margin
+    start1: int = (
+        np.where(rms_threshold < x_rms)[0][0] if np.any(rms_threshold < x_rms) else 0
     )
-    # end 側をスライド
-    end1 = _slide_index(
-        goto_min=True,
-        a=x_rms,
-        start_idx=len(x_rms) - 1,
-        threshold=rms_threshold,
-        margin=margin,
+    end1: int = (
+        np.where(rms_threshold < x_rms)[0][-1]
+        if np.any(rms_threshold < x_rms)
+        else len(x_rms) - 1
     )
 
     # ZERO-CROSS
     x_nr_hpf = filtfilt(high_b, high_a, x_nr)
     x_zcr = _normalize(zcr(x_nr_hpf, frame_length=win_length, hop_length=hop_length)[0])
     zcr_threshold = stat.mean(x_zcr) if zcr_threshold is None else zcr_threshold
-    # start 側をスライド
+    # slide start index
     start2 = _slide_index(
         goto_min=True,
         a=x_zcr,
         start_idx=start1,
         threshold=zcr_threshold,
-        margin=margin,
+        margin=zcr_margin,
     )
-    # end 側をスライド
+    # slide end index
     end2 = _slide_index(
-        goto_min=False, a=x_zcr, start_idx=end1, threshold=zcr_threshold, margin=margin
+        goto_min=False,
+        a=x_zcr,
+        start_idx=end1,
+        threshold=zcr_threshold,
+        margin=zcr_margin,
     )
 
     # RMS
