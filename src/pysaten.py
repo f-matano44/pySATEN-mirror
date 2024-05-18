@@ -11,15 +11,12 @@ from scipy.signal import filtfilt, firwin
 
 
 def vsed(data: np.ndarray, samplerate: int) -> tuple[float, float]:
-    rms_thres = 0.02
-    zcr_thres = 0.66
-    offset_s = 0.03
     _, _, start_s, end_s, _, _, _, _, _ = vsed_debug(
         data=data,
         samplerate=samplerate,
-        rms_threshold=rms_thres,
-        zcr_threshold=zcr_thres,
-        offset_s=offset_s,
+        rms_threshold=0.05,
+        zcr_threshold=0.68,
+        offset_s=0.03,
     )
     return start_s, end_s
 

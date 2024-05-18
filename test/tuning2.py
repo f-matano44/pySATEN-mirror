@@ -1,5 +1,4 @@
 import statistics as stat
-import sys
 
 import librosa
 import numpy as np
@@ -8,14 +7,13 @@ from numpy.random import default_rng
 from tqdm import tqdm
 from utils import gen_noise_signal, load_answer
 
-sys.path.append("../src")
 import pysaten
 
 
 def _main():
     rand = default_rng(0)
     result = []
-    for zcr_thres in np.linspace(0.56, 0.75, 20):
+    for zcr_thres in np.linspace(0.66, 0.85, 20):
         for rms_thres in np.linspace(0.01, 0.2, 20):
             this_param = []
             not_abs_error = []
@@ -30,7 +28,7 @@ def _main():
                         f"{dir_wav}/emoNormal{i:03}.wav",
                         sr=None,
                     )
-                    x = gen_noise_signal(x, fs, 5, False, rand, ans_s, ans_e)
+                    x = gen_noise_signal(x, fs, 25, False, rand, ans_s, ans_e)
                     _, _, S, E, _, _, _, _, _ = pysaten.vsed_debug(
                         x, fs, rms_threshold=rms_thres, zcr_threshold=zcr_thres
                     )

@@ -21,3 +21,4 @@ __pycache__
 
 # keep
 !requirements*.txt
+!/**/*_result*.csv
