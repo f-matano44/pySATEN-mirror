@@ -31,8 +31,7 @@ def gen_noise_signal(
     noise_x = x + noise * noise_scale
     # add pulse noise
     # generate pulse
-    pulse = np.array([1, -1])
-    rand.shuffle(pulse)
+    pulse = rand.random(2) - 0.5 * 2
     # determine index adding pulse noise
     start_pulse_index = np.random.randint(0, speech_start_idx)
     end_pulse = np.random.randint(speech_end_idx, len(x) - 1)
