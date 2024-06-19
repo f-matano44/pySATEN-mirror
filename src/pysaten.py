@@ -50,12 +50,9 @@ def vsed_debug(
     apass: int = 1
     order: int = 12
 
-    # set random seed
-    rand = default_rng(noise_seed)
-
     # preprocess: add blue noise && remove background noise
     data_rms = np.sort(rms(y=x)[0])
-    noise = _gen_blue_noise(len(x), sr, rand)
+    noise = _gen_blue_noise(len(x), sr, noise_seed)
     signal_amp = data_rms[-2]
     noise_amp = max(data_rms[1], 1e-10)
     snr = min(20 * np.log10(signal_amp / noise_amp), 10)
@@ -135,10 +132,10 @@ def _normalize(a: np.ndarray) -> np.ndarray:
     return (a - a.min()) / (a.max() - a.min())
 
 
-def _gen_blue_noise(length: int, fs: int, rand: np.random.Generator) -> np.ndarray:
-    length2 = length + 1000
+def _gen_blue_noise(length: int, fs: int, noise_seed: int) -> np.ndarray:
+    rand: np.random.Generator = default_rng(noise_seed)
     # white noise
-    wh = rand.uniform(low=-1.0, high=1.0, size=length2)
+    wh = rand.uniform(low=-1.0, high=1.0, size=length + 1000)
     # fft
     WH = np.fft.rfft(wh)
     WH_f = np.fft.rfftfreq(len(wh), 1 / fs)
