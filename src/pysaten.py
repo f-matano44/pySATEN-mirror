@@ -7,7 +7,7 @@ from librosa import resample
 from librosa.feature import rms
 from librosa.feature import zero_crossing_rate as zcr
 from numpy.random import default_rng
-from scipy.signal import filtfilt, firwin
+from scipy.signal import cheby1, sosfilt
 
 
 def vsed(data: np.ndarray, samplerate: int) -> tuple[float, float]:
@@ -36,12 +36,7 @@ def vsed_debug(
     win_length_s = win_length_s if win_length_s is not None else hop_length_s * 4
 
     # resample
-    SATEN_FS = 96000
-    if samplerate != SATEN_FS:
-        data = resample(
-            y=data, orig_sr=samplerate, target_sr=SATEN_FS, res_type="soxr_lq"
-        )
-        samplerate = SATEN_FS
+    data, samplerate = _resample_to_96k(data, samplerate)
 
     # constants
     f0_floor: int = 71  # from WORLD library
@@ -51,13 +46,14 @@ def vsed_debug(
     zcr_margin: int = int(zcr_margin_s / hop_length_s)
 
     # filter design
-    band_b = firwin(3001, [f0_floor, f0_ceil], pass_zero=False, fs=samplerate)
-    band_a = 1.0  # iir (butter) <- sometimes unstable
-    high_b = firwin(101, f0_ceil, pass_zero=False, fs=samplerate)
-    high_a = 1.0  # iir (butter) <- sometimes unstable
+    nyquist: int = int(samplerate / 2)
+    apass: int = 1
+    order: int = 12
+
+    # set random seed
     rand = default_rng(noise_seed)
 
-    # preprocess: add blue noise
+    # preprocess: add blue noise && remove background noise
     data_rms = np.sort(rms(y=data)[0])
     noise = _gen_blue_noise(len(data), samplerate, rand)
     signal_amp = data_rms[-2]
@@ -65,10 +61,12 @@ def vsed_debug(
     snr = min(20 * np.log10(signal_amp / noise_amp), 10)
     data = data + noise * (signal_amp / 10 ** (snr / 20))
     data = data if max(abs(data)) <= 1 else data / max(abs(data))
+    x_nr = nr.reduce_noise(data, samplerate)
 
     # ROOT-MEAN-SQUARE
-    x_nr = nr.reduce_noise(data, samplerate)
-    x_nr_bpf = filtfilt(band_b, band_a, x_nr)
+    wp = [f0_floor / nyquist, f0_ceil / nyquist]
+    band_sos = cheby1(order, rp=apass, Wn=wp, btype="bandpass", output="sos")
+    x_nr_bpf = sosfilt(band_sos, x_nr)
     x_rms = _normalize(rms(y=x_nr_bpf, frame_length=win_length, hop_length=hop_length)[0])
     rms_threshold = stat.mean(x_rms) if rms_threshold is None else rms_threshold
     start1: int = (
@@ -81,7 +79,9 @@ def vsed_debug(
     )
 
     # ZERO-CROSS
-    x_nr_hpf = filtfilt(high_b, high_a, x_nr)
+    wp = f0_ceil / nyquist
+    high_sos = cheby1(order, rp=apass, Wn=wp, btype="low", output="sos")
+    x_nr_hpf = sosfilt(high_sos, x_nr)
     x_zcr = _normalize(zcr(x_nr_hpf, frame_length=win_length, hop_length=hop_length)[0])
     zcr_threshold = stat.mean(x_zcr) if zcr_threshold is None else zcr_threshold
     # slide start index
@@ -124,6 +124,12 @@ def vsed_debug(
         x_zcr,
         zcr_threshold,
     )
+
+
+def _resample_to_96k(data: np.ndarray, src_fs: int) -> tuple[np.ndarray, int]:
+    target_fs = 96000
+    data = resample(y=data, orig_sr=src_fs, target_sr=target_fs, res_type="soxr_lq")
+    return data, target_fs
 
 
 def _normalize(a: np.ndarray) -> np.ndarray:
