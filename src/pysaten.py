@@ -11,7 +11,7 @@ from scipy.signal import cheby1, sosfilt
 
 
 def vsed(data: np.ndarray, samplerate: int) -> tuple[float, float]:
-    _, _, start_s, end_s, _, _, _, _, _ = vsed_debug(
+    _, _, _, _, start_s, end_s, _, _, _, _, _ = vsed_debug(
         data=data,
         samplerate=samplerate,
         rms_threshold=0.05,
@@ -108,9 +108,6 @@ def vsed_debug(
     start2_s = max(0, start2 * hop_length_s)
     end2_s = min(end2 * hop_length_s, len(data) / samplerate)
 
-    start2_s -= offset_s
-    end2_s += offset_s
-
     feats_timestamp = np.linspace(0, len(x_zcr) * hop_length_s, len(x_zcr))
 
     return (
@@ -118,6 +115,8 @@ def vsed_debug(
         end1_s,
         start2_s,
         end2_s,
+        start2_s - offset_s,
+        end2_s + offset_s,
         feats_timestamp,
         x_rms,
         rms_threshold,
