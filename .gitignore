@@ -1,8 +1,3 @@
-# directory
-.venv/
-.mypy_cache
-__pycache__
-
 # extension
 *.wav
 *.txt

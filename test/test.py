@@ -16,13 +16,13 @@ def _main():
     rand = np.random.default_rng(0)
     result = []
 
-    wavfiles = [
+    wav_files = [
         "wav_and_lab/metan/ITA_recitation_normal_synchronized_wav/recitation",
         "wav_and_lab/sora/ITA_recitation_normal_synchronized_wav/recitation",
         "wav_and_lab/usagi/ITA_recitation_normal_synchronized_wav/normal_recitation_",
     ]
 
-    labfiles = [
+    lab_files = [
         "wav_and_lab/metan/ITA_recitation_normal_label/recitation",
         "wav_and_lab/sora/ITA_recitation_normal_label/rct",
         "wav_and_lab/usagi/ITA_recitation_normal_label/rct",
@@ -37,9 +37,9 @@ def _main():
         print(f"SNR: {snr}", file=sys.stderr)
         for i in tqdm(range(1, 324 + 1)):
             for speaker in [0, 1, 2]:
-                ans_s, ans_e = load_answer(f"{labfiles[speaker]}{i:03}.lab")
-                wavfile = f"{wavfiles[speaker]}{i:03}.wav"
-                x, fs = read(wavfile)
+                ans_s, ans_e = load_answer(f"{lab_files[speaker]}{i:03}.lab")
+                wav_file = f"{wav_files[speaker]}{i:03}.wav"
+                x, fs = read(wav_file)
                 if snr is not None:
                     x = gen_noise_signal(x, fs, snr, True, rand, ans_s, ans_e)
                 # SATEN
