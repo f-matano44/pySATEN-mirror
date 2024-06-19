@@ -32,21 +32,21 @@ def vsed_debug(
     offset_s: float = 0,
     noise_seed: int = 0,
 ):
-    data = data.copy()
+    x = data.copy()
     win_length_s = win_length_s if win_length_s is not None else hop_length_s * 4
 
     # resample
-    data, samplerate = _resample_to_96k(data, samplerate)
+    x, sr = _resample_to_96k(x, samplerate)
 
     # constants
     f0_floor: int = 71  # from WORLD library
     f0_ceil: int = 800  # from WORLD library
-    win_length: int = int(win_length_s * samplerate)
-    hop_length: int = int(hop_length_s * samplerate)
+    win_length: int = int(win_length_s * sr)
+    hop_length: int = int(hop_length_s * sr)
     zcr_margin: int = int(zcr_margin_s / hop_length_s)
 
     # filter design
-    nyquist: int = int(samplerate / 2)
+    nyq: int = int(sr / 2)
     apass: int = 1
     order: int = 12
 
@@ -54,17 +54,17 @@ def vsed_debug(
     rand = default_rng(noise_seed)
 
     # preprocess: add blue noise && remove background noise
-    data_rms = np.sort(rms(y=data)[0])
-    noise = _gen_blue_noise(len(data), samplerate, rand)
+    data_rms = np.sort(rms(y=x)[0])
+    noise = _gen_blue_noise(len(x), sr, rand)
     signal_amp = data_rms[-2]
     noise_amp = max(data_rms[1], 1e-10)
     snr = min(20 * np.log10(signal_amp / noise_amp), 10)
-    data = data + noise * (signal_amp / 10 ** (snr / 20))
-    data = data if max(abs(data)) <= 1 else data / max(abs(data))
-    x_nr = nr.reduce_noise(data, samplerate)
+    x = x + noise * (signal_amp / 10 ** (snr / 20))
+    x = x if max(abs(x)) <= 1 else x / max(abs(x))
+    x_nr = nr.reduce_noise(x, sr)
 
     # ROOT-MEAN-SQUARE
-    wp = [f0_floor / nyquist, f0_ceil / nyquist]
+    wp = [f0_floor / nyq, f0_ceil / nyq]
     band_sos = cheby1(order, rp=apass, Wn=wp, btype="bandpass", output="sos")
     x_nr_bpf = sosfilt(band_sos, x_nr)
     x_rms = _normalize(rms(y=x_nr_bpf, frame_length=win_length, hop_length=hop_length)[0])
@@ -79,7 +79,7 @@ def vsed_debug(
     )
 
     # ZERO-CROSS
-    wp = f0_ceil / nyquist
+    wp = f0_ceil / nyq
     high_sos = cheby1(order, rp=apass, Wn=wp, btype="low", output="sos")
     x_nr_hpf = sosfilt(high_sos, x_nr)
     x_zcr = _normalize(zcr(x_nr_hpf, frame_length=win_length, hop_length=hop_length)[0])
@@ -103,10 +103,10 @@ def vsed_debug(
 
     # RMS
     start1_s = max(0, start1 * hop_length_s)
-    end1_s = min(end1 * hop_length_s, len(data) / samplerate)
+    end1_s = min(end1 * hop_length_s, len(x) / sr)
     # ZCR
     start2_s = max(0, start2 * hop_length_s)
-    end2_s = min(end2 * hop_length_s, len(data) / samplerate)
+    end2_s = min(end2 * hop_length_s, len(x) / sr)
 
     feats_timestamp = np.linspace(0, len(x_zcr) * hop_length_s, len(x_zcr))
 
