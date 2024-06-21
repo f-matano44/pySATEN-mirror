@@ -7,7 +7,7 @@ from librosa import resample
 from librosa.feature import rms
 from librosa.feature import zero_crossing_rate as zcr
 from numpy.random import default_rng
-from scipy.signal import cheby1, sosfilt
+from scipy.signal import cheby1, firwin, lfilter, sosfilt
 
 
 def vsed(data: np.ndarray, samplerate: int) -> tuple[float, float]:
@@ -39,16 +39,12 @@ def vsed_debug(
     x, sr = _resample_to_96k(x, samplerate)
 
     # constants
+    nyq: int = int(sr / 2)
     f0_floor: int = 71  # from WORLD library
     f0_ceil: int = 800  # from WORLD library
     win_length: int = int(win_length_s * sr)
     hop_length: int = int(hop_length_s * sr)
     zcr_margin: int = int(zcr_margin_s / hop_length_s)
-
-    # filter design
-    nyq: int = int(sr / 2)
-    apass: int = 1
-    order: int = 12
 
     # preprocess: add blue noise && remove background noise
     data_rms = np.sort(rms(y=x)[0])
@@ -62,7 +58,7 @@ def vsed_debug(
 
     # ROOT-MEAN-SQUARE
     wp = [f0_floor / nyq, f0_ceil / nyq]
-    band_sos = cheby1(order, rp=apass, Wn=wp, btype="bandpass", output="sos")
+    band_sos = cheby1(N=12, rp=1, Wn=wp, btype="bandpass", output="sos")
     x_nr_bpf = sosfilt(band_sos, x_nr)
     x_rms = _normalize(rms(y=x_nr_bpf, frame_length=win_length, hop_length=hop_length)[0])
     rms_threshold = stat.mean(x_rms) if rms_threshold is None else rms_threshold
@@ -76,9 +72,8 @@ def vsed_debug(
     )
 
     # ZERO-CROSS
-    wp = f0_ceil / nyq
-    high_sos = cheby1(order, rp=apass, Wn=wp, btype="low", output="sos")
-    x_nr_hpf = sosfilt(high_sos, x_nr)
+    high_b = firwin(101, f0_ceil, pass_zero=False, fs=samplerate)
+    x_nr_hpf = lfilter(high_b, 1.0, x_nr)
     x_zcr = _normalize(zcr(x_nr_hpf, frame_length=win_length, hop_length=hop_length)[0])
     zcr_threshold = stat.mean(x_zcr) if zcr_threshold is None else zcr_threshold
     # slide start index
