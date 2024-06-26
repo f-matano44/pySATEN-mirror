@@ -13,7 +13,7 @@ import pysaten
 def _main():
     rand = default_rng(0)
     result = []
-    for zcr_thres in np.linspace(0.66, 0.85, 20):
+    for zcr_thres in np.linspace(0.31, 0.80, 50):
         for rms_thres in np.linspace(0.01, 0.2, 20):
             this_param = []
             not_abs_error = []
@@ -29,7 +29,7 @@ def _main():
                         sr=None,
                     )
                     x = gen_noise_signal(x, fs, 25, False, rand, ans_s, ans_e)
-                    _, _, S, E, _, _, _, _, _ = pysaten.vsed_debug(
+                    _, _, _, _, S, E, _, _, _, _, _ = pysaten.vsed_debug(
                         x, fs, rms_threshold=rms_thres, zcr_threshold=zcr_thres
                     )
                     this_param.append(abs(S - ans_s))

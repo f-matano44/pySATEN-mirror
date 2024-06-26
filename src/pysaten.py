@@ -14,8 +14,8 @@ def vsed(data: np.ndarray, samplerate: int) -> tuple[float, float]:
     _, _, _, _, start_s, end_s, _, _, _, _, _ = vsed_debug(
         data=data,
         samplerate=samplerate,
-        rms_threshold=0.05,
-        zcr_threshold=0.68,
+        rms_threshold=0.03,
+        zcr_threshold=0.67,
         offset_s=0.03,
     )
     return start_s, end_s
@@ -26,10 +26,10 @@ def vsed_debug(
     samplerate: int,
     win_length_s: Optional[float] = None,
     hop_length_s: float = 0.01,
-    rms_threshold: Optional[float] = None,
-    zcr_threshold: Optional[float] = None,
+    rms_threshold: float = 0.03,
+    zcr_threshold: float = 0.67,
     zcr_margin_s: float = 0.1,
-    offset_s: float = 0,
+    offset_s: float = 0.03,
     noise_seed: int = 0,
 ):
     x = data.copy()
