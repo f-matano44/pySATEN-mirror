@@ -14,7 +14,6 @@ import pysaten
 
 def _main():
     rand = np.random.default_rng(0)
-    result = []
 
     wav_files = [
         "wav_and_lab/metan/ITA_recitation_normal_synchronized_wav/recitation",
@@ -29,7 +28,7 @@ def _main():
     ]
 
     marble = marblenet.MarbleNet()
-    for snr in [None, 20, 15, 10, 5, 0, -5]:
+    for snr in [None, 20, 15, 10, 5, 0, -5, -999]:
         saten = []
         rvad = []
         ina = []
@@ -40,8 +39,10 @@ def _main():
                 ans_s, ans_e = load_answer(f"{lab_files[speaker]}{i:03}.lab")
                 wav_file = f"{wav_files[speaker]}{i:03}.wav"
                 x, fs = read(wav_file)
-                if snr is not None:
+                if snr is not None and snr != -999:
                     x = gen_noise_signal(x, fs, snr, True, rand, ans_s, ans_e)
+                elif snr == -999:
+                    x = rand.uniform(low=-1.0, high=1.0, size=len(x))
                 # SATEN
                 S, E = pysaten.vsed(x, fs)
                 E = 0 if S == 0 and abs(E - len(x) / fs) <= 0.01 else E
@@ -63,27 +64,9 @@ def _main():
                 nemo.append(abs(S - ans_s))
                 nemo.append(abs(E - ans_e))
 
-        result.append(
-            [
-                snr if snr is not None else "Inf",
-                f"{np.mean(saten):.3f} ({(1.96*np.std(saten)/np.sqrt(len(saten))):.3f})",
-                f"{np.mean(rvad):.3f} ({(1.96*np.std(rvad)/np.sqrt(len(rvad))):.3f})",
-                f"{np.mean(ina):.3f} ({(1.96*np.std(ina)/np.sqrt(len(ina))):.3f})",
-                f"{np.mean(nemo):.3f} ({(1.96*np.std(nemo)/np.sqrt(len(nemo))):.3f})",
-            ]
-        )
-
-    df = pd.DataFrame(
-        result,
-        columns=[
-            "snr",
-            "saten_mean (95%CI)",
-            "rvad_mean (95%CI)",
-            "ina_mean (95%CI)",
-            "nemo_mean (95%CI)",
-        ],
-    )
-    df.to_csv("test_white_result.csv", index=False)
+        pd.DataFrame(
+            {"pySATEN": saten, "rVAD": rvad, "inaSpeechSegmenter": ina, "MarbleNet": nemo}
+        ).to_csv(f"test_{str(snr)}.csv", index=False)
 
 
 def _ina_speech_segmenter(x, fs):
