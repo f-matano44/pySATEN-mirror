@@ -56,6 +56,7 @@ plt.errorbar(
     capsize=capsize,
     markersize=markersize,
     linewidth=linewidth,
+    color="#005AFF",
 )
 plt.errorbar(
     x - 0.5 * offset,
@@ -66,6 +67,7 @@ plt.errorbar(
     capsize=capsize,
     markersize=markersize,
     linewidth=linewidth,
+    color="#F6AA00",
 )
 plt.errorbar(
     x + 0.5 * offset,
@@ -76,6 +78,7 @@ plt.errorbar(
     capsize=capsize,
     markersize=markersize,
     linewidth=linewidth,
+    color="#03AF7A",
 )
 plt.errorbar(
     x + 1.5 * offset,
@@ -86,6 +89,7 @@ plt.errorbar(
     capsize=capsize,
     markersize=markersize * 1.5,
     linewidth=linewidth,
+    color="#FF4B00",
 )
 plt.xticks(x, result["label"])
 plt.legend(handlelength=4, fontsize=12, loc="upper left")
@@ -94,5 +98,5 @@ plt.gca().yaxis.set_major_locator(MaxNLocator(integer=True))
 plt.grid()
 plt.yscale("log")
 plt.ylabel("Error [s]", fontsize=20)
-plt.xlabel("Signal Noise Ratio [dB]", fontsize=20)
+plt.xlabel("Signal-to-Noise Ratio [dB]", fontsize=20)
 plt.show()
