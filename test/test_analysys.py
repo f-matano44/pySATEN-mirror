@@ -40,6 +40,7 @@ for snr in snrlist:
         )
     print("")
 
+# color: https://contents-open.hatenablog.com/entry/2021/08/19/231157
 plt.rcParams["font.family"] = "Times New Roman"
 plt.rcParams["font.size"] = 16
 x = np.arange(len(result["label"]))
@@ -48,11 +49,22 @@ markersize = 7
 capsize = 0
 linewidth = 2
 plt.errorbar(
-    x - 1.5 * offset,
-    result[vad[0]]["med"],
-    yerr=[result[vad[0]]["low"], result[vad[0]]["high"]],
-    fmt="o-",
-    label="SATEN Lv.1",
+    x + 1.5 * offset,
+    result[vad[3]]["med"],
+    yerr=[result[vad[3]]["low"], result[vad[3]]["high"]],
+    fmt="*:",
+    label=str(vad[3]),
+    capsize=capsize,
+    markersize=markersize * 1.5,
+    linewidth=linewidth,
+    color="#FF4B00",
+)
+plt.errorbar(
+    x + 0.5 * offset,
+    result[vad[2]]["med"],
+    yerr=[result[vad[2]]["low"], result[vad[2]]["high"]],
+    fmt="D-.",
+    label=str(vad[2]),
     capsize=capsize,
     markersize=markersize,
     linewidth=linewidth,
@@ -67,29 +79,18 @@ plt.errorbar(
     capsize=capsize,
     markersize=markersize,
     linewidth=linewidth,
-    color="#F6AA00",
-)
-plt.errorbar(
-    x + 0.5 * offset,
-    result[vad[2]]["med"],
-    yerr=[result[vad[2]]["low"], result[vad[2]]["high"]],
-    fmt="D-.",
-    label=str(vad[2]),
-    capsize=capsize,
-    markersize=markersize,
-    linewidth=linewidth,
     color="#03AF7A",
 )
 plt.errorbar(
-    x + 1.5 * offset,
-    result[vad[3]]["med"],
-    yerr=[result[vad[3]]["low"], result[vad[3]]["high"]],
-    fmt="*:",
-    label=str(vad[3]),
+    x - 1.5 * offset,
+    result[vad[0]]["med"],
+    yerr=[result[vad[0]]["low"], result[vad[0]]["high"]],
+    fmt="o-",
+    label="SATEN Lv.1",
     capsize=capsize,
-    markersize=markersize * 1.5,
+    markersize=markersize,
     linewidth=linewidth,
-    color="#FF4B00",
+    color="#4DC4FF",
 )
 plt.xticks(x, result["label"])
 plt.legend(handlelength=4, fontsize=12, loc="upper left")
