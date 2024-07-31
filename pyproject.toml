@@ -1,0 +1,9 @@
+[project]
+name = "pysaten"
+version = "1.0"
+dependencies = [
+    "numpy",
+    "noisereduce",
+    "librosa",
+    "scipy",
+]
