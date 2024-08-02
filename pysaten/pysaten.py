@@ -1,3 +1,5 @@
+# SPDX-License-Identifier:GPL-3.0-or-later
+
 from typing import Optional
 
 import noisereduce as nr
@@ -13,25 +15,22 @@ _F0_CEIL: int = 800  # from WORLD library
 
 
 def vsed(y: np.ndarray, sr: int) -> tuple[float, float]:
-    _, _, _, _, start_s, end_s, _, _, _ = vsed_debug(
-        y=y,
-        orig_sr=sr,
-        rms_threshold=0.03,
-        zcr_threshold=0.67,
-        offset_s=0.03,
-    )
+    _, _, _, _, start_s, end_s, _, _, _ = vsed_debug(y, sr)
     return start_s, end_s
 
 
 def vsed_debug(
     y: np.ndarray,
     orig_sr: int,
+    # -------------------------------------------
     win_length_s: Optional[float] = None,
     hop_length_s: float = 0.01,
+    # -------------------------------------------
     rms_threshold: float = 0.03,
     zcr_threshold: float = 0.67,
     zcr_margin_s: float = 0.1,
     offset_s: float = 0.03,
+    # -------------------------------------------
     noise_seed: int = 0,
 ):
     # resample

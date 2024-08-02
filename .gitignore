@@ -25,3 +25,4 @@ build
 !requirements*.txt
 !/**/tuning_*.csv
 !/**/test_*.csv
+!/image/*
