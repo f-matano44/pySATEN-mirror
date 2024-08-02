@@ -1,35 +1,11 @@
 {
     "cSpell.words": [
-        "apass",
-        "bandpass",
-        "btype",
-        "cheby",
-        "filtfilt",
-        "firwin",
-        "irfft",
-        "itako",
-        "marblenet",
-        "metan",
-        "ndarray",
-        "nemo",
-        "nyquist",
         "pysaten",
-        "rfft",
-        "rfftfreq",
-        "rvad",
-        "samplerate",
         "SATEN",
-        "sosfilt",
-        "soxr",
-        "thres",
-        "tohoku",
-        "usagi",
-        "vsed",
-        "zundamon"
     ],
     "black-formatter.args": [
         "--line-length",
-        "90"
+        "79"
     ],
     "editor.defaultFormatter": "ms-python.black-formatter",
     "editor.formatOnSave": true,
@@ -41,7 +17,6 @@
         "source.organizeImports": "always"
     },
     "flake8.args": [
-        "--max-line-length=90",
         "--ignore=E203,W503,W504"
     ]
 }

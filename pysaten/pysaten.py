@@ -35,10 +35,14 @@ def vsed_debug(
 ):
     # resample
     sr: int = 96000
-    y_rsp: np.ndarray = resample(y=y, orig_sr=orig_sr, target_sr=sr, res_type="soxr_lq")
+    y_rsp: np.ndarray = resample(
+        y=y, orig_sr=orig_sr, target_sr=sr, res_type="soxr_lq"
+    )
 
     # constants
-    win_length_s = win_length_s if win_length_s is not None else hop_length_s * 4
+    win_length_s = (
+        win_length_s if win_length_s is not None else hop_length_s * 4
+    )
     win_length: int = int(win_length_s * sr)
     hop_length: int = int(hop_length_s * sr)
     zcr_margin: int = int(zcr_margin_s / hop_length_s)
@@ -47,11 +51,20 @@ def vsed_debug(
     y_nr = _00_preprocess(y_rsp, sr, noise_seed)
 
     # step1: Root mean square
-    start1, end1, y_rms = _01_rms(y_nr, sr, rms_threshold, win_length, hop_length)
+    start1, end1, y_rms = _01_rms(
+        y_nr, sr, rms_threshold, win_length, hop_length
+    )
 
     # step2: Zero cross
     start2, end2, y_zcr = _02_zcr(
-        y_nr, sr, start1, end1, zcr_threshold, zcr_margin, win_length, hop_length
+        y_nr,
+        sr,
+        start1,
+        end1,
+        zcr_threshold,
+        zcr_margin,
+        win_length,
+        hop_length,
     )
 
     # index -> second: rms
@@ -88,13 +101,19 @@ def _00_preprocess(y: np.ndarray, sr: int, noise_seed: int) -> np.ndarray:
     return nr.reduce_noise(y_blue, sr)
 
 
-def _01_rms(y, sr, threshold, win_length, hop_length) -> tuple[int, int, np.ndarray]:
+def _01_rms(
+    y, sr, threshold, win_length, hop_length
+) -> tuple[int, int, np.ndarray]:
     nyq: int = int(sr / 2)
     wp = [_F0_FLOOR / nyq, _F0_CEIL / nyq]
     band_sos = cheby1(N=12, rp=1, Wn=wp, btype="bandpass", output="sos")
     y_bpf = sosfilt(band_sos, y)
-    y_rms = _normalize(rms(y=y_bpf, frame_length=win_length, hop_length=hop_length)[0])
-    start1: int = np.where(threshold < y_rms)[0][0] if np.any(threshold < y_rms) else 0
+    y_rms = _normalize(
+        rms(y=y_bpf, frame_length=win_length, hop_length=hop_length)[0]
+    )
+    start1: int = (
+        np.where(threshold < y_rms)[0][0] if np.any(threshold < y_rms) else 0
+    )
     end1: int = (
         np.where(threshold < y_rms)[0][-1]
         if np.any(threshold < y_rms)
@@ -106,7 +125,9 @@ def _01_rms(y, sr, threshold, win_length, hop_length) -> tuple[int, int, np.ndar
 def _02_zcr(y, sr, start1, end1, threshold, margin, win_length, hop_length):
     high_b = firwin(101, _F0_CEIL, pass_zero=False, fs=sr)
     y_hpf = lfilter(high_b, 1.0, y)
-    y_zcr = _normalize(zcr(y_hpf, frame_length=win_length, hop_length=hop_length)[0])
+    y_zcr = _normalize(
+        zcr(y_hpf, frame_length=win_length, hop_length=hop_length)[0]
+    )
     # slide start index
     start2 = _slide_index(
         goto_min=True,
@@ -148,7 +169,11 @@ def _gen_blue_noise(length: int, sr: int, noise_seed: int) -> np.ndarray:
 
 
 def _slide_index(
-    goto_min: bool, y: np.ndarray, start_idx: int, threshold: float, margin: int
+    goto_min: bool,
+    y: np.ndarray,
+    start_idx: int,
+    threshold: float,
+    margin: int,
 ) -> int:
 
     stop_idx: int = -1 if goto_min else len(y)
@@ -156,9 +181,13 @@ def _slide_index(
 
     for i in range(start_idx, stop_idx, step):
         if threshold <= y[i]:
-            a_check_end = max(0, i - margin) if goto_min else min(i + margin, len(y))
+            a_check_end = (
+                max(0, i - margin) if goto_min else min(i + margin, len(y))
+            )
             a_check = y[a_check_end:i] if goto_min else y[i:a_check_end]
-            indices_below_threshold = [j for j, b in enumerate(a_check) if b < threshold]
+            indices_below_threshold = [
+                j for j, b in enumerate(a_check) if b < threshold
+            ]
             if indices_below_threshold:  # is not empty
                 i = (
                     min(indices_below_threshold)
