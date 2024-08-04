@@ -4,6 +4,7 @@
 __pycache__
 pysaten.egg-info
 build
+dist
 
 # extension
 *.wav

@@ -1,9 +1,26 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
 [project]
 name = "pysaten"
-version = "1.0"
+dynamic = ["version"]
 dependencies = [
     "numpy",
     "noisereduce",
     "librosa",
     "scipy",
 ]
+authors = [{name="Fumiyoshi MATANO"}]
+description = "Detect silence segment from speech signal."
+readme = "README.md"
+license = {file = "COPYING"}
+classifiers = [
+    "Programming Language :: Python :: 3",
+]
+
+[project.urls]
+Repository = "https://gitlab.com/f-matano44/pysaten.git"
+
+[tool.hatch.version]
+path = "src/pysaten/__init__.py"

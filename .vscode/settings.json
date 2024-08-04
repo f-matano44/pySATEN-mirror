@@ -3,12 +3,13 @@
         "pysaten",
         "SATEN",
     ],
+
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "ms-python.black-formatter",
     "black-formatter.args": [
         "--line-length",
         "79"
     ],
-    "editor.defaultFormatter": "ms-python.black-formatter",
-    "editor.formatOnSave": true,
     "isort.args": [
         "--profile",
         "black"
