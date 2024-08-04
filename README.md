@@ -1,9 +1,10 @@
 # pySATEN
+[![PyPI - Version](https://img.shields.io/pypi/v/pysaten)](https://pypi.org/project/pysaten/)
 
 ## About
 This library detects silence segment from speech signal.
 
-![\(alt: Image of voice segment detection\)](image/signal_graph.svg)
+![\(alt: Image of voice segment detection\)](https://gitlab.com/f-matano44/pysaten/-/raw/main/image/signal_graph.svg)
 
 
 ## Installation
@@ -16,13 +17,13 @@ pip install pysaten
 ```python
 import pysaten
 
-# y: Target signal, obtained using libraries such as librosa or soundfile
-# sr: Sampling rate
+# y: Target signal, obtained using libraries such as librosa or soundfile.
+# sr: Sampling rate.
 start_s, end_s = pysaten.vsed(y, sr)
 # start_s: Start of speech segment. Unit is seconds.
 # end_s: End of speech segment. Unit is seconds.
 
-# If you want a signal for the speech segment only
+# If you want a signal for the speech segment only.
 y_speech_segment_only = y[int(start_s * sr): int(end_s * sr)]
 ```
 
