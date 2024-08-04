@@ -1,0 +1,12 @@
+image: python
+
+stages:
+  - build
+
+build_job:
+  only:
+    - main
+  stage: build
+  script:
+    - pip install build
+    - python -m build
