@@ -12,6 +12,11 @@ from ._signal import blue_noise, rms, zcr
 from ._utility import normalize, slide_index
 
 
+def trim(y: np.ndarray, sr: int) -> np.ndarray:
+    s_sec, e_sec = vsed(y, sr)
+    return y[int(s_sec * sr) : int(e_sec * sr)]
+
+
 def vsed(y: np.ndarray, sr: int) -> tuple[float, float]:
     _, _, _, _, start_s, end_s, _, _, _ = vsed_debug(y, sr)
     return start_s, end_s
