@@ -5,12 +5,11 @@ from typing import Optional
 import noisereduce as nr
 import numpy as np
 from librosa import resample
-from librosa.feature import rms
 from numpy.random import default_rng
 from scipy.signal import cheby1, firwin, lfilter, sosfilt
 
 from ._constant import F0_CEIL, F0_FLOOR, NYQ, SR
-from ._signal import zcr
+from ._signal import rms, zcr
 
 
 def vsed(y: np.ndarray, sr: int) -> tuple[float, float]:
@@ -89,7 +88,7 @@ def vsed_debug(
 
 
 def _00_preprocess(y: np.ndarray, sr: int, noise_seed: int) -> np.ndarray:
-    data_rms = np.sort(rms(y=y)[0])
+    data_rms = np.sort(rms(y, 2048, 512))
     signal_amp = data_rms[-2]
     noise_amp = max(data_rms[1], 1e-10)
     snr = min(20 * np.log10(signal_amp / noise_amp), 10)
@@ -105,9 +104,7 @@ def _01_rms(
     wp = [F0_FLOOR / NYQ, F0_CEIL / NYQ]
     band_sos = cheby1(N=12, rp=1, Wn=wp, btype="bandpass", output="sos")
     y_bpf = sosfilt(band_sos, y)
-    y_rms = _normalize(
-        rms(y=y_bpf, frame_length=win_length, hop_length=hop_length)[0]
-    )
+    y_rms = _normalize(rms(y_bpf, win_length, hop_length))
     start1: int = (
         np.where(threshold < y_rms)[0][0] if np.any(threshold < y_rms) else 0
     )
