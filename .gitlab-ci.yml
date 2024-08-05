@@ -18,6 +18,8 @@ build:
 
 deploy:
   stage: deploy
+  only:
+    - main
   dependencies:
     - build
   id_tokens:
