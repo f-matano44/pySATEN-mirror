@@ -14,6 +14,13 @@ pip install pysaten
 
 
 ## Usage
+### Command line
+Supported formats for reading with pysoundfile.
+```sh
+pysaten_trim input.wav trimmed.wav
+```
+
+### Python
 ```python
 import pysaten
 

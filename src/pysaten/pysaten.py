@@ -1,15 +1,29 @@
 # SPDX-License-Identifier:GPL-3.0-or-later
 
+import argparse
 from typing import Optional
 
 import noisereduce as nr
 import numpy as np
+import soundfile
 from librosa import resample
 from scipy.signal import cheby1, firwin, lfilter, sosfilt
 
 from ._constant import F0_CEIL, F0_FLOOR, NYQ, SR
 from ._signal import blue_noise, rms, zcr
 from ._utility import normalize, slide_index
+
+
+def cli_runner():
+    # parse argument
+    parser = argparse.ArgumentParser()
+    parser.add_argument("input", type=str)
+    parser.add_argument("output", type=str)
+    args = parser.parse_args()
+    # trimming
+    y, sr = soundfile.read(args.input)
+    y_trimmed = trim(y, sr)
+    soundfile.write(args.output, y_trimmed, sr)
 
 
 def trim(y: np.ndarray, sr: int) -> np.ndarray:
