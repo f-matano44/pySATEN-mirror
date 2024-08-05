@@ -1,7 +1,19 @@
 # ChangeLog
 
+## 1.1.0
+* add function: trim
+* add cli command: pysaten_trim
+
+## 1.0.0.post4
+* Add original of test code (MarbleNet)
+* (No functional changes)
+
+## 1.0.0.post3
+* Modify readme
+* (No functional changes)
+
 ## 1.0.0.post2
-* modify readme
+* Modify readme
 * (No functional changes)
 
 ## 1.0.0.post1

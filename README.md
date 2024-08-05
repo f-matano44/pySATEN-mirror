@@ -14,17 +14,26 @@ pip install pysaten
 
 
 ## Usage
+### Command line
+Supported formats for reading with pysoundfile.
+```sh
+pysaten_trim input.wav trimmed.wav
+```
+
+### Python
 ```python
 import pysaten
 
 # y: Target signal, obtained using libraries such as librosa or soundfile.
 # sr: Sampling rate.
+
+# Get trimmed signal for the speech segment only.
+y_trimmed = pysaten.trim(y, sr)
+
+# If you want start/end time
 start_s, end_s = pysaten.vsed(y, sr)
 # start_s: Start of speech segment. Unit is seconds.
 # end_s: End of speech segment. Unit is seconds.
-
-# If you want a signal for the speech segment only.
-y_speech_segment_only = y[int(start_s * sr): int(end_s * sr)]
 ```
 
 
