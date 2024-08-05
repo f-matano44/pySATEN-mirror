@@ -47,6 +47,18 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 You should have received a copy of the GNU General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 
+## Acknowledgements
+The following programs were used to test the performance of pysaten.
+We would like to take this opportunity to express our gratitude.
+
+* test/marblenet: Apache License Version 2.0
+    * https://github.com/NVIDIA/NeMo
+* test/rvad: MIT License
+    * https://github.com/zhenghuatan/rVAD
+* inaSpeechSegmenter
+    * https://github.com/ina-foss/inaSpeechSegmenter
+
+
 ## Cite this
 ### Lv.1 / Library version 1.X
 #### Japanese
