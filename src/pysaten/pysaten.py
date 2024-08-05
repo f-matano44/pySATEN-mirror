@@ -5,11 +5,11 @@ from typing import Optional
 import noisereduce as nr
 import numpy as np
 from librosa import resample
-from numpy.random import default_rng
 from scipy.signal import cheby1, firwin, lfilter, sosfilt
 
 from ._constant import F0_CEIL, F0_FLOOR, NYQ, SR
-from ._signal import rms, zcr
+from ._signal import blue_noise, rms, zcr
+from ._utility import normalize, slide_index
 
 
 def vsed(y: np.ndarray, sr: int) -> tuple[float, float]:
@@ -92,7 +92,7 @@ def _00_preprocess(y: np.ndarray, sr: int, noise_seed: int) -> np.ndarray:
     signal_amp = data_rms[-2]
     noise_amp = max(data_rms[1], 1e-10)
     snr = min(20 * np.log10(signal_amp / noise_amp), 10)
-    noise = _gen_blue_noise(len(y), sr, noise_seed)
+    noise = blue_noise(len(y), sr, noise_seed)
     y_blue = y + noise * (signal_amp / 10 ** (snr / 20))
     y_blue = y_blue if max(abs(y_blue)) <= 1 else y_blue / max(abs(y_blue))
     return nr.reduce_noise(y_blue, sr)
@@ -104,7 +104,7 @@ def _01_rms(
     wp = [F0_FLOOR / NYQ, F0_CEIL / NYQ]
     band_sos = cheby1(N=12, rp=1, Wn=wp, btype="bandpass", output="sos")
     y_bpf = sosfilt(band_sos, y)
-    y_rms = _normalize(rms(y_bpf, win_length, hop_length))
+    y_rms = normalize(rms(y_bpf, win_length, hop_length))
     start1: int = (
         np.where(threshold < y_rms)[0][0] if np.any(threshold < y_rms) else 0
     )
@@ -119,9 +119,9 @@ def _01_rms(
 def _02_zcr(y, sr, start1, end1, threshold, margin, win_length, hop_length):
     high_b = firwin(101, F0_CEIL, pass_zero=False, fs=sr)
     y_hpf = lfilter(high_b, 1.0, y)
-    y_zcr = _normalize(zcr(y_hpf, win_length, hop_length))
+    y_zcr = normalize(zcr(y_hpf, win_length, hop_length))
     # slide start index
-    start2 = _slide_index(
+    start2 = slide_index(
         goto_min=True,
         y=y_zcr,
         start_idx=start1,
@@ -129,7 +129,7 @@ def _02_zcr(y, sr, start1, end1, threshold, margin, win_length, hop_length):
         margin=margin,
     )
     # slide end index
-    end2 = _slide_index(
+    end2 = slide_index(
         goto_min=False,
         y=y_zcr,
         start_idx=end1,
@@ -137,55 +137,3 @@ def _02_zcr(y, sr, start1, end1, threshold, margin, win_length, hop_length):
         margin=margin,
     )
     return start2, end2, y_zcr
-
-
-def _normalize(y: np.ndarray) -> np.ndarray:
-    return (y - y.min()) / (y.max() - y.min())
-
-
-def _gen_blue_noise(length: int, sr: int, noise_seed: int) -> np.ndarray:
-    rand: np.random.Generator = default_rng(noise_seed)
-    # white noise
-    wh = rand.uniform(low=-1.0, high=1.0, size=length + 1000)
-    # fft
-    WH = np.fft.rfft(wh)
-    WH_f = np.fft.rfftfreq(len(wh), 1 / sr)
-    # white -> blue
-    BL = WH * np.sqrt(WH_f)
-    # irfft
-    bl = np.fft.irfft(BL)
-    # normalize
-    bl /= np.max(np.abs(bl))
-
-    return bl[:length]
-
-
-def _slide_index(
-    goto_min: bool,
-    y: np.ndarray,
-    start_idx: int,
-    threshold: float,
-    margin: int,
-) -> int:
-
-    stop_idx: int = -1 if goto_min else len(y)
-    step: int = -1 if goto_min else 1
-
-    for i in range(start_idx, stop_idx, step):
-        if threshold <= y[i]:
-            a_check_end = (
-                max(0, i - margin) if goto_min else min(i + margin, len(y))
-            )
-            a_check = y[a_check_end:i] if goto_min else y[i:a_check_end]
-            indices_below_threshold = [
-                j for j, b in enumerate(a_check) if b < threshold
-            ]
-            if indices_below_threshold:  # is not empty
-                i = (
-                    min(indices_below_threshold)
-                    if goto_min
-                    else max(indices_below_threshold)
-                )
-            else:  # indices_below_threshold is empty -> finish!!!
-                return i
-    return 0
