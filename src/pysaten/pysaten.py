@@ -6,11 +6,11 @@ import noisereduce as nr
 import numpy as np
 from librosa import resample
 from librosa.feature import rms
-from librosa.feature import zero_crossing_rate as zcr
 from numpy.random import default_rng
 from scipy.signal import cheby1, firwin, lfilter, sosfilt
 
 from ._constant import F0_CEIL, F0_FLOOR, NYQ, SR
+from ._signal import zcr
 
 
 def vsed(y: np.ndarray, sr: int) -> tuple[float, float]:
@@ -122,9 +122,7 @@ def _01_rms(
 def _02_zcr(y, sr, start1, end1, threshold, margin, win_length, hop_length):
     high_b = firwin(101, F0_CEIL, pass_zero=False, fs=sr)
     y_hpf = lfilter(high_b, 1.0, y)
-    y_zcr = _normalize(
-        zcr(y_hpf, frame_length=win_length, hop_length=hop_length)[0]
-    )
+    y_zcr = _normalize(zcr(y_hpf, win_length, hop_length))
     # slide start index
     start2 = _slide_index(
         goto_min=True,
