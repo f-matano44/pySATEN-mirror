@@ -1,5 +1,8 @@
 # ChangeLog
 
+## 1.1.1
+* Bugfix
+
 ## 1.1.0
 * add function: trim
 * add cli command: pysaten_trim
