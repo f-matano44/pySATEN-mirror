@@ -24,7 +24,7 @@ classifiers = [
 Repository = "https://gitlab.com/f-matano44/pysaten.git"
 
 [project.scripts]
-pysaten_trim = "pysaten:cli_runner"
+pysaten_trim = "pysaten.pysaten:cli_runner"
 
 [tool.hatch.version]
 path = "src/pysaten/__init__.py"

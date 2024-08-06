@@ -107,7 +107,7 @@ def vsed_debug(
 
 
 def _00_preprocess(y: np.ndarray, sr: int, noise_seed: int) -> np.ndarray:
-    data_rms = np.sort(rms(y, 2048, 512))
+    data_rms = np.sort(rms(y, 2048, 512))  # <- default of librosa
     signal_amp = data_rms[-2]
     noise_amp = max(data_rms[1], 1e-10)
     snr = min(20 * np.log10(signal_amp / noise_amp), 10)
