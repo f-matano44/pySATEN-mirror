@@ -33,4 +33,12 @@ def slide_index(
 
 
 def normalize(y: np.ndarray) -> np.ndarray:
-    return (y - min(y)) / (max(y) - min(y))
+    return (y - y.min()) / (y.max() - y.min())
+
+
+def pow(a: float, b: float) -> float:
+    return a**b
+
+
+def sqrt(a: float) -> float:
+    return a**0.5
