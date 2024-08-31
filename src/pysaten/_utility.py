@@ -29,7 +29,7 @@ def slide_index(
                 )
             else:  # indices_below_threshold is empty -> finish!!!
                 return i
-    return 0
+    return 0 if goto_min else len(y)
 
 
 def normalize(y: np.ndarray) -> np.ndarray:
