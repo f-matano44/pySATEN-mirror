@@ -32,6 +32,14 @@ def trim(y: np.ndarray, sr: int) -> np.ndarray:
 
 
 def vsed(y: np.ndarray, sr: int) -> tuple[float, float]:
+    # shape check (monaural only)
+    if len(y.shape) == 1:
+        print("This is a mono audio file.")
+    else:
+        raise ValueError(
+            "Error: The audio file is not mono. It has more than one channel."
+        )
+    # trim
     _, _, _, _, start_s, end_s, _, _, _ = vsed_debug(y, sr)
     return start_s, end_s
 

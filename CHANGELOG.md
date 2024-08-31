@@ -1,5 +1,8 @@
 # ChangeLog
 
+## 1.1.3
+* Bugfix (monaural only)
+
 ## 1.1.2
 * Bugfix
 * Process speed up↑↑
