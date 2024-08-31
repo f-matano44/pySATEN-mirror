@@ -1,5 +1,8 @@
 # ChangeLog
 
+## 1.1.4
+* Bugfix
+
 ## 1.1.3
 * Bugfix (monaural only)
 
