@@ -1,5 +1,6 @@
 # pySATEN
 [![PyPI - Version](https://img.shields.io/pypi/v/pysaten)](https://pypi.org/project/pysaten/)
+[![Downloads](https://static.pepy.tech/badge/pysaten)](https://pepy.tech/project/pysaten)
 
 ## About
 This library detects silence segment from speech signal.
@@ -62,7 +63,7 @@ We would like to take this opportunity to express our gratitude.
 ## Cite this
 ### Lv.1 / Library version 1.X
 #### Japanese
-俣野 文義，小口 純矢，森勢 将雅，``音声コーパス構築のための仮定を追加した発話区間検出法の提案と基礎評価,'' 日本音響学会第 152 回 (2024 年秋季) 研究発表会, pp.xxx--xxx (2024.09).
+俣野 文義，小口 純矢，森勢 将雅，``音声コーパス構築のための仮定を追加した発話区間検出法の提案と基礎評価,'' 日本音響学会第 152 回 (2024 年秋季) 研究発表会, pp.1161--1162 (2024.09).
 
 #### English
-F. Matano, J. Koguchi, M. Morise, ``Proposal and basic evaluation of a voice activity detection with additional assumptions for speech corpus construction,'' Proceedings of the 2024 Autumn meeting of the Acoustical Society of Japan, pp.xxx--xxx (2024.09) (in Japanese).
+F. Matano, J. Koguchi, M. Morise, ``Proposal and basic evaluation of a voice activity detection with additional assumptions for speech corpus construction,'' Proceedings of the 2024 Autumn meeting of the Acoustical Society of Japan, pp.1161--1162 (2024.09) (in Japanese).
