@@ -99,6 +99,10 @@ def vsed_debug(
     start2_s: float = max(0, start2 * hop_length_s)
     end2_s: float = min(end2 * hop_length_s, len(y_rsp) / SR)
 
+    # add offset
+    start3_s: float = max(0, start2_s - offset_s)
+    end3_s: float = min(end2_s + offset_s, len(y_rsp) / SR)
+
     feats_timestamp = np.linspace(0, len(y_zcr) * hop_length_s, len(y_zcr))
 
     return (
@@ -106,8 +110,8 @@ def vsed_debug(
         end1_s,
         start2_s,
         end2_s,
-        start2_s - offset_s,
-        end2_s + offset_s,
+        start3_s,
+        end3_s,
         feats_timestamp,
         y_rms,
         y_zcr,

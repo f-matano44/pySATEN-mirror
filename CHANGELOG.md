@@ -1,8 +1,12 @@
 # ChangeLog
 
+## 1.1.5
+* Bugfix
+* Modify readme
+* Adjust ChangeLog
+
 ## 1.1.4.post1
 * Modify readme
-* (No functional changes)
 
 ## 1.1.4
 * Bugfix
@@ -23,19 +27,15 @@
 
 ## 1.0.0.post4
 * Add original of test code (MarbleNet)
-* (No functional changes)
 
 ## 1.0.0.post3
 * Modify readme
-* (No functional changes)
 
 ## 1.0.0.post2
 * Modify readme
-* (No functional changes)
 
 ## 1.0.0.post1
 * Organising the commit log
-* (No functional changes)
 
 ## 1.0.0
 * First Release
