@@ -1,3 +1,5 @@
+from typing import Union
+
 import numpy as np
 
 
@@ -40,5 +42,5 @@ def pow(a: float, b: float) -> float:
     return a**b
 
 
-def sqrt(a: float) -> float:
+def sqrt(a: Union[float, np.ndarray]) -> Union[float, np.ndarray]:
     return a**0.5
