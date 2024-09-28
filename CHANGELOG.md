@@ -1,5 +1,8 @@
 # ChangeLog
 
+## 1.1.6
+* Delete debug code
+
 ## 1.1.5
 * Bugfix
 * Modify readme
