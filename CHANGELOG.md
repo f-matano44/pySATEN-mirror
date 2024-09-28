@@ -1,5 +1,8 @@
 # ChangeLog
 
+## 1.1.6.post1
+* Modify readme
+
 ## 1.1.6
 * Delete debug code
 
