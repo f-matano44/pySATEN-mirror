@@ -1,4 +1,5 @@
 # flake8: noqa: F401
-from pysaten.pysaten import trim, vsed, vsed_debug
+from pysaten.lv1.pysaten import vsed_debug
+from pysaten.pysaten import trim, vsed
 
-__version__ = "1.1.6.post1"
+__version__ = "1.2.0"

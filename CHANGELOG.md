@@ -1,5 +1,8 @@
 # ChangeLog
 
+## 1.2.0
+* modify `vsed_debug` function
+
 ## 1.1.6.post1
 * Modify readme
 
