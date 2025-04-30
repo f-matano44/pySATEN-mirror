@@ -1,37 +1,38 @@
 # https://docs.pypi.org/trusted-publishers/using-a-publisher/#gitlab-cicd
-image: python
+image: python:3-slim
+
+workflow:
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      when: always
+    - when: never
 
 stages:
   - build
   - deploy
 
+variables:
+  PIP_ROOT_USER_ACTION: "ignore"
+
 build:
   stage: build
-  only:
-    - main
   script:
-    - pip install build
+    - python --version
+    - python -m pip install -U pip
+    - python -m pip install -U wheel setuptools build
     - python -m build
   artifacts:
     paths:
       - dist/
+    expire_in: 1 day
 
 deploy:
   stage: deploy
-  only:
-    - main
   dependencies:
     - build
   id_tokens:
     PYPI_ID_TOKEN:
       aud: pypi
   script:
-    # install library
-    - apt-get update && apt-get install -y jq
-    - pip install twine id
-    # set token
-    - oidc_token=$(python -m id PYPI)
-    - resp=$(curl -X POST https://pypi.org/_/oidc/mint-token -d "{\"token\":\"${oidc_token}\"}")
-    - api_token=$(jq --raw-output '.token' <<< "${resp}")
-    # upload
-    - python -m twine upload -u __token__ -p "${api_token}" dist/*
+    - python -m pip install -U twine>=6.1
+    - python -m twine upload dist/*
