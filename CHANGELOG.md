@@ -1,5 +1,11 @@
 # ChangeLog
 
+## 1.2.1
+* Refactoring
+* Refine CI commands
+* Refine pyproject.toml
+* Update requirements for test
+
 ## 1.2.0
 * modify `vsed_debug` function
 
