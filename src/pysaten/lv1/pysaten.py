@@ -7,9 +7,10 @@ import numpy as np
 from librosa import resample
 from scipy.signal import cheby1, firwin, lfilter, sosfilt
 
-from .._constant import F0_CEIL, F0_FLOOR, NYQ, SR
-from .._signal import blue_noise, rms, zcr
-from .._utility import normalize, slide_index
+from ..utility import color_noise
+from ..utility.constants import F0_CEIL, F0_FLOOR, NYQ, SR
+from ..utility.others import slide_index
+from ..utility.signal import normalize, rms, zcr
 
 
 def vsed_debug(
@@ -91,7 +92,7 @@ def _00_preprocess(y: np.ndarray, sr: int, noise_seed: int) -> np.ndarray:
     signal_amp = data_rms[-2]
     noise_amp = max(data_rms[1], 1e-10)
     snr = min(20 * np.log10(signal_amp / noise_amp), 10)
-    noise = blue_noise(len(y), sr, noise_seed)
+    noise = color_noise.blue(len(y), sr, noise_seed)
     y_blue = y + noise * (signal_amp / 10 ** (snr / 20))
     y_blue = y_blue if max(abs(y_blue)) <= 1 else y_blue / max(abs(y_blue))
     return nr.reduce_noise(y_blue, sr)

@@ -2,8 +2,6 @@ import math
 
 import numpy as np
 
-from . import _utility as util
-
 
 def rms(y, win_length, hop_length):
     rms = np.zeros(math.ceil(float(len(y)) / hop_length))
@@ -14,7 +12,7 @@ def rms(y, win_length, hop_length):
         zc_end = int(min(idx + (win_length / 2), len(y) - 1))
         target = y[zc_start:zc_end]
         # calc rms
-        rms[i] = util.sqrt(np.mean(util.pow(target, 2)))
+        rms[i] = _sqrt(np.mean(_pow(target, 2)))
     return rms
 
 
@@ -32,19 +30,13 @@ def zcr(y, win_length, hop_length):
     return zcr
 
 
-def blue_noise(length: int, sr: int, noise_seed: int) -> np.ndarray:
-    rand: np.random.Generator = np.random.default_rng(noise_seed)
-    length2 = length + 1000
-    # white noise
-    wh = rand.uniform(low=-1.0, high=1.0, size=length2)
-    # fft
-    WH = np.fft.rfft(wh)
-    WH_f = np.fft.rfftfreq(len(wh), 1 / sr)
-    # white -> blue
-    BL = WH * util.sqrt(WH_f)
-    # irfft
-    bl = np.fft.irfft(BL)
-    # normalize
-    bl /= np.max(np.abs(bl))
+def normalize(y: np.ndarray) -> np.ndarray:
+    return (y - y.min()) / (y.max() - y.min())
 
-    return bl[:length]
+
+def _pow(a, b):
+    return a**b
+
+
+def _sqrt(a):
+    return a**0.5
