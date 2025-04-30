@@ -1,9 +1,10 @@
 import math
 
 import numpy as np
+import numpy.typing as npt
 
 
-def rms(y, win_length, hop_length):
+def rms(y: npt.NDArray, win_length: int, hop_length: int) -> npt.NDArray:
     rms = np.zeros(math.ceil(float(len(y)) / hop_length))
     for i in range(len(rms)):
         # get target array
@@ -16,7 +17,7 @@ def rms(y, win_length, hop_length):
     return rms
 
 
-def zcr(y, win_length, hop_length):
+def zcr(y: npt.NDArray, win_length: int, hop_length: int) -> npt.NDArray:
     zcr = np.zeros(math.ceil(float(len(y)) / hop_length))
     for i in range(len(zcr)):
         # get target array
@@ -30,13 +31,13 @@ def zcr(y, win_length, hop_length):
     return zcr
 
 
-def normalize(y: np.ndarray) -> np.ndarray:
+def normalize(y: npt.NDArray) -> npt.NDArray:
     return (y - y.min()) / (y.max() - y.min())
 
 
-def _pow(a, b):
+def _pow(a: npt.NDArray, b: float) -> npt.NDArray:
     return a**b
 
 
-def _sqrt(a):
+def _sqrt(a: float) -> float:
     return a**0.5
