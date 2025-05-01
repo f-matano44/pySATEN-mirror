@@ -2,6 +2,7 @@
 
 ## 1.2.1
 * Refactoring
+* Modify generation code of colored noise
 * Refine CI commands
 * Refine pyproject.toml
 * Update requirements for test
