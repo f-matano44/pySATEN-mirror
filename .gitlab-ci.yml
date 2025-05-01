@@ -36,4 +36,4 @@ deploy:
   script:
     - python -m pip install -U pip
     - python -m pip install -U twine>=6.1
-    - python -m twine upload dist/* --no-color
+    - python -m twine --no-color upload dist/* --disable-progress-bar
