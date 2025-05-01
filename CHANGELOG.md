@@ -4,8 +4,8 @@
 * Refactoring
 * Modify generation code of colored noise
 * Add experimental support for numpy.typing
-* Refine CI commands
-* Refine pyproject.toml
+* Refine CI commands (<- modded more @ post1)
+* Refine pyproject.toml (<- modded more @ post1)
 * Update requirements for test/
 * Pin the pyenv environment (<- added @ post1)
 
