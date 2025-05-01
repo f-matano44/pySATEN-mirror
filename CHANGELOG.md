@@ -1,5 +1,13 @@
 # ChangeLog
 
+## 1.2.1
+* Refactoring
+* Modify generation code of colored noise
+* Add experimental support for numpy.typing
+* Refine CI commands
+* Refine pyproject.toml
+* Update requirements for test/
+
 ## 1.2.0
 * modify `vsed_debug` function
 

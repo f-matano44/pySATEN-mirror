@@ -1,23 +1,25 @@
 [build-system]
-requires = ["hatchling"]
+requires = ["hatchling>=1.11"]
 build-backend = "hatchling.build"
 
 [project]
 name = "pysaten"
+description = "Detect silence segment from speech signal."
 dynamic = ["version"]
+requires-python = ">=3"
 dependencies = [
-    "numpy",
+    "numpy>=1.20",  # for numpy.typing
     "noisereduce",
     "librosa",
     "soundfile",
     "scipy",
 ]
-authors = [{name="Fumiyoshi MATANO"}]
-description = "Detect silence segment from speech signal."
 readme = "README.md"
-license = {file = "COPYING"}
+license = "GPL-3.0-or-later"
+license-files = ["COPYING"]
 classifiers = [
-    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)"
 ]
 
 [project.urls]

@@ -1,5 +1,3 @@
-from typing import Union
-
 import numpy as np
 
 
@@ -32,15 +30,3 @@ def slide_index(
             else:  # indices_below_threshold is empty -> finish!!!
                 return i
     return 0 if goto_min else len(y)
-
-
-def normalize(y: np.ndarray) -> np.ndarray:
-    return (y - y.min()) / (y.max() - y.min())
-
-
-def pow(a: float, b: float) -> float:
-    return a**b
-
-
-def sqrt(a: Union[float, np.ndarray]) -> Union[float, np.ndarray]:
-    return a**0.5

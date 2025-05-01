@@ -1,14 +1,14 @@
-# SPDX-License-Identifier:GPL-3.0-or-later
-
 import argparse
+from typing import Tuple
 
 import numpy as np
+import numpy.typing as npt
 import soundfile
 
 from .lv1.pysaten import vsed_debug
 
 
-def cli_runner():
+def cli_runner() -> None:
     # parse argument
     parser = argparse.ArgumentParser()
     parser.add_argument("input", type=str)
@@ -16,21 +16,19 @@ def cli_runner():
     args = parser.parse_args()
     # trimming
     y, sr = soundfile.read(args.input)
-    y_trimmed = trim(y, sr)
+    y_trimmed: npt.NDArray = trim(y, sr)
     soundfile.write(args.output, y_trimmed, sr)
 
 
-def trim(y: np.ndarray, sr: int) -> np.ndarray:
+def trim(y: npt.NDArray[np.floating], sr: int) -> npt.NDArray[np.floating]:
     s_sec, e_sec = vsed(y, sr)
     return y[int(s_sec * sr) : int(e_sec * sr)]
 
 
-def vsed(y: np.ndarray, sr: int) -> tuple[float, float]:
+def vsed(y: npt.NDArray[np.floating], sr: int) -> Tuple[float, float]:
     # shape check (monaural only)
-    if len(y.shape) != 1:
-        raise ValueError(
-            "Error: The audio file is not mono. It has more than one channel."
-        )
+    if y.ndim != 1:
+        raise ValueError("PySaten only supports mono audio.")
     # trim
     _, _, _, _, start_s, end_s, _, _, _ = vsed_debug(y, sr)
     return start_s, end_s
