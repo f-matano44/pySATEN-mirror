@@ -34,5 +34,6 @@ deploy:
     PYPI_ID_TOKEN:
       aud: pypi
   script:
+    - python -m pip install -U pip
     - python -m pip install -U twine>=6.1
-    - python -m twine upload dist/*
+    - python -m twine upload dist/* --no-color
