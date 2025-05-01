@@ -1,11 +1,9 @@
-import math
-
 import numpy as np
 import numpy.typing as npt
 
 
 def rms(y: npt.NDArray, win_length: int, hop_length: int) -> npt.NDArray:
-    rms = np.zeros(math.ceil(float(len(y)) / hop_length))
+    rms = np.zeros(int(np.ceil(float(len(y)) / hop_length)))
     for i in range(len(rms)):
         # get target array
         idx = i * hop_length
@@ -18,7 +16,7 @@ def rms(y: npt.NDArray, win_length: int, hop_length: int) -> npt.NDArray:
 
 
 def zcr(y: npt.NDArray, win_length: int, hop_length: int) -> npt.NDArray:
-    zcr = np.zeros(math.ceil(float(len(y)) / hop_length))
+    zcr = np.zeros(int(np.ceil(float(len(y)) / hop_length)))
     for i in range(len(zcr)):
         # get target array
         idx = i * hop_length
