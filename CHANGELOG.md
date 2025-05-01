@@ -7,6 +7,7 @@
 * Refine CI commands
 * Refine pyproject.toml
 * Update requirements for test/
+* Pin the pyenv environment (<- added @ post1)
 
 ## 1.2.0
 * modify `vsed_debug` function
