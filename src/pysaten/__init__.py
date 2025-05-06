@@ -2,4 +2,4 @@
 from pysaten.lv1.pysaten import vsed_debug
 from pysaten.pysaten import trim, vsed
 
-__version__ = "1.2.1.post1"
+__version__ = "1.2.1.post2"
