@@ -3,26 +3,26 @@ image: python:3-slim
 
 workflow:
   rules:
+    - when: never
     - if: '$CI_COMMIT_BRANCH == "main"'
       when: always
-    - when: never
 
 stages:
   - build
   - deploy
 
-variables:
-  PIP_ROOT_USER_ACTION: "ignore"
-
 build:
   stage: build
   script:
     - python --version
+    - python -m venv .venv
+    - source .venv/bin/activate
     - python -m pip install -U pip
     - python -m pip install -U wheel setuptools build
     - python -m build
   artifacts:
     paths:
+      - .venv/
       - dist/
     expire_in: 1 day
 
@@ -34,6 +34,6 @@ deploy:
     PYPI_ID_TOKEN:
       aud: pypi
   script:
-    - python -m pip install -U pip
+    - source .venv/bin/activate
     - python -m pip install -U twine>=6.1
     - python -m twine --no-color upload dist/* --disable-progress-bar
