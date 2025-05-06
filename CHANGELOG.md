@@ -3,6 +3,7 @@
 ## 1.2.1
 * Refactoring
 * Modify generation code of colored noise
+    * Calculation results may differ starting with this release
 * Add experimental support for numpy.typing
 * Refine CI commands (modded more @ post1, post2)
 * Refine pyproject.toml (modded more @ post1, post2)
