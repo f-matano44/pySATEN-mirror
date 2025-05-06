@@ -20,6 +20,9 @@ classifiers = [
     "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)"
 ]
 
+[project.urls]
+Repository = "https://gitlab.com/f-matano44/pysaten.git"
+
 [project.scripts]
 pysaten_trim = "pysaten.pysaten:cli_runner"
 
