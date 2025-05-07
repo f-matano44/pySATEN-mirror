@@ -1,43 +1,47 @@
-import numpy as np
-from numpy.fft import irfft, rfft, rfftfreq
+import torch
 
 
-def white(length: int, noise_seed: int) -> np.ndarray:
-    rand: np.random.Generator = np.random.default_rng(noise_seed)
-    return rand.uniform(low=-1.0, high=1.0, size=length)
+def white(length: int, noise_seed: int, device: str = "cpu") -> torch.Tensor:
+    gen = torch.Generator(device=device)
+    gen.manual_seed(noise_seed)
+    return torch.rand(length, generator=gen, device=device) * 2.0 - 1.0
 
 
-def blue(length: int, sr: int, noise_seed: int) -> np.ndarray:
-    offset = int(length * 0.10)  # TODO: temporary placeholder
+def blue(
+    length: int, sr: int, noise_seed: int, device: str = "cpu"
+) -> torch.Tensor:
+    offset = int(length / 2)
     # white noise
-    wh = white(length + (offset * 2), noise_seed)
+    wh = white(length + (offset * 2), noise_seed, device)
     # fft
-    WH = rfft(wh)
-    WH_f = rfftfreq(len(wh), 1 / sr)
+    WH_f = torch.fft.rfft(wh)
+    freqs = torch.fft.rfftfreq(len(wh), 1 / sr)
     # white -> blue
-    BL = WH * np.sqrt(WH_f)
+    BL_f = WH_f * torch.sqrt(freqs)
     # irfft
-    bl = irfft(BL)
+    bl = torch.fft.irfft(BL_f)
     # normalize
-    bl /= np.max(np.abs(bl))
+    bl /= bl.abs().max()
 
     return bl[offset : length + offset]
 
 
-def pink(length: int, sr: int, noise_seed: int) -> np.ndarray:
-    offset = int(length * 0.10)  # TODO: temporary placeholder
+def pink(
+    length: int, sr: int, noise_seed: int, device: str = "cpu"
+) -> torch.Tensor:
+    offset = int(length / 2)
     # white noise
-    wh = white(length + (offset * 2), noise_seed)
+    wh = white(length + (offset * 2), noise_seed, device)
     # fft
-    WH = rfft(wh)
-    WH_f = rfftfreq(len(wh), 1 / sr)
+    WH_f = torch.fft.rfft(wh)
+    freqs = torch.fft.rfftfreq(len(wh), 1 / sr)
     # white -> pink
-    PK = WH.copy()
-    for i in range(len(WH)):
-        PK[i] = WH[i] / np.sqrt(WH_f[i]) if 20 < WH_f[i] else 0
+    PK_f = WH_f.copy()
+    for i in range(len(WH_f)):
+        PK_f[i] = WH_f[i] / torch.sqrt(freqs[i]) if 20 < freqs[i] else 0
     # irfft
-    pk = np.fft.irfft(PK)
+    pk = torch.fft.irfft(PK_f)
     # normalize
-    pk /= np.max(np.abs(pk))
+    pk /= pk.abs().max()
 
     return pk[offset : length + offset]

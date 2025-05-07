@@ -92,7 +92,7 @@ def _00_preprocess(y: np.ndarray, sr: int, noise_seed: int) -> np.ndarray:
     signal_amp = data_rms[-2]
     noise_amp = max(data_rms[1], 1e-10)
     snr = min(20 * np.log10(signal_amp / noise_amp), 10)
-    noise = color_noise.blue(len(y), sr, noise_seed)
+    noise = color_noise.blue(len(y), sr, noise_seed).cpu().numpy()
     y_blue = y + noise * (signal_amp / 10 ** (snr / 20))
     y_blue = y_blue if max(abs(y_blue)) <= 1 else y_blue / max(abs(y_blue))
     return nr.reduce_noise(y_blue, sr)
