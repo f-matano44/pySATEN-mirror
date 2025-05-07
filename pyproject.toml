@@ -13,6 +13,7 @@ dependencies = [
     "librosa",
     "soundfile",
     "scipy",
+    "torch>=1.7"  # for torch.fft
 ]
 readme = "README.md"
 classifiers = [
