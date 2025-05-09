@@ -1,5 +1,10 @@
 # ChangeLog
 
+## 1.2.2
+* Modify generation code of colored noise
+    * numpy -> torch
+    * Calculation results may differ starting with this release
+
 ## 1.2.1
 * Refactoring
 * Modify generation code of colored noise
