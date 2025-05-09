@@ -11,6 +11,9 @@ from utils import gen_noise_signal, load_answer
 
 import pysaten
 
+inaSegmenter = Segmenter(detect_gender=False)
+marble = marblenet.MarbleNet()
+
 
 def _main():
     rand = np.random.default_rng(0)
@@ -27,7 +30,6 @@ def _main():
         "wav_and_lab/usagi/ITA_recitation_normal_label/rct",
     ]
 
-    marble = marblenet.MarbleNet()
     for snr in [None, 20, 15, 10, 5, 0, -5, -999]:
         saten = []
         rvad = []
@@ -65,12 +67,16 @@ def _main():
                 nemo.append(abs(E - ans_e))
 
         pd.DataFrame(
-            {"pySATEN": saten, "rVAD": rvad, "inaSpeechSegmenter": ina, "MarbleNet": nemo}
+            {
+                "pySATEN": saten,
+                "rVAD": rvad,
+                "inaSpeechSegmenter": ina,
+                "MarbleNet": nemo,
+            }
         ).to_csv(f"test_{str(snr)}.csv", index=False)
 
 
 def _ina_speech_segmenter(x, fs):
-    inaSegmenter = Segmenter(detect_gender=False)
     write("temp.wav", x, fs)
     segments = inaSegmenter("temp.wav")
     ina_temp = []
