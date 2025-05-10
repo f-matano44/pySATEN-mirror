@@ -4,6 +4,7 @@
 * Modify generation code of colored noise
     * numpy -> torch
     * Calculation results may differ starting with this release
+* Refactoring of test/test.py
 
 ## 1.2.1
 * Refactoring
