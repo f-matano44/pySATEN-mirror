@@ -1,4 +1,5 @@
 import argparse
+import time
 from typing import Tuple
 
 import numpy as np
@@ -26,9 +27,10 @@ def trim(y: npt.NDArray[np.floating], sr: int) -> npt.NDArray[np.floating]:
 
 
 def vsed(y: npt.NDArray[np.floating], sr: int) -> Tuple[float, float]:
+    seed = int(time.time())
     # shape check (monaural only)
     if y.ndim != 1:
         raise ValueError("PySaten only supports mono audio.")
     # trim
-    _, _, _, _, start_s, end_s, _, _, _ = vsed_debug(y, sr)
+    _, _, _, _, start_s, end_s, _, _, _ = vsed_debug(y, sr, noise_seed=seed)
     return start_s, end_s
