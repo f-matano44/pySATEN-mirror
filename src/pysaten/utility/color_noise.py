@@ -1,18 +1,16 @@
 import torch
 
 
-def white(length: int, noise_seed: int, device: str = "cpu") -> torch.Tensor:
+def white(length: int, seed: int, device: str = "cpu") -> torch.Tensor:
     gen = torch.Generator(device=device)
-    gen.manual_seed(noise_seed)
+    gen.manual_seed(seed)
     return torch.rand(length, generator=gen, device=device) * 2.0 - 1.0
 
 
-def blue(
-    length: int, sr: int, noise_seed: int, device: str = "cpu"
-) -> torch.Tensor:
+def blue(length: int, sr: int, seed: int, device: str = "cpu") -> torch.Tensor:
     offset = int(length / 2)
     # white noise
-    wh = white(length + (offset * 2), noise_seed, device)
+    wh = white(length + (offset * 2), seed, device)
     # fft
     WH_f = torch.fft.rfft(wh)
     freqs = torch.fft.rfftfreq(len(wh), 1 / sr)
@@ -26,12 +24,10 @@ def blue(
     return bl[offset : length + offset]
 
 
-def pink(
-    length: int, sr: int, noise_seed: int, device: str = "cpu"
-) -> torch.Tensor:
+def pink(length: int, sr: int, seed: int, device: str = "cpu") -> torch.Tensor:
     offset = int(length / 2)
     # white noise
-    wh = white(length + (offset * 2), noise_seed, device)
+    wh = white(length + (offset * 2), seed, device)
     # fft
     WH_f = torch.fft.rfft(wh)
     freqs = torch.fft.rfftfreq(len(wh), 1 / sr)
