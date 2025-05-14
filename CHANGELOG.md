@@ -1,5 +1,8 @@
 # ChangeLog
 
+## 1.3.1
+* Refactoring
+
 ## 1.3.0
 * Modify generation code of colored noise
     * numpy -> torch
