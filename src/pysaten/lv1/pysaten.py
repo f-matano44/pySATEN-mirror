@@ -9,7 +9,6 @@ from scipy.signal import cheby1, firwin, lfilter, sosfilt
 
 from ..utility import color_noise
 from ..utility.constants import F0_CEIL, F0_FLOOR, NYQ, SR
-from ..utility.others import slide_index
 from ..utility.signal import normalize, rms, zcr
 
 
@@ -121,7 +120,7 @@ def _02_zcr(y, sr, start1, end1, threshold, margin, win_length, hop_length):
     y_hpf = lfilter(high_b, 1.0, y)
     y_zcr = normalize(zcr(y_hpf, win_length, hop_length))
     # slide start index
-    start2 = slide_index(
+    start2 = _slide_index(
         goto_min=True,
         y=y_zcr,
         start_idx=start1,
@@ -129,7 +128,7 @@ def _02_zcr(y, sr, start1, end1, threshold, margin, win_length, hop_length):
         margin=margin,
     )
     # slide end index
-    end2 = slide_index(
+    end2 = _slide_index(
         goto_min=False,
         y=y_zcr,
         start_idx=end1,
@@ -137,3 +136,34 @@ def _02_zcr(y, sr, start1, end1, threshold, margin, win_length, hop_length):
         margin=margin,
     )
     return start2, end2, y_zcr
+
+
+def _slide_index(
+    goto_min: bool,
+    y: np.ndarray,
+    start_idx: int,
+    threshold: float,
+    margin: int,
+) -> int:
+
+    stop_idx: int = -1 if goto_min else len(y)
+    step: int = -1 if goto_min else 1
+
+    for i in range(start_idx, stop_idx, step):
+        if threshold <= y[i]:
+            a_check_end = (
+                max(0, i - margin) if goto_min else min(i + margin, len(y))
+            )
+            a_check = y[a_check_end:i] if goto_min else y[i:a_check_end]
+            indices_below_threshold = [
+                j for j, b in enumerate(a_check) if b < threshold
+            ]
+            if indices_below_threshold:  # is not empty
+                i = (
+                    min(indices_below_threshold)
+                    if goto_min
+                    else max(indices_below_threshold)
+                )
+            else:  # indices_below_threshold is empty -> finish!!!
+                return i
+    return 0 if goto_min else len(y)
