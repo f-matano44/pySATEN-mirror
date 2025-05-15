@@ -26,7 +26,7 @@ def _main():
                     lab = f"wav_and_lab/{character}/ITA_emotion_normal_label"
                     lab_path = Path(f"{lab}/emoNormal{i:03}.lab")
 
-                    handler = WavLabHandler(lab_path, lab_path)
+                    handler = WavLabHandler(wav_path, lab_path)
                     x, fs = librosa.load(wav_path, sr=None)
                     ans_s, ans_e = handler.get_answer()
 
