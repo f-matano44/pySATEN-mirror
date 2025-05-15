@@ -1,4 +1,5 @@
 import sys
+from math import inf
 from pathlib import Path
 
 import numpy as np
@@ -6,9 +7,8 @@ import pandas as pd
 from inaSpeechSegmenter import Segmenter
 from marblenet import marblenet
 from rvad import rvad_fast
-from soundfile import read, write
+from soundfile import write
 from tqdm import tqdm
-from utils import gen_noise_signal
 
 import pysaten
 from pysaten.utility.WavLabHandler import WavLabHandler
@@ -32,7 +32,7 @@ def _main():
         "wav_and_lab/usagi/ITA_recitation_normal_label/rct",
     ]
 
-    for snr in [None, 20, 15, 10, 5, 0, -5, -999]:
+    for snr in [inf, 20, 15, 10, 5, 0, -5, -inf]:
         saten = []
         rvad = []
         ina = []
@@ -43,13 +43,11 @@ def _main():
                 wav_path = Path(f"{wav_files[speaker]}{i:03}.wav")
                 lab_path = Path(f"{lab_files[speaker]}{i:03}.lab")
                 handler = WavLabHandler(wav_path, lab_path)
-                x, fs = read(wav_path)
-                ans_s, ans_e = handler.get_answer()
 
-                if snr is not None and snr != -999:
-                    x = gen_noise_signal(x, fs, snr, True, rand, ans_s, ans_e)
-                elif snr == -999:
-                    x = rand.uniform(low=-1.0, high=1.0, size=len(x))
+                x, fs = handler.get_noise_signal(
+                    snr, True, True, int(rand.integers(0, 20250515))
+                )
+                ans_s, ans_e = handler.get_answer()
 
                 # SATEN
                 S, E = pysaten.vsed(x, fs)

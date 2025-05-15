@@ -1,12 +1,10 @@
 import statistics as stat
 from pathlib import Path
 
-import librosa
 import numpy as np
 import pandas as pd
 from numpy.random import default_rng
 from tqdm import tqdm
-from utils import gen_noise_signal
 
 import pysaten
 from pysaten.utility.WavLabHandler import WavLabHandler
@@ -27,13 +25,15 @@ def _main():
                     lab_path = Path(f"{lab}/emoNormal{i:03}.lab")
 
                     handler = WavLabHandler(wav_path, lab_path)
-                    x, fs = librosa.load(wav_path, sr=None)
-                    ans_s, ans_e = handler.get_answer()
+                    x, fs = handler.get_noise_signal(
+                        25, False, False, int(rand.integers(0, 20250515))
+                    )
 
-                    x = gen_noise_signal(x, fs, 25, False, rand, ans_s, ans_e)
                     _, _, _, _, S, E, _, _, _ = pysaten.vsed_debug(
                         x, fs, rms_threshold=rms_thres, zcr_threshold=zcr_thres
                     )
+
+                    ans_s, ans_e = handler.get_answer()
                     this_param.append(abs(S - ans_s))
                     this_param.append(abs(E - ans_e))
                     not_abs_error.append(S - ans_s)
