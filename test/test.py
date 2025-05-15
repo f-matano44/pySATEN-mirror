@@ -1,4 +1,5 @@
 import sys
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
@@ -7,9 +8,10 @@ from marblenet import marblenet
 from rvad import rvad_fast
 from soundfile import read, write
 from tqdm import tqdm
-from utils import gen_noise_signal, load_answer
+from utils import gen_noise_signal
 
 import pysaten
+from pysaten.utility.WavLabHandler import WavLabHandler
 
 inaSegmenter = Segmenter(detect_gender=False)
 marble = marblenet.MarbleNet()
@@ -38,13 +40,17 @@ def _main():
         print(f"SNR: {snr}", file=sys.stderr)
         for i in tqdm(range(1, 324 + 1)):
             for speaker in [0, 1, 2]:
-                ans_s, ans_e = load_answer(f"{lab_files[speaker]}{i:03}.lab")
-                wav_file = f"{wav_files[speaker]}{i:03}.wav"
-                x, fs = read(wav_file)
+                wav_path = Path(f"{wav_files[speaker]}{i:03}.wav")
+                lab_path = Path(f"{lab_files[speaker]}{i:03}.lab")
+                handler = WavLabHandler(wav_path, lab_path)
+                x, fs = read(wav_path)
+                ans_s, ans_e = handler.get_answer()
+
                 if snr is not None and snr != -999:
                     x = gen_noise_signal(x, fs, snr, True, rand, ans_s, ans_e)
                 elif snr == -999:
                     x = rand.uniform(low=-1.0, high=1.0, size=len(x))
+
                 # SATEN
                 S, E = pysaten.vsed(x, fs)
                 E = 0 if S == 0 and abs(E - len(x) / fs) <= 0.01 else E

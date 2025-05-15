@@ -1,13 +1,15 @@
 import statistics as stat
+from pathlib import Path
 
 import librosa
 import numpy as np
 import pandas as pd
 from numpy.random import default_rng
 from tqdm import tqdm
-from utils import gen_noise_signal, load_answer
+from utils import gen_noise_signal
 
 import pysaten
+from pysaten.utility.WavLabHandler import WavLabHandler
 
 
 def _main():
@@ -19,15 +21,14 @@ def _main():
             not_abs_error = []
             for i in tqdm(range(1, 101)):
                 for character in ["zundamon", "tohoku_itako"]:
-                    dir_lab = f"wav_and_lab/{character}/ITA_emotion_normal_label"
-                    ans_s, ans_e = load_answer(f"{dir_lab}/emoNormal{i:03}.lab")
-                    dir_wav = (
-                        f"wav_and_lab/{character}/ITA_emotion_normal_synchronized_wav"
-                    )
-                    x, fs = librosa.load(
-                        f"{dir_wav}/emoNormal{i:03}.wav",
-                        sr=None,
-                    )
+                    wav = f"wav_and_lab/{character}/ITA_emotion_normal_synchronized_wav"
+                    wav_path = Path(f"{wav}/emoNormal{i:03}.wav")
+                    lab = f"wav_and_lab/{character}/ITA_emotion_normal_label"
+                    lab_path = Path(f"{lab}/emoNormal{i:03}.lab")
+                    handler = WavLabHandler(lab_path, lab_path)
+                    x, fs = librosa.load(wav_path, sr=None)
+                    ans_s, ans_e = handler.get_answer()
+
                     x = gen_noise_signal(x, fs, 25, False, rand, ans_s, ans_e)
                     _, _, _, _, S, E, _, _, _ = pysaten.vsed_debug(
                         x, fs, rms_threshold=rms_thres, zcr_threshold=zcr_thres

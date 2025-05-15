@@ -1,12 +1,6 @@
+from pathlib import Path
+
 import numpy as np
-
-
-def load_answer(filename: str):
-    ans = []
-    with open(filename, "r") as file:
-        for line in file:
-            ans.append([x for x in line.split(" ")])
-    return float(ans[0][1]) / 1e7, float(ans[-1][0]) / 1e7
 
 
 def gen_noise_signal(
@@ -27,7 +21,9 @@ def gen_noise_signal(
         else _gen_pink_noise(len(x), fs, rand)
     )
     # mix stationary noise and signal (in specified snr)
-    noise_scale = _determine_noise_scale(x[speech_start_idx:speech_end_idx], noise, snr)
+    noise_scale = _determine_noise_scale(
+        x[speech_start_idx:speech_end_idx], noise, snr
+    )
     noise_x = x + noise * noise_scale
     # add pulse noise
     # generate pulse
@@ -41,7 +37,9 @@ def gen_noise_signal(
     return noise_x
 
 
-def _gen_pink_noise(length: int, fs: int, rand: np.random.Generator) -> np.array:
+def _gen_pink_noise(
+    length: int, fs: int, rand: np.random.Generator
+) -> np.array:
     length2 = length + 1000
 
     # white noise
