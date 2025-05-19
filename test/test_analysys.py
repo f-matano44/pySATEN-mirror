@@ -2,8 +2,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from matplotlib.ticker import MaxNLocator
+from math import inf
 
-snrlist = [None, 20, 15, 10, 5, 0, -5, -999]
+snrlist = [inf, 20, 15, 10, 5, 0, -5, -inf]
 vad = ["pySATEN", "rVAD", "inaSpeechSegmenter", "MarbleNet"]
 result: dict = {
     "label": ["Inf", "20", "15", "10", "5", "0", "-5", "-Inf"],
@@ -22,7 +23,7 @@ for snr in snrlist:
         f"{trueSNR}, ",
         end="",
     )
-    file_path = f"test_{str(snr)}.csv"
+    file_path = f"test_result/test_{str(snr)}.csv"
     df = pd.read_csv(file_path)
     for method in vad:
         result[method]["low"].append(df[method].quantile(0.25))
@@ -41,7 +42,7 @@ for snr in snrlist:
     print("")
 
 # color: https://contents-open.hatenablog.com/entry/2021/08/19/231157
-plt.rcParams["font.family"] = "Times New Roman"
+plt.rcParams["font.family"] = "Liberation Serif"
 plt.rcParams["font.size"] = 16
 x = np.arange(len(result["label"]))
 offset = 0.11
