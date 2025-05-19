@@ -1,5 +1,6 @@
 import copy
 import wave
+from pathlib import Path
 
 import librosa
 import nemo.collections.asr as nemo_asr
@@ -203,9 +204,6 @@ class MarbleNet:
 
         return start, end
 
-    def vad_test(self, x, fs):
-        x = librosa.resample(x, orig_sr=fs, target_sr=16000)
-        sf.write("temp.wav", x, 16000)
-
+    def vad_test(self, temp_wav_16k: Path):
         step = 0.025
-        return self.offline_inference("temp.wav", step)
+        return self.offline_inference(temp_wav_16k, step)
