@@ -72,9 +72,9 @@ class WavLabHandler:
         )
 
         # mix stationary noise and signal (in specified snr)
-        if snr is inf:
+        if snr == inf:
             noised_x = x
-        elif snr is -inf:
+        elif snr == -inf:
             noised_x = noise
         else:
             noise_scale = WavLabHandler.__determine_noise_scale(
