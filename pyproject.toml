@@ -30,7 +30,7 @@ Repository = "https://gitlab.com/f-matano44/pysaten.git"
 [project.scripts]
 pysaten_trim = "pysaten.pysaten:cli_runner"
 
-[tool.poetry.group.dev.dependencies]
+[tool.poetry.group.dev_lv1.dependencies]
 matplotlib = "^3.10.3"
 pandas = "^2.2.3"
 inaspeechsegmenter = "^0.7.14"
