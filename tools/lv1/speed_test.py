@@ -8,7 +8,6 @@ from pysaten.utility.WavLabHandler import WavLabHandler
 
 """
 $ python speed_test.py
-python speed_test.py
 wav_lab: 0.9626076221466064
 noise: 417.0023241043091
 saten: 15.571624040603638
