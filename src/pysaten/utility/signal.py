@@ -2,7 +2,7 @@ import numpy as np
 import numpy.typing as npt
 
 
-def rms(y: npt.NDArray, win_length: int, hop_length: int) -> npt.NDArray:
+def root_mean_square(y: npt.NDArray, win_length: int, hop_length: int) -> npt.NDArray:
     rms = np.zeros(int(np.ceil(float(len(y)) / hop_length)))
     for i in range(len(rms)):
         # get target array
@@ -15,7 +15,7 @@ def rms(y: npt.NDArray, win_length: int, hop_length: int) -> npt.NDArray:
     return rms
 
 
-def zcr(y: npt.NDArray, win_length: int, hop_length: int) -> npt.NDArray:
+def zero_crossing_rate(y: npt.NDArray, win_length: int, hop_length: int) -> npt.NDArray:
     zcr = np.zeros(int(np.ceil(float(len(y)) / hop_length)))
     for i in range(len(zcr)):
         # get target array
