@@ -19,18 +19,22 @@ def _main():
             not_abs_error = []
             for i in tqdm(range(1, 101)):
                 for character in ["zundamon", "tohoku_itako"]:
+                    seed = int(rand.integers(0, 20250522))
+
                     wav = f"wav_and_lab/{character}/ITA_emotion_normal_synchronized_wav"
                     wav_path = Path(f"{wav}/emoNormal{i:03}.wav")
                     lab = f"wav_and_lab/{character}/ITA_emotion_normal_label"
                     lab_path = Path(f"{lab}/emoNormal{i:03}.lab")
 
                     handler = WavLabHandler(wav_path, lab_path)
-                    x, fs = handler.get_noise_signal(
-                        25, False, False, int(rand.integers(0, 20250515))
-                    )
+                    x, fs = handler.get_noise_signal(25, False, False, seed)
 
                     _, _, _, _, S, E, _, _, _ = pysaten.vsed_debug_lv1(
-                        x, fs, rms_threshold=rms_thres, zcr_threshold=zcr_thres
+                        x,
+                        fs,
+                        rms_threshold=rms_thres,
+                        zcr_threshold=zcr_thres,
+                        noise_seed=seed,
                     )
 
                     ans_s, ans_e = handler.get_answer()
