@@ -14,7 +14,7 @@ from ..utility.signal import root_mean_square as rms
 from ..utility.signal import zero_crossing_rate as zcr
 
 
-def vsed_debug(
+def vsed_debug_lv1(
     y: np.ndarray,
     orig_sr: int,
     # -------------------------------------------

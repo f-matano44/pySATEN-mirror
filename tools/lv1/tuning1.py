@@ -29,7 +29,7 @@ def _main():
                         25, False, False, int(rand.integers(0, 20250515))
                     )
 
-                    _, _, _, _, S, E, _, _, _ = pysaten.vsed_debug(
+                    _, _, _, _, S, E, _, _, _ = pysaten.vsed_debug_lv1(
                         x, fs, rms_threshold=rms_thres, zcr_threshold=zcr_thres
                     )
 
