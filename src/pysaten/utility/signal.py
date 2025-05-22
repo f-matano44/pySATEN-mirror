@@ -25,7 +25,7 @@ def zero_crossing_rate(y: npt.NDArray, win_length: int, hop_length: int) -> npt.
         target = y[zcr_start:zcr_end]
         # calc zcr
         sign_arr = np.sign(target)[target != 0 & ~np.isnan(target)]
-        zcr[i] = np.sum(np.abs(np.diff(sign_arr)) != 0) / hop_length
+        zcr[i] = np.sum(np.abs(np.diff(sign_arr)) != 0) / len(target)
     return zcr
 
 
