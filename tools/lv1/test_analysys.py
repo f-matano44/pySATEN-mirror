@@ -1,8 +1,9 @@
+from math import inf
+
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from matplotlib.ticker import MaxNLocator
-from math import inf
 
 snrlist = [inf, 20, 15, 10, 5, 0, -5, -inf]
 vad = ["pySATEN", "rVAD", "inaSpeechSegmenter", "MarbleNet"]
@@ -52,7 +53,10 @@ linewidth = 2
 plt.errorbar(
     x + 1.5 * offset,
     result[vad[3]]["med"],
-    yerr=[result[vad[3]]["low"], result[vad[3]]["high"]],
+    yerr=[
+        np.array(result[vad[3]]["med"]) - np.array(result[vad[3]]["low"]),
+        np.array(result[vad[3]]["high"]) - np.array(result[vad[3]]["med"]),
+    ],
     fmt="*:",
     label=str(vad[3]),
     capsize=capsize,
@@ -63,7 +67,10 @@ plt.errorbar(
 plt.errorbar(
     x + 0.5 * offset,
     result[vad[2]]["med"],
-    yerr=[result[vad[2]]["low"], result[vad[2]]["high"]],
+    yerr=[
+        np.array(result[vad[2]]["med"]) - np.array(result[vad[2]]["low"]),
+        np.array(result[vad[2]]["high"]) - np.array(result[vad[2]]["med"]),
+    ],
     fmt="D-.",
     label=str(vad[2]),
     capsize=capsize,
@@ -74,7 +81,10 @@ plt.errorbar(
 plt.errorbar(
     x - 0.5 * offset,
     result[vad[1]]["med"],
-    yerr=[result[vad[1]]["low"], result[vad[1]]["high"]],
+    yerr=[
+        np.array(result[vad[1]]["med"]) - np.array(result[vad[1]]["low"]),
+        np.array(result[vad[1]]["high"]) - np.array(result[vad[1]]["med"]),
+    ],
     fmt="s--",
     label=str(vad[1]),
     capsize=capsize,
@@ -85,7 +95,10 @@ plt.errorbar(
 plt.errorbar(
     x - 1.5 * offset,
     result[vad[0]]["med"],
-    yerr=[result[vad[0]]["low"], result[vad[0]]["high"]],
+    yerr=[
+        np.array(result[vad[0]]["med"]) - np.array(result[vad[0]]["low"]),
+        np.array(result[vad[0]]["high"]) - np.array(result[vad[0]]["med"]),
+    ],
     fmt="o-",
     label="SATEN Lv.1",
     capsize=capsize,
