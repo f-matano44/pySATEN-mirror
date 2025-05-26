@@ -34,7 +34,7 @@ y_trimmed = pysaten.trim(y, sr)
 
 # If you trim manually or want to get start/end time...
 start_s, end_s = pysaten.vsed(y, sr)
-y_trimmed = y[start_s * sr : end_s * sr]
+y_trimmed = y[int(start_s * sr) : int(end_s * sr)]
 # start_s: Start of speech segment. Unit is seconds.
 # end_s: End of speech segment. Unit is seconds.
 ```
