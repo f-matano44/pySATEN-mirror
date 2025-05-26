@@ -50,7 +50,7 @@ def _main():
 
                     # create noised signal
                     x, fs = handler.get_noise_signal(
-                        snr, True, True, rand.integers(0, 20250526)
+                        snr, True, True, int(rand.integers(0, 20250526))
                     )
 
                     # save noise signal
@@ -64,7 +64,7 @@ def _main():
                     ans_s, ans_e = handler.get_answer()
 
                     # SATEN
-                    S, E = pysaten.vsed(x, fs, rand.integers(0, 20250526))
+                    S, E = pysaten.vsed(x, fs, int(rand.integers(0, 20250526)))
                     E = 0 if S == 0 and abs(E - len(x) / fs) <= 0.01 else E
                     saten.append(abs(S - ans_s))
                     saten.append(abs(E - ans_e))
