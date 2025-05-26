@@ -9,8 +9,8 @@ This library detects silence segment from speech signal.
 
 
 ## Installation
-```sh
-pip install pysaten
+```
+$ pip install pysaten
 ```
 
 
@@ -18,8 +18,8 @@ pip install pysaten
 ### Command line
 Supported formats for reading with pysoundfile.
 The audio file that can be loaded is mono only.
-```sh
-pysaten_trim input.wav trimmed.wav
+```
+$ pysaten_trim input.wav trimmed.wav
 ```
 
 ### Python
@@ -39,6 +39,12 @@ y_trimmed = y[start_s * sr : end_s * sr]
 # end_s: End of speech segment. Unit is seconds.
 ```
 
+### For development
+```
+$ git clone https://gitlab.com/f-matano44/pysaten.git
+$ poetry install
+```
+
 
 ## License
 Copyright 2024 Fumiyoshi MATANO
@@ -48,6 +54,7 @@ This program is free software: you can redistribute it and/or modify it under th
 This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.
+
 
 
 ## Acknowledgements
