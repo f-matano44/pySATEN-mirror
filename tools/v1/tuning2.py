@@ -29,7 +29,7 @@ def _main():
                     handler = WavLabHandler(wav_path, lab_path)
                     x, fs = handler.get_noise_signal(25, False, False, seed)
 
-                    _, _, _, _, S, E, _, _, _ = pysaten.vsed_debug_lv1(
+                    _, _, _, _, S, E, _, _, _ = pysaten.vsed_debug_v1(
                         x,
                         fs,
                         rms_threshold=rms_thres,

@@ -63,7 +63,7 @@ We would like to take this opportunity to express our gratitude.
 
 
 ## Cite this
-### Lv.1 / Library version 1.X
+### Library version 1.X (Non-peer-reviewed)
 #### Japanese
 俣野 文義，小口 純矢，森勢 将雅，``音声コーパス構築のための仮定を追加した発話区間検出法の提案と基礎評価,'' 日本音響学会第 152 回 (2024 年秋季) 研究発表会, pp.1161--1162 (2024.09).
 

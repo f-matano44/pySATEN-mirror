@@ -6,7 +6,7 @@ import numpy as np
 import numpy.typing as npt
 import soundfile
 
-from .lv1 import vsed_debug_lv1
+from .v1 import vsed_debug_v1
 
 
 def cli_runner() -> None:
@@ -32,5 +32,5 @@ def vsed(y: npt.NDArray[np.floating], sr: int) -> Tuple[float, float]:
     if y.ndim != 1:
         raise ValueError("PySaten only supports mono audio.")
     # trim
-    _, _, _, _, start_s, end_s, _, _, _ = vsed_debug_lv1(y, sr, noise_seed=seed)
+    _, _, _, _, start_s, end_s, _, _, _ = vsed_debug_v1(y, sr, noise_seed=seed)
     return start_s, end_s
