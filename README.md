@@ -58,7 +58,7 @@ You should have received a copy of the GNU General Public License along with thi
 
 
 ## Acknowledgements
-The following programs were used to test the performance of pysaten.
+The following programs were used to [\[evaluate the performance of pysaten\]](tools/v1/).
 We would like to take this opportunity to express our gratitude.
 
 * test/marblenet: Apache License Version 2.0
