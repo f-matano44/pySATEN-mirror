@@ -1,5 +1,8 @@
 # ChangeLog
 
+## 1.4.0.post1
+* Modify readme
+
 ## 1.4.0
 * hatchling -> poetry
 * Support python version (3>= -> 3.10>=)

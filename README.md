@@ -41,7 +41,7 @@ y_trimmed = y[int(start_s * sr) : int(end_s * sr)]
 # end_s: End of speech segment. Unit is seconds.
 ```
 
-### For development
+### For development (Linux only)
 ```
 $ git clone https://gitlab.com/f-matano44/pysaten.git
 $ poetry install
