@@ -1,4 +1,6 @@
 # pySATEN
+[\[Repository\]](https://gitlab.com/f-matano44/pysaten)
+[\[Mirror\]](https://github.com/f-matano44/pySATEN-mirror)
 [![PyPI - Version](https://img.shields.io/pypi/v/pysaten)](https://pypi.org/project/pysaten/)
 [![Downloads](https://static.pepy.tech/badge/pysaten)](https://pepy.tech/project/pysaten)
 
