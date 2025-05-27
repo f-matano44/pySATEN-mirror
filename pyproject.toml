@@ -1,12 +1,15 @@
 [build-system]
-requires = ["hatchling>=1.26"]
-build-backend = "hatchling.build"
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
 
 [project]
 name = "pysaten"
 description = "Detect silence segment from speech signal."
-dynamic = ["version"]
-requires-python = ">=3"
+version = "1.4.0"
+authors = [
+    {name = "Fumiyoshi MATANO",email = "fumiyoshi.matano@gmail.com"}
+]
+requires-python = ">=3.10"
 dependencies = [
     "numpy>=1.20",  # for numpy.typing
     "noisereduce",
@@ -27,5 +30,18 @@ Repository = "https://gitlab.com/f-matano44/pysaten.git"
 [project.scripts]
 pysaten_trim = "pysaten.pysaten:cli_runner"
 
-[tool.hatch.version]
-path = "src/pysaten/__init__.py"
+[tool.poetry.group.dev.dependencies]
+matplotlib = "^3.10.3"
+pandas = "^2.2.3"
+inaspeechsegmenter = "^0.7.14"
+tqdm = "^4.67.1"
+nemo-toolkit = {extras = ["asr"], version = "^2.3.0"}
+torch = {version = "^2.7.0", source = "torch_cpu"}
+torchvision = {version = "^0.22.0", source = "torch_cpu"}
+torchaudio = {version = "^2.7.0", source = "torch_cpu"}
+
+[[tool.poetry.source]]
+name = "torch_cpu"
+url = "https://download.pytorch.org/whl/cpu"
+priority = "explicit"
+

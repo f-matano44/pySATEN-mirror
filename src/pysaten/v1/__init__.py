@@ -9,10 +9,13 @@ from scipy.signal import cheby1, firwin, lfilter, sosfilt
 
 from ..utility import color_noise
 from ..utility.constants import F0_CEIL, F0_FLOOR, NYQ, SR
-from ..utility.signal import normalize, rms, zcr
+from ..utility.signal import normalize
+from ..utility.signal import root_mean_square as rms
+from ..utility.signal import slide_index
+from ..utility.signal import zero_crossing_rate as zcr
 
 
-def vsed_debug(
+def vsed_debug_v1(
     y: np.ndarray,
     orig_sr: int,
     # -------------------------------------------
@@ -27,14 +30,10 @@ def vsed_debug(
     noise_seed: int = 0,
 ):
     # resample
-    y_rsp: np.ndarray = resample(
-        y=y, orig_sr=orig_sr, target_sr=SR, res_type="soxr_lq"
-    )
+    y_rsp: np.ndarray = resample(y=y, orig_sr=orig_sr, target_sr=SR, res_type="soxr_lq")
 
     # constants
-    win_length_s = (
-        win_length_s if win_length_s is not None else hop_length_s * 4
-    )
+    win_length_s = win_length_s if win_length_s is not None else hop_length_s * 4
     win_length: int = int(win_length_s * SR)
     hop_length: int = int(hop_length_s * SR)
     zcr_margin: int = int(zcr_margin_s / hop_length_s)
@@ -43,9 +42,7 @@ def vsed_debug(
     y_nr = _00_preprocess(y_rsp, SR, noise_seed)
 
     # step1: Root mean square
-    start1, end1, y_rms = _01_rms(
-        y_nr, SR, rms_threshold, win_length, hop_length
-    )
+    start1, end1, y_rms = _01_rms(y_nr, SR, rms_threshold, win_length, hop_length)
 
     # step2: Zero cross
     start2, end2, y_zcr = _02_zcr(
@@ -97,16 +94,12 @@ def _00_preprocess(y: np.ndarray, sr: int, noise_seed: int) -> np.ndarray:
     return nr.reduce_noise(y_blue, sr)
 
 
-def _01_rms(
-    y, sr, threshold, win_length, hop_length
-) -> tuple[int, int, np.ndarray]:
+def _01_rms(y, sr, threshold, win_length, hop_length) -> tuple[int, int, np.ndarray]:
     wp = [F0_FLOOR / NYQ, F0_CEIL / NYQ]
     band_sos = cheby1(N=12, rp=1, Wn=wp, btype="bandpass", output="sos")
     y_bpf = sosfilt(band_sos, y)
     y_rms = normalize(rms(y_bpf, win_length, hop_length))
-    start1: int = (
-        np.where(threshold < y_rms)[0][0] if np.any(threshold < y_rms) else 0
-    )
+    start1: int = np.where(threshold < y_rms)[0][0] if np.any(threshold < y_rms) else 0
     end1: int = (
         np.where(threshold < y_rms)[0][-1]
         if np.any(threshold < y_rms)
@@ -120,7 +113,7 @@ def _02_zcr(y, sr, start1, end1, threshold, margin, win_length, hop_length):
     y_hpf = lfilter(high_b, 1.0, y)
     y_zcr = normalize(zcr(y_hpf, win_length, hop_length))
     # slide start index
-    start2 = _slide_index(
+    start2 = slide_index(
         goto_min=True,
         y=y_zcr,
         start_idx=start1,
@@ -128,7 +121,7 @@ def _02_zcr(y, sr, start1, end1, threshold, margin, win_length, hop_length):
         margin=margin,
     )
     # slide end index
-    end2 = _slide_index(
+    end2 = slide_index(
         goto_min=False,
         y=y_zcr,
         start_idx=end1,
@@ -136,34 +129,3 @@ def _02_zcr(y, sr, start1, end1, threshold, margin, win_length, hop_length):
         margin=margin,
     )
     return start2, end2, y_zcr
-
-
-def _slide_index(
-    goto_min: bool,
-    y: np.ndarray,
-    start_idx: int,
-    threshold: float,
-    margin: int,
-) -> int:
-
-    stop_idx: int = -1 if goto_min else len(y)
-    step: int = -1 if goto_min else 1
-
-    for i in range(start_idx, stop_idx, step):
-        if threshold <= y[i]:
-            a_check_end = (
-                max(0, i - margin) if goto_min else min(i + margin, len(y))
-            )
-            a_check = y[a_check_end:i] if goto_min else y[i:a_check_end]
-            indices_below_threshold = [
-                j for j, b in enumerate(a_check) if b < threshold
-            ]
-            if indices_below_threshold:  # is not empty
-                i = (
-                    min(indices_below_threshold)
-                    if goto_min
-                    else max(indices_below_threshold)
-                )
-            else:  # indices_below_threshold is empty -> finish!!!
-                return i
-    return 0 if goto_min else len(y)

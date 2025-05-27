@@ -1,9 +1,11 @@
+from math import inf
+
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from matplotlib.ticker import MaxNLocator
 
-snrlist = [None, 20, 15, 10, 5, 0, -5, -999]
+snrlist = [inf, 20, 15, 10, 5, 0, -5, -inf]
 vad = ["pySATEN", "rVAD", "inaSpeechSegmenter", "MarbleNet"]
 result: dict = {
     "label": ["Inf", "20", "15", "10", "5", "0", "-5", "-Inf"],
@@ -22,7 +24,7 @@ for snr in snrlist:
         f"{trueSNR}, ",
         end="",
     )
-    file_path = f"test_{str(snr)}.csv"
+    file_path = f"test_result/test_{str(snr)}.csv"
     df = pd.read_csv(file_path)
     for method in vad:
         result[method]["low"].append(df[method].quantile(0.25))
@@ -41,7 +43,7 @@ for snr in snrlist:
     print("")
 
 # color: https://contents-open.hatenablog.com/entry/2021/08/19/231157
-plt.rcParams["font.family"] = "Times New Roman"
+plt.rcParams["font.family"] = "Liberation Serif"
 plt.rcParams["font.size"] = 16
 x = np.arange(len(result["label"]))
 offset = 0.11
@@ -51,7 +53,10 @@ linewidth = 2
 plt.errorbar(
     x + 1.5 * offset,
     result[vad[3]]["med"],
-    yerr=[result[vad[3]]["low"], result[vad[3]]["high"]],
+    yerr=[
+        np.array(result[vad[3]]["med"]) - np.array(result[vad[3]]["low"]),
+        np.array(result[vad[3]]["high"]) - np.array(result[vad[3]]["med"]),
+    ],
     fmt="*:",
     label=str(vad[3]),
     capsize=capsize,
@@ -62,7 +67,10 @@ plt.errorbar(
 plt.errorbar(
     x + 0.5 * offset,
     result[vad[2]]["med"],
-    yerr=[result[vad[2]]["low"], result[vad[2]]["high"]],
+    yerr=[
+        np.array(result[vad[2]]["med"]) - np.array(result[vad[2]]["low"]),
+        np.array(result[vad[2]]["high"]) - np.array(result[vad[2]]["med"]),
+    ],
     fmt="D-.",
     label=str(vad[2]),
     capsize=capsize,
@@ -73,7 +81,10 @@ plt.errorbar(
 plt.errorbar(
     x - 0.5 * offset,
     result[vad[1]]["med"],
-    yerr=[result[vad[1]]["low"], result[vad[1]]["high"]],
+    yerr=[
+        np.array(result[vad[1]]["med"]) - np.array(result[vad[1]]["low"]),
+        np.array(result[vad[1]]["high"]) - np.array(result[vad[1]]["med"]),
+    ],
     fmt="s--",
     label=str(vad[1]),
     capsize=capsize,
@@ -84,7 +95,10 @@ plt.errorbar(
 plt.errorbar(
     x - 1.5 * offset,
     result[vad[0]]["med"],
-    yerr=[result[vad[0]]["low"], result[vad[0]]["high"]],
+    yerr=[
+        np.array(result[vad[0]]["med"]) - np.array(result[vad[0]]["low"]),
+        np.array(result[vad[0]]["high"]) - np.array(result[vad[0]]["med"]),
+    ],
     fmt="o-",
     label="SATEN Lv.1",
     capsize=capsize,

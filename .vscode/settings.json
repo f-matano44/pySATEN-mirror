@@ -1,15 +1,24 @@
 {
     "cSpell.words": [
         "freqs",
+        "itako",
+        "marblenet",
+        "metan",
+        "nemo",
         "pysaten",
-        "SATEN"
+        "rvad",
+        "SATEN",
+        "thres",
+        "tohoku",
+        "usagi",
+        "zundamon"
     ],
 
     "editor.formatOnSave": true,
     "editor.defaultFormatter": "ms-python.black-formatter",
     "black-formatter.args": [
         "--line-length",
-        "79"
+        "90"
     ],
     "isort.args": [
         "--profile",
@@ -19,6 +28,8 @@
         "source.organizeImports": "always"
     },
     "flake8.args": [
-        "--ignore=E203,W503,W504"
+        "--ignore=E203,W503,W504",
+        "--max-line-length",
+        "90"
     ]
 }

@@ -1,4 +1,6 @@
 # pySATEN
+[\[Repository\]](https://gitlab.com/f-matano44/pysaten)
+[\[Mirror\]](https://github.com/f-matano44/pySATEN-mirror)
 [![PyPI - Version](https://img.shields.io/pypi/v/pysaten)](https://pypi.org/project/pysaten/)
 [![Downloads](https://static.pepy.tech/badge/pysaten)](https://pepy.tech/project/pysaten)
 
@@ -9,8 +11,8 @@ This library detects silence segment from speech signal.
 
 
 ## Installation
-```sh
-pip install pysaten
+```
+$ pip install pysaten
 ```
 
 
@@ -18,8 +20,8 @@ pip install pysaten
 ### Command line
 Supported formats for reading with pysoundfile.
 The audio file that can be loaded is mono only.
-```sh
-pysaten_trim input.wav trimmed.wav
+```
+$ pysaten_trim input.wav trimmed.wav
 ```
 
 ### Python
@@ -34,9 +36,15 @@ y_trimmed = pysaten.trim(y, sr)
 
 # If you trim manually or want to get start/end time...
 start_s, end_s = pysaten.vsed(y, sr)
-y_trimmed = y[start_s * sr : end_s * sr]
+y_trimmed = y[int(start_s * sr) : int(end_s * sr)]
 # start_s: Start of speech segment. Unit is seconds.
 # end_s: End of speech segment. Unit is seconds.
+```
+
+### For development
+```
+$ git clone https://gitlab.com/f-matano44/pysaten.git
+$ poetry install
 ```
 
 
@@ -50,8 +58,9 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 You should have received a copy of the GNU General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 
+
 ## Acknowledgements
-The following programs were used to test the performance of pysaten.
+The following programs were used to [\[evaluate the performance of pysaten\]](tools/v1/).
 We would like to take this opportunity to express our gratitude.
 
 * test/marblenet: Apache License Version 2.0
@@ -63,7 +72,7 @@ We would like to take this opportunity to express our gratitude.
 
 
 ## Cite this
-### Lv.1 / Library version 1.X
+### Library version 1.X (Non-peer-reviewed)
 #### Japanese
 俣野 文義，小口 純矢，森勢 将雅，``音声コーパス構築のための仮定を追加した発話区間検出法の提案と基礎評価,'' 日本音響学会第 152 回 (2024 年秋季) 研究発表会, pp.1161--1162 (2024.09).
 

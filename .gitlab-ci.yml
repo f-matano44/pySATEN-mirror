@@ -18,8 +18,8 @@ build:
     - python -m venv .venv
     - source .venv/bin/activate
     - python -m pip install -U pip
-    - python -m pip install -U wheel setuptools build
-    - python -m build
+    - python -m pip install poetry
+    - poetry build
   artifacts:
     paths:
       - .venv/

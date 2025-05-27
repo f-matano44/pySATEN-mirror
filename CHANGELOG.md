@@ -1,5 +1,13 @@
 # ChangeLog
 
+## 1.4.0
+* hatchling -> poetry
+* Support python version (3>= -> 3.10>=)
+* remove "Lv" representation
+* test/ -> tools/
+* Redo test.py
+* Other refactoring
+
 ## 1.3.1
 * Refactoring
 

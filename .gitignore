@@ -26,4 +26,5 @@ dist
 !requirements*.txt
 !/**/tuning_*.csv
 !/**/test_*.csv
-!/image/*
+!/**/image/*.svg
+!/**/image/*.pdf

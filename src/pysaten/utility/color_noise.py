@@ -32,7 +32,7 @@ def pink(length: int, sr: int, seed: int, device: str = "cpu") -> torch.Tensor:
     WH_f = torch.fft.rfft(wh)
     freqs = torch.fft.rfftfreq(len(wh), 1 / sr)
     # white -> pink
-    PK_f = WH_f.copy()
+    PK_f = WH_f.clone()
     for i in range(len(WH_f)):
         PK_f[i] = WH_f[i] / torch.sqrt(freqs[i]) if 20 < freqs[i] else 0
     # irfft
