@@ -17,7 +17,7 @@ def cli_runner() -> None:
     parser.add_argument("output", type=str)
     args = parser.parse_args()
     # trimming
-    y, sr = librosa.load(args.input, sr=None, mono=True, dtype=np.float32)
+    y, sr = librosa.load(args.input, sr=None, mono=True)
     y_trimmed: npt.NDArray = trim(y, sr)
     wavfile.write(args.output, sr, (y_trimmed * pow(2, 31)).astype(np.int32))
 
