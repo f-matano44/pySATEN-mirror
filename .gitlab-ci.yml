@@ -22,7 +22,6 @@ build:
     - poetry build
   artifacts:
     paths:
-      - .venv/
       - dist/
     expire_in: 1 day
 
@@ -34,6 +33,8 @@ deploy:
     PYPI_ID_TOKEN:
       aud: pypi
   script:
+    - python -m venv .venv
     - source .venv/bin/activate
-    - python -m pip install -U twine>=6.1
+    - python -m pip install -U pip
+    - python -m pip install twine>=6.1
     - python -m twine --no-color upload dist/* --disable-progress-bar
