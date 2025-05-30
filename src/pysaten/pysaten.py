@@ -19,7 +19,7 @@ def cli_runner() -> None:
     # trimming
     y, sr = librosa.load(args.input, sr=None, mono=True, dtype=np.float32)
     y_trimmed: npt.NDArray = trim(y, sr)
-    wavfile.write(args.output, sr, y_trimmed)
+    wavfile.write(args.output, sr, (y_trimmed * pow(2, 31)).astype(np.int32))
 
 
 def trim(y: npt.NDArray[np.floating], sr: float) -> npt.NDArray[np.floating]:
