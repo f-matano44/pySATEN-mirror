@@ -33,7 +33,7 @@ def vsed(
     seed = time.time_ns() if seed is None else seed
     # shape check (monaural only)
     if y.ndim != 1:
-        raise ValueError("PySaten only supports mono audio.")
+        raise ValueError("PySaten only supports monaural audio.")
     # trim
     _, _, _, _, start_s, end_s, _, _, _ = vsed_debug_v1(y, sr, noise_seed=seed)
     return start_s, end_s
