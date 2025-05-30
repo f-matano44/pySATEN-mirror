@@ -1,6 +1,6 @@
 import argparse
 import time
-from typing import Optional, Tuple
+from typing import Optional
 
 import librosa
 import numpy as np
@@ -18,7 +18,7 @@ def cli_runner() -> None:
     args = parser.parse_args()
     # trimming
     y, sr = librosa.load(args.input, sr=None, mono=True)
-    y_trimmed: npt.NDArray = trim(y, sr)
+    y_trimmed: npt.NDArray[np.floating] = trim(y, sr)
     wavfile.write(args.output, sr, (y_trimmed * pow(2, 31)).astype(np.int32))
 
 
@@ -29,7 +29,7 @@ def trim(y: npt.NDArray[np.floating], sr: float) -> npt.NDArray[np.floating]:
 
 def vsed(
     y: npt.NDArray[np.floating], sr: float, seed: Optional[int] = None
-) -> Tuple[float, float]:
+) -> tuple[float, float]:
     seed = time.time_ns() if seed is None else seed
     # shape check (monaural only)
     if y.ndim != 1:
