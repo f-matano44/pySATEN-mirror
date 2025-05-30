@@ -17,7 +17,7 @@ from ..utility.signal import zero_crossing_rate as zcr
 
 def vsed_debug_v1(
     y: np.ndarray,
-    orig_sr: int,
+    orig_sr: float,
     # -------------------------------------------
     win_length_s: Optional[float] = None,
     hop_length_s: float = 0.01,

@@ -18,8 +18,7 @@ $ pip install pysaten
 
 ## Usage
 ### Command line
-Supported formats for reading with pysoundfile.
-The audio file that can be loaded is mono only.
+The audio file is loaded as monaural.
 ```
 $ pysaten_trim input.wav trimmed.wav
 ```
