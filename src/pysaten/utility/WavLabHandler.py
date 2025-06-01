@@ -1,6 +1,7 @@
+from dataclasses import dataclass
 from math import inf
 from pathlib import Path
-from typing import TypedDict
+from typing import Final
 
 import librosa
 import numpy as np
@@ -11,10 +12,12 @@ from .color_noise import pink as pk_noise
 from .color_noise import white as wh_noise
 
 
-class _TimeAlignment(TypedDict):
-    start: float
-    end: float
-    phoneme: str
+@dataclass
+class _TimeAlignment:
+    def __init__(self, start, end, phoneme) -> None:
+        self.start: Final[float] = start
+        self.end: Final[float] = end
+        self.phoneme: Final[str] = phoneme
 
 
 class WavLabHandler:
@@ -34,17 +37,17 @@ class WavLabHandler:
             self.__monophone_label = []
             for line in f:
                 sp = line.split()
-                align: _TimeAlignment = {
-                    "start": float(sp[0]) / 1e7,
-                    "end": float(sp[1]) / 1e7,
-                    "phoneme": sp[2],
-                }
+                align = _TimeAlignment(
+                    start=float(sp[0]) / 1e7,
+                    end=float(sp[1]) / 1e7,
+                    phoneme=sp[2],
+                )
                 self.__monophone_label.append(align)
 
     def get_answer(self) -> tuple[float, float]:
         return (
-            self.__monophone_label[1]["start"],
-            self.__monophone_label[-1]["start"],
+            self.__monophone_label[1].start,
+            self.__monophone_label[-1].start,
         )
 
     def get_signal(self) -> tuple[npt.NDArray[np.floating], float]:
