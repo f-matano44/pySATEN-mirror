@@ -21,11 +21,11 @@ class _TimeAlignment:
 
 
 class WavLabHandler:
-    __x: npt.NDArray[np.floating]
-    __sr: float
-    __monophone_label: list[_TimeAlignment]
+    __x: Final[npt.NDArray[np.floating]]
+    __sr: Final[float]
+    __monophone_label: Final[list[_TimeAlignment]]
 
-    def __init__(self, wav_path: Path, lab_path: Path):
+    def __init__(self, wav_path: Path, lab_path: Path) -> None:
         # load audio
         self.__x, self.__sr = librosa.load(wav_path, sr=None)
 
@@ -36,7 +36,7 @@ class WavLabHandler:
         with lab_path.open() as f:
             self.__monophone_label = []
             for line in f:
-                sp = line.split()
+                sp: list[str] = line.split()
                 align = _TimeAlignment(
                     start=float(sp[0]) / 1e7,
                     end=float(sp[1]) / 1e7,
