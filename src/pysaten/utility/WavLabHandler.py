@@ -31,9 +31,6 @@ class WavLabHandler:
 
         # load label
         with lab_path.open() as f:
-            if sum(1 for _ in f) < 3:
-                raise ValueError("Invalid label format")
-        with lab_path.open() as f:
             self.__monophone_label = []
             for line in f:
                 sp: list[str] = line.split()
@@ -43,6 +40,8 @@ class WavLabHandler:
                     phoneme=sp[2],
                 )
                 self.__monophone_label.append(align)
+        if len(self.__monophone_label) < 3:
+            raise ValueError("Invalid label format")
 
     def get_answer(self) -> tuple[float, float]:
         return (
