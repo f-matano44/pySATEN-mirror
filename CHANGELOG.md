@@ -1,5 +1,9 @@
 # ChangeLog
 
+## 1.4.0.post2
+* Fix pipeline
+* move poetry.lock file
+
 ## 1.4.0.post1
 * Modify readme
 
