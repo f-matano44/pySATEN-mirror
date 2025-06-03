@@ -1,6 +1,6 @@
 # SPDX-License-Identifier:GPL-3.0-or-later
 
-from typing import Optional
+from typing import Final, Optional
 
 import noisereduce as nr
 import numpy as np
@@ -34,9 +34,9 @@ def vsed_debug_v1(
 
     # constants
     win_length_s = win_length_s if win_length_s is not None else hop_length_s * 4
-    win_length: int = int(win_length_s * SR)
-    hop_length: int = int(hop_length_s * SR)
-    zcr_margin: int = int(zcr_margin_s / hop_length_s)
+    win_length: Final[int] = int(win_length_s * SR)
+    hop_length: Final[int] = int(hop_length_s * SR)
+    zcr_margin: Final[int] = int(zcr_margin_s / hop_length_s)
 
     # preprocess: add blue noise && remove background noise
     y_nr = _00_preprocess(y_rsp, SR, noise_seed)
@@ -57,16 +57,16 @@ def vsed_debug_v1(
     )
 
     # index -> second: rms
-    start1_s: float = max(0, start1 * hop_length_s)
-    end1_s: float = min(end1 * hop_length_s, len(y_rsp) / SR)
+    start1_s: Final[float] = max(0, start1 * hop_length_s)
+    end1_s: Final[float] = min(end1 * hop_length_s, len(y_rsp) / SR)
 
     # index -> second: zrs
-    start2_s: float = max(0, start2 * hop_length_s)
-    end2_s: float = min(end2 * hop_length_s, len(y_rsp) / SR)
+    start2_s: Final[float] = max(0, start2 * hop_length_s)
+    end2_s: Final[float] = min(end2 * hop_length_s, len(y_rsp) / SR)
 
     # add offset
-    start3_s: float = max(0, start2_s - offset_s)
-    end3_s: float = min(end2_s + offset_s, len(y_rsp) / SR)
+    start3_s: Final[float] = max(0, start2_s - offset_s)
+    end3_s: Final[float] = min(end2_s + offset_s, len(y_rsp) / SR)
 
     feats_timestamp = np.linspace(0, len(y_zcr) * hop_length_s, len(y_zcr))
 
@@ -108,7 +108,9 @@ def _01_rms(y, sr, threshold, win_length, hop_length) -> tuple[int, int, np.ndar
     return start1, end1, y_rms
 
 
-def _02_zcr(y, sr, start1, end1, threshold, margin, win_length, hop_length):
+def _02_zcr(
+    y, sr, start1, end1, threshold, margin, win_length, hop_length
+) -> tuple[int, int, np.ndarray]:
     high_b = firwin(101, F0_CEIL, pass_zero=False, fs=sr)
     y_hpf = lfilter(high_b, 1.0, y)
     y_zcr = normalize(zcr(y_hpf, win_length, hop_length))
