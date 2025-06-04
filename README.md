@@ -18,7 +18,7 @@ $ pip install pysaten
 
 ## Usage
 ### Command line
-The audio file is loaded as monaural.
+The audio file is exported as 24-bit PCM at 48 kHz, mono.
 ```
 $ pysaten_trim input.wav trimmed.wav
 ```

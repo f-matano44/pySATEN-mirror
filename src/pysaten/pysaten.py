@@ -5,7 +5,7 @@ from typing import Optional
 import librosa
 import numpy as np
 import numpy.typing as npt
-from scipy.io import wavfile
+import soundfile as sf
 
 from .v1 import vsed_debug_v1
 
@@ -17,9 +17,9 @@ def cli_runner() -> None:
     parser.add_argument("output", type=str)
     args = parser.parse_args()
     # trimming
-    y, sr = librosa.load(args.input, sr=None, mono=True, dtype=np.float64)
+    y, sr = librosa.load(args.input, sr=48000)
     y_trimmed: npt.NDArray[np.floating] = trim(y, sr)
-    wavfile.write(args.output, sr, (y_trimmed * pow(2, 31)).astype(np.int32))
+    sf.write(args.output, y_trimmed, sr, format="WAV", subtype="PCM_24")
 
 
 def trim(y: npt.NDArray[np.floating], sr: float) -> npt.NDArray[np.floating]:

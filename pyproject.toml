@@ -14,6 +14,7 @@ dependencies = [
     "numpy>=1.20",  # for numpy.typing
     "noisereduce",
     "librosa",
+    "soundfile",
     "scipy",
     "torch>=1.7"  # for torch.fft
 ]
@@ -38,7 +39,6 @@ nemo-toolkit = {extras = ["asr"], version = "^2.3.0"}
 torch = {version = "^2.7.0", source = "torch_cpu"}
 torchvision = {version = "^0.22.0", source = "torch_cpu"}
 torchaudio = {version = "^2.7.0", source = "torch_cpu"}
-soundfile = "^0.13.1"
 
 [[tool.poetry.source]]
 name = "torch_cpu"
