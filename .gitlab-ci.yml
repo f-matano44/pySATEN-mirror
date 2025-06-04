@@ -23,7 +23,6 @@ build:
   artifacts:
     paths:
       - dist/
-    expire_in: 1 day
 
 deploy:
   stage: deploy
