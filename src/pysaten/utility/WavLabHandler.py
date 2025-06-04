@@ -35,8 +35,8 @@ class WavLabHandler:
             for line in f:
                 sp: list[str] = line.split()
                 align = _TimeAlignment(
-                    start=float(sp[0]) / 1e7,
-                    end=float(sp[1]) / 1e7,
+                    start=int(sp[0]) / 1e7,
+                    end=int(sp[1]) / 1e7,
                     phoneme=sp[2],
                 )
                 self.__monophone_label.append(align)
