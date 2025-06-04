@@ -11,7 +11,7 @@ def root_mean_square(y: npt.NDArray, win_length: int, hop_length: int) -> npt.ND
         zc_end = int(min(idx + (win_length / 2), len(y) - 1))
         target = y[zc_start:zc_end]
         # calc rms
-        rms[i] = _sqrt(np.mean(_pow(target, 2)))
+        rms[i] = np.sqrt(np.mean(np.power(target, 2)))
     return rms
 
 
@@ -58,11 +58,3 @@ def slide_index(
             else:  # indices_below_threshold is empty -> finish!!!
                 return i
     return 0 if goto_min else len(y)
-
-
-def _pow(a: npt.NDArray, b: float) -> npt.NDArray:
-    return a**b
-
-
-def _sqrt(a: float) -> float:
-    return a**0.5
