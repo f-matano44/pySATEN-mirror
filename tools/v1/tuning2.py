@@ -52,7 +52,7 @@ def _main():
             )
             print(f"{rms_thres:.3f}, {zcr_thres:.2f} -> {stat.mean(this_param):.3f}\n")
 
-    pw_csv = "tuning_result/tuning_result2.csv"
+    pw_csv = "tuning_result_of_asj152/tuning_result2.csv"
     df = pd.DataFrame(
         result, columns=["rme_threshold", "zcr_threshold", "error_s", "not_abs_error_s"]
     )

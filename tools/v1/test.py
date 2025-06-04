@@ -91,7 +91,7 @@ def _main():
                     "inaSpeechSegmenter": ina,
                     "MarbleNet": nemo,
                 }
-            ).to_csv(f"test_result/test_{str(snr)}.csv", index=False)
+            ).to_csv(f"test_result_of_v140/test_{str(snr)}.csv", index=False)
 
 
 def _ina_speech_segmenter(temp_wav: Path):

@@ -24,7 +24,7 @@ for snr in snrlist:
         f"{trueSNR}, ",
         end="",
     )
-    file_path = f"test_result/test_{str(snr)}.csv"
+    file_path = f"test_result_of_v140/test_{str(snr)}.csv"
     df = pd.read_csv(file_path)
     for method in vad:
         result[method]["low"].append(df[method].quantile(0.25))
