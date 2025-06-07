@@ -29,7 +29,7 @@ def _main():
                     handler = WavLabHandler(wav_path, lab_path)
                     x, fs = handler.get_noise_signal(25, False, False, seed)
 
-                    _, _, _, _, S, E, _, _, _ = pysaten.vsed_debug_v1(
+                    _, _, _, _, S, E, _, _, _ = pysaten.v1.vsed_debug_v1(
                         x,
                         fs,
                         rms_threshold=rms_thres,
@@ -52,7 +52,7 @@ def _main():
             )
             print(f"{rms_thres:.3f}, {zcr_thres:.2f} -> {stat.mean(this_param):.3f}\n")
 
-    pw_csv = "tuning_result/tuning_result1.csv"
+    pw_csv = "tuning_result_of_asj152/tuning_result1.csv"
     df = pd.DataFrame(
         result, columns=["rme_threshold", "zcr_threshold", "error_s", "not_abs_error_s"]
     )

@@ -1,5 +1,13 @@
 # ChangeLog
 
+## 1.4.0.post2
+* Fix pipeline
+* Move poetry.lock file
+* Modify readme
+* Modify typing method
+* Modify behavior of cli runner
+* Modify directory structure
+
 ## 1.4.0.post1
 * Modify readme
 
