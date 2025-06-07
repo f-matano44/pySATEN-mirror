@@ -28,6 +28,7 @@ class WavLabHandler:
     def __init__(self, wav_path: Path, lab_path: Path) -> None:
         # load audio
         self.__x, self.__sr = librosa.load(wav_path, sr=None)
+        self.__x.flags.writeable = False  # x is immutable
 
         # load label
         with lab_path.open() as f:
