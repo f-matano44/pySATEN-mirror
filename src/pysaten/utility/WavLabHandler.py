@@ -85,14 +85,15 @@ class WavLabHandler:
             noised_x = x + noise * noise_scale
 
         # add pulse noise
-        rand.seed(noise_seed)
-        pulse: npt.NDArray[np.floating] = rand.random(2) - 0.5 * 2
-        # determine index adding pulse noise
-        start_pulse_index: int = np.random.randint(0, speech_start_idx)
-        end_pulse_index: int = np.random.randint(speech_end_idx, len(x) - 1)
-        # add pulse noise
-        noised_x[start_pulse_index] = pulse[0]
-        noised_x[end_pulse_index] = pulse[1]
+        if with_pulse:
+            rand.seed(noise_seed)
+            pulse: npt.NDArray[np.floating] = rand.random(2) - 0.5 * 2
+            # determine index adding pulse noise
+            start_pulse_index: int = np.random.randint(0, speech_start_idx)
+            end_pulse_index: int = np.random.randint(speech_end_idx, len(x) - 1)
+            # add pulse noise
+            noised_x[start_pulse_index] = pulse[0]
+            noised_x[end_pulse_index] = pulse[1]
         return noised_x, sr
 
     @staticmethod

@@ -1,8 +1,9 @@
 # pySATEN
-[\[Repository\]](https://gitlab.com/f-matano44/pysaten)
-[\[Mirror\]](https://github.com/f-matano44/pySATEN-mirror)
 [![PyPI - Version](https://img.shields.io/pypi/v/pysaten)](https://pypi.org/project/pysaten/)
 [![Downloads](https://static.pepy.tech/badge/pysaten)](https://pepy.tech/project/pysaten)
+
+* Main: https://gitlab.com/f-matano44/pysaten
+* Mirror: https://github.com/f-matano44/pySATEN-mirror
 
 ## About
 This library detects silence segment from speech signal.
@@ -27,17 +28,15 @@ $ pysaten_trim input.wav trimmed.wav
 ```python
 import pysaten
 
-# y: Target signal, obtained using libraries such as librosa or soundfile.
+# y: Target signal(numpy.ndarray), obtained using libraries such as librosa or soundfile.
 # sr: Sampling rate.
 
 # Get trimmed signal for the speech segment only.
-y_trimmed = pysaten.trim(y, sr)
+y_trimmed: numpy.ndarray = pysaten.trim(y, sr)
 
 # If you trim manually or want to get start/end time...
-start_s, end_s = pysaten.vsed(y, sr)
-y_trimmed = y[int(start_s * sr) : int(end_s * sr)]
-# start_s: Start of speech segment. Unit is seconds.
-# end_s: End of speech segment. Unit is seconds.
+start_sec, end_sec = pysaten.vsed(y, sr)
+y_trimmed = y[int(start_sec * sr) : int(end_sec * sr)]
 ```
 
 ### For development (Linux only)
