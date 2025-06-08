@@ -2,6 +2,7 @@
 
 ## 1.4.2
 * Bugfix of WavLabHandler
+* Modify readme
 
 ## 1.4.1
 * Move poetry.lock file
