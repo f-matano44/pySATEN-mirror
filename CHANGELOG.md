@@ -1,5 +1,8 @@
 # ChangeLog
 
+## 1.4.3
+* Modify color noise generator argument
+
 ## 1.4.2
 * Bugfix of WavLabHandler
 * Modify readme
