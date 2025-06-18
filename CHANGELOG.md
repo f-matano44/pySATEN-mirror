@@ -1,5 +1,9 @@
 # ChangeLog
 
+## 1.4.3
+* Modify color noise generator argument
+* Modify GitLab CI
+
 ## 1.4.2
 * Bugfix of WavLabHandler
 * Modify readme
