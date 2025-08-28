@@ -5,7 +5,7 @@ build-backend = "poetry.core.masonry.api"
 [project]
 name = "pysaten"
 description = "Detect silence segment from speech signal."
-version = "1.4.3"
+version = "1.4.4"
 authors = [
     {name = "Fumiyoshi MATANO",email = "fumiyoshi.matano@gmail.com"}
 ]
@@ -45,3 +45,12 @@ name = "torch_cpu"
 url = "https://download.pytorch.org/whl/cpu"
 priority = "explicit"
 
+[tool.black]
+line-length = 90
+
+[tool.isort]
+profile = "black"
+
+[tool.mypy]
+plugins = "numpy.typing.mypy_plugin"
+ignore_missing_imports = true
