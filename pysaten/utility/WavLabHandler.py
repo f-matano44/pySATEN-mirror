@@ -79,7 +79,7 @@ class WavLabHandler:
         elif snr == -inf:
             noised_x = noise
         else:
-            noise_scale = WavLabHandler.__determine_noise_scale(
+            noise_scale = _determine_noise_scale(
                 x[speech_start_idx:speech_end_idx], noise, int(snr)
             )
             noised_x = x + noise * noise_scale
@@ -96,14 +96,63 @@ class WavLabHandler:
             noised_x[end_pulse_index] = pulse[1]
         return noised_x, sr
 
-    @staticmethod
-    def __determine_noise_scale(
-        signal: npt.NDArray[np.floating],
-        noise: npt.NDArray[np.floating],
-        desired_snr_db: int,
-    ) -> float:
-        desired_snr_linear: float = 10 ** (desired_snr_db / 10)
-        signal_power: float = np.mean(signal**2)
-        noise_power: float = np.mean(noise**2)
-        scaling_factor: float = np.sqrt(signal_power / (desired_snr_linear * noise_power))
-        return scaling_factor
+    def get_noise_signal2(
+        self, snr: float, noise_type: str, noise_seed: int
+    ) -> tuple[npt.NDArray, float]:
+        x: npt.NDArray = self.__x
+        ans_s_sec, ans_e_sec = self.get_answer()
+        speech_start_idx: Final[int] = int(ans_s_sec * self.__sr)
+        speech_end_idx: Final[int] = int(ans_e_sec * self.__sr)
+
+        color_flag = False
+
+        for nt in noise_type.split():
+            if not color_flag and (nt == "white" or nt == "pink"):
+                # generate color noise
+                noise: npt.NDArray[np.floating] = (
+                    (
+                        wh_noise(len(x), noise_seed)
+                        if nt == "white"
+                        else pk_noise(len(x), self.__sr, noise_seed)
+                    )
+                    .cpu()
+                    .numpy()
+                )
+
+                # mix stationary noise and signal (in specified snr)
+                if snr == inf:
+                    noised_x = x.copy()
+                elif snr == -inf:
+                    noised_x = noise
+                else:
+                    noise_scale = _determine_noise_scale(
+                        x[speech_start_idx:speech_end_idx], noise, int(snr)
+                    )
+                    noised_x = x + noise * noise_scale
+
+                color_flag = True
+
+            # add pulse noise
+            if nt == "pulse":
+                rand.seed(noise_seed)
+                pulse: npt.NDArray[np.floating] = rand.random(2) - 0.5 * 2
+                # determine index adding pulse noise
+                start_pulse_index: int = np.random.randint(0, speech_start_idx)
+                end_pulse_index: int = np.random.randint(speech_end_idx, len(x) - 1)
+                # add pulse noise
+                noised_x[start_pulse_index] = pulse[0]
+                noised_x[end_pulse_index] = pulse[1]
+
+        return noised_x, self.__sr
+
+
+def _determine_noise_scale(
+    signal: npt.NDArray[np.floating],
+    noise: npt.NDArray[np.floating],
+    desired_snr_db: int,
+) -> float:
+    desired_snr_linear: float = 10 ** (desired_snr_db / 10)
+    signal_power: float = np.mean(signal**2)
+    noise_power: float = np.mean(noise**2)
+    scaling_factor: float = np.sqrt(signal_power / (desired_snr_linear * noise_power))
+    return scaling_factor

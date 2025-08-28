@@ -199,11 +199,19 @@ class MarbleNet:
         vad.reset()
         preds = np.array(preds)
 
-        start = np.min(np.where(preds > 0)) * STEP if np.any(preds > 0) else 0
-        end = np.max(np.where(preds > 0)) * STEP if np.any(preds > 0) else 0
+        start = np.min(np.where(preds > 0)) * STEP if np.any(preds > 0) else None
+        end = np.max(np.where(preds > 0)) * STEP if np.any(preds > 0) else None
 
         return start, end
 
     def vad_test(self, temp_wav_16k: Path):
         step = 0.025
+        S, E = self.offline_inference(temp_wav_16k, step)
+        if S == "Failed" and E == "Failed":
+            return 0, 0
+        else:
+            return S, E
+
+    def vad_test2(self, temp_wav_16k: Path):
+        step = 0.01
         return self.offline_inference(temp_wav_16k, step)

@@ -5,6 +5,7 @@ __pycache__
 pysaten.egg-info
 build
 dist
+graph_*
 
 # extension
 *.wav
@@ -13,6 +14,7 @@ dist
 *.csv
 *.pdf
 *.zip
+*.png
 
 # file
 /**/blue.py
@@ -25,6 +27,7 @@ dist
 # keep
 !requirements*.txt
 !/**/tuning_*.csv
-!/**/test_*.csv
+!/**/test_result/*
+!/image/*
 !/**/image/*.svg
 !/**/image/*.pdf
