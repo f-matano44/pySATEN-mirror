@@ -8,13 +8,28 @@ workflow:
     - when: never
 
 stages:
+  - lint
   - build
   - deploy
 
-build:
-  stage: build
+lint:
+  stage: lint
   script:
     - python --version
+    - python -m venv .venv
+    - source .venv/bin/activate
+    - python -m pip install black isort flake8 mypy numpy
+
+    - black --check src/
+    - isort --check-only src/
+    - flake8 src/
+    - mypy src/
+
+build:
+  stage: build
+  dependencies:
+    - lint
+  script:
     - python -m venv .venv
     - source .venv/bin/activate
     - python -m pip install poetry
