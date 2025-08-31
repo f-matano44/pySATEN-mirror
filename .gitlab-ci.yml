@@ -20,10 +20,10 @@ lint:
     - source .venv/bin/activate
     - python -m pip install black isort flake8 mypy numpy
 
-    - black --check src/
-    - isort --check-only src/
-    - flake8 src/
-    - mypy src/
+    - black --check pysaten/
+    - isort --check-only pysaten/
+    - flake8 pysaten/
+    - mypy pysaten/
 
 build:
   stage: build
