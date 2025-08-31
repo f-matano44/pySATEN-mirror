@@ -18,23 +18,9 @@
         "ylim",
         "zundamon"
     ],
-
     "editor.formatOnSave": true,
     "editor.defaultFormatter": "ms-python.black-formatter",
-    "black-formatter.args": [
-        "--line-length",
-        "90"
-    ],
-    "isort.args": [
-        "--profile",
-        "black"
-    ],
     "editor.codeActionsOnSave": {
         "source.organizeImports": "always"
     },
-    "flake8.args": [
-        "--ignore=E203,W503,W504",
-        "--max-line-length",
-        "90"
-    ]
 }

@@ -47,3 +47,12 @@ name = "torch_cpu"
 url = "https://download.pytorch.org/whl/cpu"
 priority = "explicit"
 
+[tool.black]
+line-length = 90
+
+[tool.isort]
+profile = "black"
+
+[tool.mypy]
+plugins = "numpy.typing.mypy_plugin"
+ignore_missing_imports = true
