@@ -1,5 +1,6 @@
 {
     "cSpell.words": [
+        "filtfilt",
         "freqs",
         "itako",
         "marblenet",
@@ -8,9 +9,13 @@
         "pysaten",
         "rvad",
         "SATEN",
+        "silero",
         "thres",
         "tohoku",
         "usagi",
+        "xlabel",
+        "ylabel",
+        "ylim",
         "zundamon"
     ],
     "editor.formatOnSave": true,
