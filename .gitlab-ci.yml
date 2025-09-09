@@ -1,4 +1,3 @@
-# https://docs.pypi.org/trusted-publishers/using-a-publisher/#gitlab-cicd
 image: python:3-slim
 
 workflow:
@@ -38,7 +37,7 @@ build:
     paths:
       - dist/
 
-deploy:
+deploy:  # https://docs.pypi.org/trusted-publishers/using-a-publisher/#gitlab-cicd
   stage: deploy
   dependencies:
     - build
