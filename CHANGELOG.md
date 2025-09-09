@@ -1,5 +1,11 @@
 # ChangeLog
 
+## 2.0.1
+* BugFix
+
+## 2.0.0
+* Add new algorism
+
 ## 1.4.3
 * Modify color noise generator argument
 * Modify GitLab CI

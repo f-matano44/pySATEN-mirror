@@ -7,7 +7,7 @@ import numpy as np
 import numpy.typing as npt
 import soundfile as sf
 
-from .v1 import vsed_debug_v1
+from .v2 import vsed_debug_v2
 
 
 def cli_runner() -> None:
@@ -35,5 +35,4 @@ def vsed(
     if y.ndim != 1:
         raise ValueError("PySaten only supports monaural audio.")
     # trim
-    _, _, _, _, start_s, end_s, _, _, _ = vsed_debug_v1(y, sr, noise_seed=seed)
-    return start_s, end_s
+    return vsed_debug_v2(y, int(sr), noise_seed=seed).get_result()
