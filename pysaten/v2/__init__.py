@@ -50,14 +50,16 @@ class vsed_debug_v2:
         y_nr, yf_nr = _00_preprocess(y_rsp, SR, noise_seed)
         # get root-mean-square
         y_rms: Final[npt.NDArray] = _01_rms(y_nr, yf_nr, SR, win_length, hop_length)
+        y_rms.flags.writeable = False
         # get zero-crossing-rate
         self.y_zcr: Final[npt.NDArray] = _02_zcr(y_nr, SR, win_length, hop_length)
         self.y_zcr.flags.writeable = False
+        # get rms weight
+        rms_weight: Final[npt.NDArray] = (1 - self.y_zcr) * _gaussian_curve(self.y_zcr)
+        rms_weight.flags.writeable = False
 
         # step1: Root mean square -------------------------------------------
-        self.bell: Final[npt.NDArray] = _gaussian_curve(self.y_zcr)
-        self.bell.flags.writeable = False
-        self.y_rms: Final[npt.NDArray] = y_rms * (1 - self.y_zcr) * self.bell
+        self.y_rms: Final[npt.NDArray] = y_rms * rms_weight
         self.y_rms.flags.writeable = False
         start1: Final[int] = (
             np.where(rms_threshold < self.y_rms)[0][0]
