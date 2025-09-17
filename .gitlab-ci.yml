@@ -24,8 +24,7 @@ build:
   dependencies:
     - lint
   script:
-    - apt-get update && apt-get install -y pipx
-    - pipx install "poetry>=2"
+    - pip install "poetry>=2"
     - poetry build
   artifacts:
     paths:
@@ -41,6 +40,5 @@ deploy:  # https://docs.pypi.org/trusted-publishers/using-a-publisher/#gitlab-ci
     PYPI_ID_TOKEN:
       aud: pypi
   script:
-    - apt-get update && apt-get install -y pipx
-    - pipx install "twine>=6.1"
+    - pip install "twine>=6.1"
     - twine --no-color upload dist/* --disable-progress-bar
