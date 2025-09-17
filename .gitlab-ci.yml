@@ -15,10 +15,7 @@ lint:
   stage: lint
   script:
     - python --version
-    - python -m venv .venv
-    - source .venv/bin/activate
-    - python -m pip install black isort flake8 mypy numpy
-
+    - apt-get update && apt-get install -y black isort flake8 mypy python3-numpy
     - black --check pysaten/
     - isort --check-only pysaten/
     - flake8 pysaten/
@@ -29,9 +26,8 @@ build:
   dependencies:
     - lint
   script:
-    - python -m venv .venv
-    - source .venv/bin/activate
-    - python -m pip install poetry
+    - apt-get update && apt-get install -y pipx
+    - pipx install "poetry>=2"
     - poetry build
   artifacts:
     paths:
@@ -45,7 +41,6 @@ deploy:  # https://docs.pypi.org/trusted-publishers/using-a-publisher/#gitlab-ci
     PYPI_ID_TOKEN:
       aud: pypi
   script:
-    - python -m venv .venv
-    - source .venv/bin/activate
-    - python -m pip install twine>=6.1
-    - python -m twine --no-color upload dist/* --disable-progress-bar
+    - apt-get update && apt-get install -y pipx
+    - pipx install "twine>=6.1"
+    - twine --no-color upload dist/* --disable-progress-bar
