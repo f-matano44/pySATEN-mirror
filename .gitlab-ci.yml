@@ -1,10 +1,4 @@
-image: python:3-slim
-
-workflow:
-  rules:
-    - if: '$CI_COMMIT_BRANCH == "main"'
-      when: always
-    - when: never
+image: python:slim
 
 stages:
   - lint
@@ -13,6 +7,8 @@ stages:
 
 lint:
   stage: lint
+  rules:
+    - when: always
   script:
     - python --version
     - apt-get update && apt-get install -y black isort flake8 mypy python3-numpy
@@ -23,6 +19,8 @@ lint:
 
 build:
   stage: build
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
   dependencies:
     - lint
   script:
@@ -35,6 +33,8 @@ build:
 
 deploy:  # https://docs.pypi.org/trusted-publishers/using-a-publisher/#gitlab-cicd
   stage: deploy
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
   dependencies:
     - build
   id_tokens:

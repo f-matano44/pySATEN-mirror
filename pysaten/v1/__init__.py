@@ -96,7 +96,7 @@ def _00_preprocess(y: npt.NDArray, sr: int, noise_seed: int) -> npt.NDArray:
     noise: Final[npt.NDArray] = color_noise.blue(len(y), sr, noise_seed).cpu().numpy()
     y_blue: Final[npt.NDArray] = y + noise * (signal_amp / 10 ** (snr / 20))
     y_blue_normalized: Final[npt.NDArray] = (
-        y_blue if max(abs(y_blue)) <= 1 else y_blue / max(abs(y_blue))
+        y_blue if np.max(np.abs(y_blue)) <= 1 else y_blue / np.max(np.abs(y_blue))
     )
     return nr.reduce_noise(y_blue_normalized, sr)
 
