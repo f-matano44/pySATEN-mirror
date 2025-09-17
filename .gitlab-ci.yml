@@ -5,6 +5,9 @@ stages:
   - build
   - deploy
 
+variables:
+  PIP_ROOT_USER_ACTION: "ignore"
+
 lint:
   stage: lint
   rules:
@@ -24,7 +27,7 @@ build:
   dependencies:
     - lint
   script:
-    - pip install --root-user-action "poetry>=2"
+    - pip install "poetry>=2"
     - poetry build
   artifacts:
     paths:
@@ -40,5 +43,5 @@ deploy:  # https://docs.pypi.org/trusted-publishers/using-a-publisher/#gitlab-ci
     PYPI_ID_TOKEN:
       aud: pypi
   script:
-    - pip install --root-user-action "twine>=6.1"
+    - pip install "twine>=6.1"
     - twine --no-color upload dist/* --disable-progress-bar
