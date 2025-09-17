@@ -43,4 +43,4 @@ deploy:  # https://docs.pypi.org/trusted-publishers/using-a-publisher/#gitlab-ci
   script:
     - apt-get update && apt-get install -y pipx
     - pipx install "twine>=6.1"
-    - python -m twine --no-color upload dist/* --disable-progress-bar
+    - twine --no-color upload dist/* --disable-progress-bar
