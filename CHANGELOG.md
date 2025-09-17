@@ -4,7 +4,7 @@
 * Refactoring
 * Update README
 * Downgrade python version for development (@ post1)
-* Modify ci (@ post1)
+* Modify ci (@ post1, post2)
 
 ## 2.0.1
 * BugFix
