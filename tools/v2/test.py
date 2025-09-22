@@ -57,7 +57,7 @@ def _main():
 
                     # create noised signal
                     x, fs = handler.get_noise_signal2(
-                        snr, "pink pulse", int(rand.integers(0, 20250515))
+                        snr, "pink", int(rand.integers(0, 20250922))
                     )
 
                     # save noise signal
