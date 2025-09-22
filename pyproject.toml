@@ -38,6 +38,7 @@ tqdm = "^4.67.1"
 nemo-toolkit = {extras = ["asr"], version = "^2.4.0"}
 silero-vad = "^6.0.0"
 rvadfast = "^0.0.5"
+jedi = "^0.19.2"
 
 [tool.black]
 line-length = 90

@@ -249,7 +249,6 @@ description = "An AST unparser for Python"
 optional = false
 python-versions = "*"
 groups = ["dev"]
-markers = "python_version <= \"3.12\""
 files = [
     {file = "astunparse-1.6.3-py2.py3-none-any.whl", hash = "sha256:c2652417f2c8b5bb325c885ae329bdf3f86424075c4fd1a128674bc6fba4b8e8"},
     {file = "astunparse-1.6.3.tar.gz", hash = "sha256:5ad93a8456f0d084c3456d059fd9a92cce667963232cbf763eac3bc5b7940872"},
@@ -474,19 +473,6 @@ files = [
 ]
 
 [[package]]
-name = "backports-weakref"
-version = "1.0.post1"
-description = "Backport of new features in Python's weakref module"
-optional = false
-python-versions = "*"
-groups = ["dev"]
-markers = "python_version >= \"3.13\""
-files = [
-    {file = "backports.weakref-1.0.post1-py2.py3-none-any.whl", hash = "sha256:81bc9b51c0abc58edc76aefbbc68c62a787918ffe943a37947e162c3f8e19e82"},
-    {file = "backports.weakref-1.0.post1.tar.gz", hash = "sha256:bc4170a29915f8b22c9e7c4939701859650f2eb84184aee80da329ac0b9825c2"},
-]
-
-[[package]]
 name = "bitsandbytes"
 version = "0.45.5"
 description = "k-bit optimizers and matrix multiplication routines."
@@ -508,23 +494,6 @@ benchmark = ["matplotlib", "pandas"]
 dev = ["bitsandbytes[test]", "build (>=1.0.0,<2)", "pre-commit (>=3.5.0,<4)", "ruff (==0.9.6)", "wheel (>=0.42,<1)"]
 docs = ["hf-doc-builder (==0.5.0)"]
 test = ["einops (>=0.8.0,<0.9.0)", "lion-pytorch (==0.2.3)", "pytest (>=8.3,<9.0)", "scipy (>=1.10.1,<2) ; python_version < \"3.9\"", "scipy (>=1.11.4,<2) ; python_version >= \"3.9\"", "transformers (>=4.30.1,<5)"]
-
-[[package]]
-name = "bleach"
-version = "1.5.0"
-description = "An easy whitelist-based HTML-sanitizing tool."
-optional = false
-python-versions = "*"
-groups = ["dev"]
-markers = "python_version >= \"3.13\""
-files = [
-    {file = "bleach-1.5.0-py2.py3-none-any.whl", hash = "sha256:e67f46adcec78dbc3c04462f3aba3213a673d5652eba2609ed1ef15492a44b8d"},
-    {file = "bleach-1.5.0.tar.gz", hash = "sha256:978e758599b54cd3caa2e160d74102879b230ea8dc93871d0783721eef58bc65"},
-]
-
-[package.dependencies]
-html5lib = ">=0.999,<0.9999 || >0.9999,<0.99999 || >0.99999,<0.99999999"
-six = "*"
 
 [[package]]
 name = "braceexpand"
@@ -1290,20 +1259,6 @@ files = [
 ]
 
 [[package]]
-name = "enum34"
-version = "1.1.10"
-description = "Python 3.4 Enum backported to 3.3, 3.2, 3.1, 2.7, 2.6, 2.5, and 2.4"
-optional = false
-python-versions = "*"
-groups = ["dev"]
-markers = "python_version >= \"3.13\""
-files = [
-    {file = "enum34-1.1.10-py2-none-any.whl", hash = "sha256:a98a201d6de3f2ab3db284e70a33b0f896fbf35f8086594e8c9e74b909058d53"},
-    {file = "enum34-1.1.10-py3-none-any.whl", hash = "sha256:c3858660960c984d6ab0ebad691265180da2b43f07e061c0f8dca9ef3cffd328"},
-    {file = "enum34-1.1.10.tar.gz", hash = "sha256:cce6a7477ed816bd2542d03d53db9f0db935dd013b70f336a95c73979289f248"},
-]
-
-[[package]]
 name = "exceptiongroup"
 version = "1.3.0"
 description = "Backport of PEP 654 (exception groups)"
@@ -1640,7 +1595,6 @@ description = "Python AST that abstracts the underlying Python version"
 optional = false
 python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,>=2.7"
 groups = ["dev"]
-markers = "python_version <= \"3.12\""
 files = [
     {file = "gast-0.6.0-py3-none-any.whl", hash = "sha256:52b182313f7330389f72b069ba00f174cfe2a06411099547288839c6cbafbd54"},
     {file = "gast-0.6.0.tar.gz", hash = "sha256:88fc5300d32c7ac6ca7b515310862f71e6fdf2c029bbec7c66c0f5dd47b6b1fb"},
@@ -1687,7 +1641,6 @@ description = "pasta is an AST-based Python refactoring library"
 optional = false
 python-versions = "*"
 groups = ["dev"]
-markers = "python_version <= \"3.12\""
 files = [
     {file = "google-pasta-0.2.0.tar.gz", hash = "sha256:c9f2c8dfc8f96d0d5808299920721be30c9eec37f2389f28904f454565c8a16e"},
     {file = "google_pasta-0.2.0-py2-none-any.whl", hash = "sha256:4612951da876b1a10fe3960d7226f0c7682cf901e16ac06e473b267a5afa8954"},
@@ -1857,7 +1810,6 @@ description = "Read and write HDF5 files from Python"
 optional = false
 python-versions = ">=3.9"
 groups = ["dev"]
-markers = "python_version <= \"3.12\""
 files = [
     {file = "h5py-3.14.0-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:24df6b2622f426857bda88683b16630014588a0e4155cba44e872eb011c4eaed"},
     {file = "h5py-3.14.0-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:6ff2389961ee5872de697054dd5a033b04284afc3fb52dc51d94561ece2c10c6"},
@@ -1911,21 +1863,6 @@ files = [
 
 [package.extras]
 tests = ["pytest"]
-
-[[package]]
-name = "html5lib"
-version = "0.9999999"
-description = "HTML parser based on the WHATWG HTML specification"
-optional = false
-python-versions = "*"
-groups = ["dev"]
-markers = "python_version >= \"3.13\""
-files = [
-    {file = "html5lib-0.9999999.tar.gz", hash = "sha256:2612a191a8d5842bfa057e41ba50bbb9dcb722419d2408c78cff4758d0754868"},
-]
-
-[package.dependencies]
-six = "*"
 
 [[package]]
 name = "huggingface-hub"
@@ -2302,7 +2239,6 @@ description = "Multi-backend Keras"
 optional = false
 python-versions = ">=3.10"
 groups = ["dev"]
-markers = "python_version <= \"3.12\""
 files = [
     {file = "keras-3.11.3-py3-none-any.whl", hash = "sha256:f484f050e05ee400455b05ec8c36ed35edc34de94256b6073f56cfe68f65491f"},
     {file = "keras-3.11.3.tar.gz", hash = "sha256:efda616835c31b7d916d72303ef9adec1257320bc9fd4b2b0138840fc65fb5b7"},
@@ -2601,7 +2537,6 @@ description = "Clang Python Bindings, mirrored from the official LLVM repo: http
 optional = false
 python-versions = "*"
 groups = ["dev"]
-markers = "python_version <= \"3.12\""
 files = [
     {file = "libclang-18.1.1-1-py2.py3-none-macosx_11_0_arm64.whl", hash = "sha256:0b2e143f0fac830156feb56f9231ff8338c20aecfe72b4ffe96f19e5a1dbb69a"},
     {file = "libclang-18.1.1-py2.py3-none-macosx_10_9_x86_64.whl", hash = "sha256:6f14c3f194704e5d09769108f03185fce7acaf1d1ae4bbb2f30a72c2400cb7c5"},
@@ -3282,24 +3217,6 @@ numpy = [
 dev = ["absl-py", "pyink", "pylint (>=2.6.0)", "pytest", "pytest-xdist"]
 
 [[package]]
-name = "mock"
-version = "5.2.0"
-description = "Rolling backport of unittest.mock for all Pythons"
-optional = false
-python-versions = ">=3.6"
-groups = ["dev"]
-markers = "python_version >= \"3.13\""
-files = [
-    {file = "mock-5.2.0-py3-none-any.whl", hash = "sha256:7ba87f72ca0e915175596069dbbcc7c75af7b5e9b9bc107ad6349ede0819982f"},
-    {file = "mock-5.2.0.tar.gz", hash = "sha256:4e460e818629b4b173f32d08bf30d3af8123afbb8e04bb5707a1fd4799e503f0"},
-]
-
-[package.extras]
-build = ["blurb", "twine", "wheel"]
-docs = ["sphinx"]
-test = ["pytest", "pytest-cov"]
-
-[[package]]
 name = "more-itertools"
 version = "10.8.0"
 description = "More routines for operating on iterables, beyond itertools"
@@ -3553,7 +3470,6 @@ description = "A simple utility to separate the implementation of your Python pa
 optional = false
 python-versions = "*"
 groups = ["dev"]
-markers = "python_version <= \"3.12\""
 files = [
     {file = "namex-0.1.0-py3-none-any.whl", hash = "sha256:e2012a474502f1e2251267062aae3114611f07df4224b6e06334c57b0f2ce87c"},
     {file = "namex-0.1.0.tar.gz", hash = "sha256:117f03ccd302cc48e3f5c58a296838f6b89c83455ab8683a1e85f2a430aa4306"},
@@ -3816,6 +3732,20 @@ files = [
 
 [[package]]
 name = "nvidia-cublas-cu12"
+version = "12.5.3.2"
+description = "CUBLAS native runtime libraries"
+optional = false
+python-versions = ">=3"
+groups = ["dev"]
+markers = "python_version >= \"3.13\""
+files = [
+    {file = "nvidia_cublas_cu12-12.5.3.2-py3-none-manylinux2014_aarch64.whl", hash = "sha256:7d0191251180de606023d396b94d66f66470a0ae96d1dbb906c7656ea0f71eda"},
+    {file = "nvidia_cublas_cu12-12.5.3.2-py3-none-manylinux2014_x86_64.whl", hash = "sha256:ca070ad70e9fa6654084575d01bd001f30cc4665e33d4bb9fc8e0f321caa034b"},
+    {file = "nvidia_cublas_cu12-12.5.3.2-py3-none-win_amd64.whl", hash = "sha256:4960f3dc5f39699acadf76fa6d94b10a2a00f2956c2c442efa299fb22b0748f3"},
+]
+
+[[package]]
+name = "nvidia-cublas-cu12"
 version = "12.8.4.1"
 description = "CUBLAS native runtime libraries"
 optional = false
@@ -3827,6 +3757,20 @@ files = [
     {file = "nvidia_cublas_cu12-12.8.4.1-py3-none-win_amd64.whl", hash = "sha256:47e9b82132fa8d2b4944e708049229601448aaad7e6f296f630f2d1a32de35af"},
 ]
 markers = {main = "platform_system == \"Linux\" and platform_machine == \"x86_64\" and python_version <= \"3.12\"", dev = "python_version <= \"3.12\""}
+
+[[package]]
+name = "nvidia-cuda-cupti-cu12"
+version = "12.5.82"
+description = "CUDA profiling tools runtime libs."
+optional = false
+python-versions = ">=3"
+groups = ["dev"]
+markers = "python_version >= \"3.13\""
+files = [
+    {file = "nvidia_cuda_cupti_cu12-12.5.82-py3-none-manylinux2014_aarch64.whl", hash = "sha256:d32c06490c6ba35c4323730820c7d0c4c126c04ed58d2f57275adb8d54b138fe"},
+    {file = "nvidia_cuda_cupti_cu12-12.5.82-py3-none-manylinux2014_x86_64.whl", hash = "sha256:bde77a5feb66752ec61db2adfe47f56b941842825b4c7e2068aff27c9d107953"},
+    {file = "nvidia_cuda_cupti_cu12-12.5.82-py3-none-win_amd64.whl", hash = "sha256:4f835281cf492e2bedd153f5c3de9da8f1d775a419468305e64ce73b3b0c6dc3"},
+]
 
 [[package]]
 name = "nvidia-cuda-cupti-cu12"
@@ -3844,6 +3788,20 @@ markers = {main = "platform_system == \"Linux\" and platform_machine == \"x86_64
 
 [[package]]
 name = "nvidia-cuda-nvcc-cu12"
+version = "12.5.82"
+description = "CUDA nvcc"
+optional = false
+python-versions = ">=3"
+groups = ["dev"]
+markers = "python_version >= \"3.13\""
+files = [
+    {file = "nvidia_cuda_nvcc_cu12-12.5.82-py3-none-manylinux2014_aarch64.whl", hash = "sha256:ab02fe922cee01235b7950f045042219fe83e15aceb4cd3c1d36db30b034dec7"},
+    {file = "nvidia_cuda_nvcc_cu12-12.5.82-py3-none-manylinux2014_x86_64.whl", hash = "sha256:b03e545b8e8c3ce7ebcd7fc44063180ff52ff01d064ece2127ed90a04ef12cd0"},
+    {file = "nvidia_cuda_nvcc_cu12-12.5.82-py3-none-win_amd64.whl", hash = "sha256:6eaa264da57a893ae7606dd80b169d9783444af941697822cb82c8379ffc4957"},
+]
+
+[[package]]
+name = "nvidia-cuda-nvcc-cu12"
 version = "12.9.86"
 description = "CUDA nvcc"
 optional = false
@@ -3854,6 +3812,20 @@ files = [
     {file = "nvidia_cuda_nvcc_cu12-12.9.86-py3-none-manylinux2010_x86_64.manylinux_2_12_x86_64.whl", hash = "sha256:5d6a0d32fdc7ea39917c20065614ae93add6f577d840233237ff08e9a38f58f0"},
     {file = "nvidia_cuda_nvcc_cu12-12.9.86-py3-none-manylinux2014_aarch64.manylinux_2_17_aarch64.whl", hash = "sha256:44e1eca4d08926193a558d2434b1bf83d57b4d5743e0c431c0c83d51da1df62b"},
     {file = "nvidia_cuda_nvcc_cu12-12.9.86-py3-none-win_amd64.whl", hash = "sha256:8ed7f0b17dea662755395be029376db3b94fed5cbb17c2d35cc866c5b1b84099"},
+]
+
+[[package]]
+name = "nvidia-cuda-nvrtc-cu12"
+version = "12.5.82"
+description = "NVRTC native runtime libraries"
+optional = false
+python-versions = ">=3"
+groups = ["dev"]
+markers = "python_version >= \"3.13\""
+files = [
+    {file = "nvidia_cuda_nvrtc_cu12-12.5.82-py3-none-manylinux2014_aarch64.whl", hash = "sha256:5bb6a0eb01d4974bb7ca3d48bd3859472debb3c3057a5e7de2b08fbdf35eed7e"},
+    {file = "nvidia_cuda_nvrtc_cu12-12.5.82-py3-none-manylinux2014_x86_64.whl", hash = "sha256:3dbd97b0104b4bfbc3c4f8c79cd2496307c89c43c29a9f83125f1d76296ff3fd"},
+    {file = "nvidia_cuda_nvrtc_cu12-12.5.82-py3-none-win_amd64.whl", hash = "sha256:e5db37e990056c70953b7772dd778336ef9da0a0b5bb28f9f2a61c2e42b51d78"},
 ]
 
 [[package]]
@@ -3872,6 +3844,20 @@ markers = {main = "platform_system == \"Linux\" and platform_machine == \"x86_64
 
 [[package]]
 name = "nvidia-cuda-runtime-cu12"
+version = "12.5.82"
+description = "CUDA Runtime native Libraries"
+optional = false
+python-versions = ">=3"
+groups = ["dev"]
+markers = "python_version >= \"3.13\""
+files = [
+    {file = "nvidia_cuda_runtime_cu12-12.5.82-py3-none-manylinux2014_aarch64.whl", hash = "sha256:71f015dbf9df05dd71f7480132c6ebf47a6ceb2ab53d7db8e08e4b30ebb87e14"},
+    {file = "nvidia_cuda_runtime_cu12-12.5.82-py3-none-manylinux2014_x86_64.whl", hash = "sha256:3e79a060e126df40fd3a068f3f787eb000fa51b251ec6cd97d09579632687115"},
+    {file = "nvidia_cuda_runtime_cu12-12.5.82-py3-none-win_amd64.whl", hash = "sha256:0fd5fbca289bceb9f0690aa9858f06187b554fdeb7e2711dfd5bb3ce58900b46"},
+]
+
+[[package]]
+name = "nvidia-cuda-runtime-cu12"
 version = "12.8.90"
 description = "CUDA Runtime native Libraries"
 optional = false
@@ -3883,6 +3869,23 @@ files = [
     {file = "nvidia_cuda_runtime_cu12-12.8.90-py3-none-win_amd64.whl", hash = "sha256:c0c6027f01505bfed6c3b21ec546f69c687689aad5f1a377554bc6ca4aa993a8"},
 ]
 markers = {main = "platform_system == \"Linux\" and platform_machine == \"x86_64\" and python_version <= \"3.12\"", dev = "python_version <= \"3.12\""}
+
+[[package]]
+name = "nvidia-cudnn-cu12"
+version = "9.3.0.75"
+description = "cuDNN runtime libraries"
+optional = false
+python-versions = ">=3"
+groups = ["dev"]
+markers = "python_version >= \"3.13\""
+files = [
+    {file = "nvidia_cudnn_cu12-9.3.0.75-py3-none-manylinux2014_aarch64.whl", hash = "sha256:c5cf7ff3415e446adf195a5b7dd2ba56cd00c3ee78bfdc566e51698931aa4b7f"},
+    {file = "nvidia_cudnn_cu12-9.3.0.75-py3-none-manylinux2014_x86_64.whl", hash = "sha256:9ad9c6929ebb5295eb4a1728024666d1c88283373e265a0c5c883e6f9d5cd76d"},
+    {file = "nvidia_cudnn_cu12-9.3.0.75-py3-none-win_amd64.whl", hash = "sha256:c819e82eed8cf564b9d37478ea4eab9e87194bb3b7f7f8098bc1f67c9b80f1b6"},
+]
+
+[package.dependencies]
+nvidia-cublas-cu12 = "*"
 
 [[package]]
 name = "nvidia-cudnn-cu12"
@@ -3900,6 +3903,23 @@ markers = {main = "platform_system == \"Linux\" and platform_machine == \"x86_64
 
 [package.dependencies]
 nvidia-cublas-cu12 = "*"
+
+[[package]]
+name = "nvidia-cufft-cu12"
+version = "11.2.3.61"
+description = "CUFFT native runtime libraries"
+optional = false
+python-versions = ">=3"
+groups = ["dev"]
+markers = "python_version >= \"3.13\""
+files = [
+    {file = "nvidia_cufft_cu12-11.2.3.61-py3-none-manylinux2014_aarch64.whl", hash = "sha256:6d45b48a5ee7599e57131129cda2c58544d9b78b95064d3ec3e5c6b96e2b58cc"},
+    {file = "nvidia_cufft_cu12-11.2.3.61-py3-none-manylinux2014_x86_64.whl", hash = "sha256:9a6e8df162585750f61983a638104a48c756aa13f9f48e19ab079b38e3c828b8"},
+    {file = "nvidia_cufft_cu12-11.2.3.61-py3-none-win_amd64.whl", hash = "sha256:4a8f6f0ce93c52a50ee83422a80472b5f376054a63f38532d0eab4007e7ef28b"},
+]
+
+[package.dependencies]
+nvidia-nvjitlink-cu12 = "*"
 
 [[package]]
 name = "nvidia-cufft-cu12"
@@ -3933,6 +3953,20 @@ files = [
 
 [[package]]
 name = "nvidia-curand-cu12"
+version = "10.3.6.82"
+description = "CURAND native runtime libraries"
+optional = false
+python-versions = ">=3"
+groups = ["dev"]
+markers = "python_version >= \"3.13\""
+files = [
+    {file = "nvidia_curand_cu12-10.3.6.82-py3-none-manylinux2014_aarch64.whl", hash = "sha256:36aabeb5990297bbce3df324ea7c7c13c3aabb140c86d50ab3b23e4ec61672f1"},
+    {file = "nvidia_curand_cu12-10.3.6.82-py3-none-manylinux2014_x86_64.whl", hash = "sha256:2823fb27de4e44dbb22394a6adf53aa6e1b013aca0f8c22867d1cfae58405536"},
+    {file = "nvidia_curand_cu12-10.3.6.82-py3-none-win_amd64.whl", hash = "sha256:0631ba65231260ad832ce233ddda57e7b3b7158eabf000d78e46cbb5bd5b7aae"},
+]
+
+[[package]]
+name = "nvidia-curand-cu12"
 version = "10.3.9.90"
 description = "CURAND native runtime libraries"
 optional = false
@@ -3944,6 +3978,25 @@ files = [
     {file = "nvidia_curand_cu12-10.3.9.90-py3-none-win_amd64.whl", hash = "sha256:f149a8ca457277da854f89cf282d6ef43176861926c7ac85b2a0fbd237c587ec"},
 ]
 markers = {main = "platform_system == \"Linux\" and platform_machine == \"x86_64\" and python_version <= \"3.12\"", dev = "python_version <= \"3.12\""}
+
+[[package]]
+name = "nvidia-cusolver-cu12"
+version = "11.6.3.83"
+description = "CUDA solver native runtime libraries"
+optional = false
+python-versions = ">=3"
+groups = ["dev"]
+markers = "python_version >= \"3.13\""
+files = [
+    {file = "nvidia_cusolver_cu12-11.6.3.83-py3-none-manylinux2014_aarch64.whl", hash = "sha256:1b8b77d2fe8abe72bb722dafb708cceaeb81f1a03999477f20b33b34f46ab885"},
+    {file = "nvidia_cusolver_cu12-11.6.3.83-py3-none-manylinux2014_x86_64.whl", hash = "sha256:93cfafacde4428b71778eeb092ec615a02a3d05404da1bcf91c53e3fa1bce42b"},
+    {file = "nvidia_cusolver_cu12-11.6.3.83-py3-none-win_amd64.whl", hash = "sha256:6224732963cba312a84c78114b9a38c4ffabb2e2a6a120923ac99ba6f895c8cf"},
+]
+
+[package.dependencies]
+nvidia-cublas-cu12 = "*"
+nvidia-cusparse-cu12 = "*"
+nvidia-nvjitlink-cu12 = "*"
 
 [[package]]
 name = "nvidia-cusolver-cu12"
@@ -3962,6 +4015,23 @@ markers = {main = "platform_system == \"Linux\" and platform_machine == \"x86_64
 [package.dependencies]
 nvidia-cublas-cu12 = "*"
 nvidia-cusparse-cu12 = "*"
+nvidia-nvjitlink-cu12 = "*"
+
+[[package]]
+name = "nvidia-cusparse-cu12"
+version = "12.5.1.3"
+description = "CUSPARSE native runtime libraries"
+optional = false
+python-versions = ">=3"
+groups = ["dev"]
+markers = "python_version >= \"3.13\""
+files = [
+    {file = "nvidia_cusparse_cu12-12.5.1.3-py3-none-manylinux2014_aarch64.whl", hash = "sha256:7b97fd01f0a61628af99d0efd52132fccc8c18fc5c509f13802dccf0574a19c2"},
+    {file = "nvidia_cusparse_cu12-12.5.1.3-py3-none-manylinux2014_x86_64.whl", hash = "sha256:016df8e993c437e8301e62739f01775cba988fd5253cd4c64173f8e8d2f8e752"},
+    {file = "nvidia_cusparse_cu12-12.5.1.3-py3-none-win_amd64.whl", hash = "sha256:33520db374e2f5ebc976d6faa1852b98c398a57e6f71150fe59705928596ffd1"},
+]
+
+[package.dependencies]
 nvidia-nvjitlink-cu12 = "*"
 
 [[package]]
@@ -3997,6 +4067,18 @@ files = [
 
 [[package]]
 name = "nvidia-nccl-cu12"
+version = "2.21.5"
+description = "NVIDIA Collective Communication Library (NCCL) Runtime"
+optional = false
+python-versions = ">=3"
+groups = ["dev"]
+markers = "python_version >= \"3.13\""
+files = [
+    {file = "nvidia_nccl_cu12-2.21.5-py3-none-manylinux2014_x86_64.whl", hash = "sha256:8579076d30a8c24988834445f8d633c697d42397e92ffc3f63fa26766d25e0a0"},
+]
+
+[[package]]
+name = "nvidia-nccl-cu12"
 version = "2.27.3"
 description = "NVIDIA Collective Communication Library (NCCL) Runtime"
 optional = false
@@ -4007,6 +4089,20 @@ files = [
     {file = "nvidia_nccl_cu12-2.27.3-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl", hash = "sha256:adf27ccf4238253e0b826bce3ff5fa532d65fc42322c8bfdfaf28024c0fbe039"},
 ]
 markers = {main = "platform_system == \"Linux\" and platform_machine == \"x86_64\" and python_version <= \"3.12\"", dev = "python_version <= \"3.12\""}
+
+[[package]]
+name = "nvidia-nvjitlink-cu12"
+version = "12.5.82"
+description = "Nvidia JIT LTO Library"
+optional = false
+python-versions = ">=3"
+groups = ["dev"]
+markers = "python_version >= \"3.13\""
+files = [
+    {file = "nvidia_nvjitlink_cu12-12.5.82-py3-none-manylinux2014_aarch64.whl", hash = "sha256:98103729cc5226e13ca319a10bbf9433bbbd44ef64fe72f45f067cacc14b8d27"},
+    {file = "nvidia_nvjitlink_cu12-12.5.82-py3-none-manylinux2014_x86_64.whl", hash = "sha256:f9b37bc5c8cf7509665cb6ada5aaa0ce65618f2332b7d3e78e9790511f111212"},
+    {file = "nvidia_nvjitlink_cu12-12.5.82-py3-none-win_amd64.whl", hash = "sha256:e782564d705ff0bf61ac3e1bf730166da66dd2fe9012f111ede5fc49b64ae697"},
+]
 
 [[package]]
 name = "nvidia-nvjitlink-cu12"
@@ -4179,7 +4275,6 @@ description = "Path optimization of einsum functions."
 optional = false
 python-versions = ">=3.8"
 groups = ["dev"]
-markers = "python_version <= \"3.12\""
 files = [
     {file = "opt_einsum-3.4.0-py3-none-any.whl", hash = "sha256:69bb92469f86a1565195ece4ac0323943e83477171b91d24c35afe028a90d7cd"},
     {file = "opt_einsum-3.4.0.tar.gz", hash = "sha256:96ca72f1b886d148241348783498194c577fa30a8faac108586b14f1ba4473ac"},
@@ -4192,7 +4287,6 @@ description = "Optimized PyTree Utilities."
 optional = false
 python-versions = ">=3.9"
 groups = ["dev"]
-markers = "python_version <= \"3.12\""
 files = [
     {file = "optree-0.17.0-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:85ec183b8eec6efc9a5572c2a84c62214c949555efbc69ca2381aca6048d08df"},
     {file = "optree-0.17.0-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:6e77b6e0b7bb3ecfeb9a92ba605ef21b39bff38829b745af993e2e2b474322e2"},
@@ -5713,59 +5807,62 @@ jinja2 = ["ruamel.yaml.jinja2 (>=0.2)"]
 
 [[package]]
 name = "ruamel-yaml-clib"
-version = "0.2.12"
+version = "0.2.13"
 description = "C version of reader, parser and emitter for ruamel.yaml derived from libyaml"
 optional = false
 python-versions = ">=3.9"
 groups = ["dev"]
 markers = "platform_python_implementation == \"CPython\" and python_version < \"3.14\""
 files = [
-    {file = "ruamel.yaml.clib-0.2.12-cp310-cp310-macosx_13_0_arm64.whl", hash = "sha256:11f891336688faf5156a36293a9c362bdc7c88f03a8a027c2c1d8e0bcde998e5"},
-    {file = "ruamel.yaml.clib-0.2.12-cp310-cp310-manylinux2014_aarch64.whl", hash = "sha256:a606ef75a60ecf3d924613892cc603b154178ee25abb3055db5062da811fd969"},
-    {file = "ruamel.yaml.clib-0.2.12-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:fd5415dded15c3822597455bc02bcd66e81ef8b7a48cb71a33628fc9fdde39df"},
-    {file = "ruamel.yaml.clib-0.2.12-cp310-cp310-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:f66efbc1caa63c088dead1c4170d148eabc9b80d95fb75b6c92ac0aad2437d76"},
-    {file = "ruamel.yaml.clib-0.2.12-cp310-cp310-musllinux_1_1_i686.whl", hash = "sha256:22353049ba4181685023b25b5b51a574bce33e7f51c759371a7422dcae5402a6"},
-    {file = "ruamel.yaml.clib-0.2.12-cp310-cp310-musllinux_1_1_x86_64.whl", hash = "sha256:932205970b9f9991b34f55136be327501903f7c66830e9760a8ffb15b07f05cd"},
-    {file = "ruamel.yaml.clib-0.2.12-cp310-cp310-musllinux_1_2_aarch64.whl", hash = "sha256:a52d48f4e7bf9005e8f0a89209bf9a73f7190ddf0489eee5eb51377385f59f2a"},
-    {file = "ruamel.yaml.clib-0.2.12-cp310-cp310-win32.whl", hash = "sha256:3eac5a91891ceb88138c113f9db04f3cebdae277f5d44eaa3651a4f573e6a5da"},
-    {file = "ruamel.yaml.clib-0.2.12-cp310-cp310-win_amd64.whl", hash = "sha256:ab007f2f5a87bd08ab1499bdf96f3d5c6ad4dcfa364884cb4549aa0154b13a28"},
-    {file = "ruamel.yaml.clib-0.2.12-cp311-cp311-macosx_13_0_arm64.whl", hash = "sha256:4a6679521a58256a90b0d89e03992c15144c5f3858f40d7c18886023d7943db6"},
-    {file = "ruamel.yaml.clib-0.2.12-cp311-cp311-manylinux2014_aarch64.whl", hash = "sha256:d84318609196d6bd6da0edfa25cedfbabd8dbde5140a0a23af29ad4b8f91fb1e"},
-    {file = "ruamel.yaml.clib-0.2.12-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:bb43a269eb827806502c7c8efb7ae7e9e9d0573257a46e8e952f4d4caba4f31e"},
-    {file = "ruamel.yaml.clib-0.2.12-cp311-cp311-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:811ea1594b8a0fb466172c384267a4e5e367298af6b228931f273b111f17ef52"},
-    {file = "ruamel.yaml.clib-0.2.12-cp311-cp311-musllinux_1_1_i686.whl", hash = "sha256:cf12567a7b565cbf65d438dec6cfbe2917d3c1bdddfce84a9930b7d35ea59642"},
-    {file = "ruamel.yaml.clib-0.2.12-cp311-cp311-musllinux_1_1_x86_64.whl", hash = "sha256:7dd5adc8b930b12c8fc5b99e2d535a09889941aa0d0bd06f4749e9a9397c71d2"},
-    {file = "ruamel.yaml.clib-0.2.12-cp311-cp311-musllinux_1_2_aarch64.whl", hash = "sha256:1492a6051dab8d912fc2adeef0e8c72216b24d57bd896ea607cb90bb0c4981d3"},
-    {file = "ruamel.yaml.clib-0.2.12-cp311-cp311-win32.whl", hash = "sha256:bd0a08f0bab19093c54e18a14a10b4322e1eacc5217056f3c063bd2f59853ce4"},
-    {file = "ruamel.yaml.clib-0.2.12-cp311-cp311-win_amd64.whl", hash = "sha256:a274fb2cb086c7a3dea4322ec27f4cb5cc4b6298adb583ab0e211a4682f241eb"},
-    {file = "ruamel.yaml.clib-0.2.12-cp312-cp312-macosx_14_0_arm64.whl", hash = "sha256:20b0f8dc160ba83b6dcc0e256846e1a02d044e13f7ea74a3d1d56ede4e48c632"},
-    {file = "ruamel.yaml.clib-0.2.12-cp312-cp312-manylinux2014_aarch64.whl", hash = "sha256:943f32bc9dedb3abff9879edc134901df92cfce2c3d5c9348f172f62eb2d771d"},
-    {file = "ruamel.yaml.clib-0.2.12-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:95c3829bb364fdb8e0332c9931ecf57d9be3519241323c5274bd82f709cebc0c"},
-    {file = "ruamel.yaml.clib-0.2.12-cp312-cp312-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:749c16fcc4a2b09f28843cda5a193e0283e47454b63ec4b81eaa2242f50e4ccd"},
-    {file = "ruamel.yaml.clib-0.2.12-cp312-cp312-musllinux_1_1_i686.whl", hash = "sha256:bf165fef1f223beae7333275156ab2022cffe255dcc51c27f066b4370da81e31"},
-    {file = "ruamel.yaml.clib-0.2.12-cp312-cp312-musllinux_1_1_x86_64.whl", hash = "sha256:32621c177bbf782ca5a18ba4d7af0f1082a3f6e517ac2a18b3974d4edf349680"},
-    {file = "ruamel.yaml.clib-0.2.12-cp312-cp312-musllinux_1_2_aarch64.whl", hash = "sha256:b82a7c94a498853aa0b272fd5bc67f29008da798d4f93a2f9f289feb8426a58d"},
-    {file = "ruamel.yaml.clib-0.2.12-cp312-cp312-win32.whl", hash = "sha256:e8c4ebfcfd57177b572e2040777b8abc537cdef58a2120e830124946aa9b42c5"},
-    {file = "ruamel.yaml.clib-0.2.12-cp312-cp312-win_amd64.whl", hash = "sha256:0467c5965282c62203273b838ae77c0d29d7638c8a4e3a1c8bdd3602c10904e4"},
-    {file = "ruamel.yaml.clib-0.2.12-cp313-cp313-macosx_14_0_arm64.whl", hash = "sha256:4c8c5d82f50bb53986a5e02d1b3092b03622c02c2eb78e29bec33fd9593bae1a"},
-    {file = "ruamel.yaml.clib-0.2.12-cp313-cp313-manylinux2014_aarch64.whl", hash = "sha256:e7e3736715fbf53e9be2a79eb4db68e4ed857017344d697e8b9749444ae57475"},
-    {file = "ruamel.yaml.clib-0.2.12-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:0b7e75b4965e1d4690e93021adfcecccbca7d61c7bddd8e22406ef2ff20d74ef"},
-    {file = "ruamel.yaml.clib-0.2.12-cp313-cp313-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:96777d473c05ee3e5e3c3e999f5d23c6f4ec5b0c38c098b3a5229085f74236c6"},
-    {file = "ruamel.yaml.clib-0.2.12-cp313-cp313-musllinux_1_1_i686.whl", hash = "sha256:3bc2a80e6420ca8b7d3590791e2dfc709c88ab9152c00eeb511c9875ce5778bf"},
-    {file = "ruamel.yaml.clib-0.2.12-cp313-cp313-musllinux_1_1_x86_64.whl", hash = "sha256:e188d2699864c11c36cdfdada94d781fd5d6b0071cd9c427bceb08ad3d7c70e1"},
-    {file = "ruamel.yaml.clib-0.2.12-cp313-cp313-musllinux_1_2_aarch64.whl", hash = "sha256:4f6f3eac23941b32afccc23081e1f50612bdbe4e982012ef4f5797986828cd01"},
-    {file = "ruamel.yaml.clib-0.2.12-cp313-cp313-win32.whl", hash = "sha256:6442cb36270b3afb1b4951f060eccca1ce49f3d087ca1ca4563a6eb479cb3de6"},
-    {file = "ruamel.yaml.clib-0.2.12-cp313-cp313-win_amd64.whl", hash = "sha256:e5b8daf27af0b90da7bb903a876477a9e6d7270be6146906b276605997c7e9a3"},
-    {file = "ruamel.yaml.clib-0.2.12-cp39-cp39-macosx_12_0_arm64.whl", hash = "sha256:fc4b630cd3fa2cf7fce38afa91d7cfe844a9f75d7f0f36393fa98815e911d987"},
-    {file = "ruamel.yaml.clib-0.2.12-cp39-cp39-manylinux2014_aarch64.whl", hash = "sha256:bc5f1e1c28e966d61d2519f2a3d451ba989f9ea0f2307de7bc45baa526de9e45"},
-    {file = "ruamel.yaml.clib-0.2.12-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:5a0e060aace4c24dcaf71023bbd7d42674e3b230f7e7b97317baf1e953e5b519"},
-    {file = "ruamel.yaml.clib-0.2.12-cp39-cp39-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:e2f1c3765db32be59d18ab3953f43ab62a761327aafc1594a2a1fbe038b8b8a7"},
-    {file = "ruamel.yaml.clib-0.2.12-cp39-cp39-musllinux_1_1_i686.whl", hash = "sha256:d85252669dc32f98ebcd5d36768f5d4faeaeaa2d655ac0473be490ecdae3c285"},
-    {file = "ruamel.yaml.clib-0.2.12-cp39-cp39-musllinux_1_1_x86_64.whl", hash = "sha256:e143ada795c341b56de9418c58d028989093ee611aa27ffb9b7f609c00d813ed"},
-    {file = "ruamel.yaml.clib-0.2.12-cp39-cp39-musllinux_1_2_aarch64.whl", hash = "sha256:2c59aa6170b990d8d2719323e628aaf36f3bfbc1c26279c0eeeb24d05d2d11c7"},
-    {file = "ruamel.yaml.clib-0.2.12-cp39-cp39-win32.whl", hash = "sha256:beffaed67936fbbeffd10966a4eb53c402fafd3d6833770516bf7314bc6ffa12"},
-    {file = "ruamel.yaml.clib-0.2.12-cp39-cp39-win_amd64.whl", hash = "sha256:040ae85536960525ea62868b642bdb0c2cc6021c9f9d507810c0c604e66f5a7b"},
-    {file = "ruamel.yaml.clib-0.2.12.tar.gz", hash = "sha256:6c8fbb13ec503f99a91901ab46e0b07ae7941cd527393187039aec586fdfd36f"},
+    {file = "ruamel.yaml.clib-0.2.13-cp310-cp310-macosx_13_0_arm64.whl", hash = "sha256:a67efad34e15232f03333d4a7cc96b1db8ecb676439b6a3db10d49ffbd3a8606"},
+    {file = "ruamel.yaml.clib-0.2.13-cp310-cp310-manylinux2014_aarch64.whl", hash = "sha256:ce8be9ce9c967a9952e92d9280d18de9ae331284645b50dc32f71ef207ef00e1"},
+    {file = "ruamel.yaml.clib-0.2.13-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:e16f9611130aa3695aaff32d956e49b45cef902aa15cf9de18ebf919d6acc153"},
+    {file = "ruamel.yaml.clib-0.2.13-cp310-cp310-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:3a6afcf136a474703e9c7fa62fab76870775c98a4f59f599fdd24348dca3a229"},
+    {file = "ruamel.yaml.clib-0.2.13-cp310-cp310-musllinux_1_1_aarch64.whl", hash = "sha256:70328e9afcb83deb689547989e6b79fc8f094964b8b754b44a70ba7e68e523fe"},
+    {file = "ruamel.yaml.clib-0.2.13-cp310-cp310-musllinux_1_2_i686.whl", hash = "sha256:fc2c45c0b5b7845278148f18a4039b6d8fde3f7266dd00986684453a57d3444a"},
+    {file = "ruamel.yaml.clib-0.2.13-cp310-cp310-musllinux_1_2_x86_64.whl", hash = "sha256:fa3c15cefc29ed3f7ad6ac370bd46d8e431d1fa0ba03eb54912e8c5d826e458e"},
+    {file = "ruamel.yaml.clib-0.2.13-cp310-cp310-win32.whl", hash = "sha256:e9117696191427cd2c5028878b89012e01cee51b2ae8f5dd440a79d6ba4a1011"},
+    {file = "ruamel.yaml.clib-0.2.13-cp310-cp310-win_amd64.whl", hash = "sha256:4ba827c038348ebde594788b66a4741ce9606b979b684e3bc1e7d1c11d6ac817"},
+    {file = "ruamel.yaml.clib-0.2.13-cp311-cp311-macosx_13_0_arm64.whl", hash = "sha256:825a7483da63b9448fdad9778269a5d02e5f64040aa8326fec071e830c2fc49c"},
+    {file = "ruamel.yaml.clib-0.2.13-cp311-cp311-manylinux2014_aarch64.whl", hash = "sha256:54707e2200b9e1c34a62af09edd3ea3469a722951365311398458abe36ff45d6"},
+    {file = "ruamel.yaml.clib-0.2.13-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:958b1fc6334cd745db7099a69da4f60503cfbbc05ce1412b1d06c5922cd8314b"},
+    {file = "ruamel.yaml.clib-0.2.13-cp311-cp311-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:d50c415df5ba918c483a2486a90dd5a3e6df634fca688f71d266e15a618d643f"},
+    {file = "ruamel.yaml.clib-0.2.13-cp311-cp311-musllinux_1_1_aarch64.whl", hash = "sha256:bbdb57e57a5bb3510bfb43496bab44857546c56c7f04bb7bfd0b248388d41c2e"},
+    {file = "ruamel.yaml.clib-0.2.13-cp311-cp311-musllinux_1_2_i686.whl", hash = "sha256:df8ef03eb60fc2e1c0570612363091898b97a7b3181422e1b34c3ee22d7e0a9e"},
+    {file = "ruamel.yaml.clib-0.2.13-cp311-cp311-musllinux_1_2_x86_64.whl", hash = "sha256:89168de27694f7903a1317381525efdf7ea2c377b5b1eeeb927940870a7e8945"},
+    {file = "ruamel.yaml.clib-0.2.13-cp311-cp311-win32.whl", hash = "sha256:8cdb4c720137bb7834cf2c09753d5f3468023eebb7f6ad2604ddf920328753dd"},
+    {file = "ruamel.yaml.clib-0.2.13-cp311-cp311-win_amd64.whl", hash = "sha256:670d8a9c5b22af152863236b7a7fec471aafefc5e89b637b8f98d280cb92a0ce"},
+    {file = "ruamel.yaml.clib-0.2.13-cp312-cp312-macosx_14_0_arm64.whl", hash = "sha256:810500056a0e294131042eca6687a786e82aad817e8e0bc5ce059d2f95b67fef"},
+    {file = "ruamel.yaml.clib-0.2.13-cp312-cp312-manylinux2014_aarch64.whl", hash = "sha256:f8e44b1b583f93a8f4d00e5285d9ea8ccd9524cdd4c54788db2880a11f21287d"},
+    {file = "ruamel.yaml.clib-0.2.13-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:4d1ab027be86f7d5ccc9b777a22194fd3850012df413f216bf1608768b4daa2f"},
+    {file = "ruamel.yaml.clib-0.2.13-cp312-cp312-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:55f01d82d7d96213f0963609876ae841c81e217985c668100c5fb95cc9a564b3"},
+    {file = "ruamel.yaml.clib-0.2.13-cp312-cp312-musllinux_1_1_aarch64.whl", hash = "sha256:031c7cdd5751cda19ddf90e42756ec2ee72a30791c2f65f5f800f9ee929862f0"},
+    {file = "ruamel.yaml.clib-0.2.13-cp312-cp312-musllinux_1_2_i686.whl", hash = "sha256:ba745411caabc994963729663a7c2d09398795c36dc4b5672ca4fdc445ab6544"},
+    {file = "ruamel.yaml.clib-0.2.13-cp312-cp312-musllinux_1_2_x86_64.whl", hash = "sha256:fb90267cc3748858236b9cedb580191be1d0d218f6cde64e954fa759d90fb08d"},
+    {file = "ruamel.yaml.clib-0.2.13-cp312-cp312-win32.whl", hash = "sha256:5188c3212c10fcd14a6de8ce787c0713a49fc5972054703f790cfd9f1d27a90b"},
+    {file = "ruamel.yaml.clib-0.2.13-cp312-cp312-win_amd64.whl", hash = "sha256:518b13f9fe601a559a759f3d21cdb2590cb85611934a7c0f09c09dc1a869ec83"},
+    {file = "ruamel.yaml.clib-0.2.13-cp313-cp313-macosx_15_0_arm64.whl", hash = "sha256:b3dae045e57780a6ec39a018220d82931d6cb3e6e8b326a9a804597ffa6f8520"},
+    {file = "ruamel.yaml.clib-0.2.13-cp313-cp313-manylinux2014_aarch64.whl", hash = "sha256:f6d476bc7bb9b25d54133f95d0766aaf1662689f6c26e9e08d28a45609a634f2"},
+    {file = "ruamel.yaml.clib-0.2.13-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:5622265f2b64f6933a29a5d8e33385a0c3ef47f509354602d0c28f5d7d126fe3"},
+    {file = "ruamel.yaml.clib-0.2.13-cp313-cp313-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:b2ba05d2dbe39435915aa20d53336d55fd0fa6c25eb1c580d60fc1f753e40a41"},
+    {file = "ruamel.yaml.clib-0.2.13-cp313-cp313-musllinux_1_1_aarch64.whl", hash = "sha256:a5a43fc6f95c58c1a65cbb7b68b31f9721362e10c5276d3f8db4ccde8e9acb04"},
+    {file = "ruamel.yaml.clib-0.2.13-cp313-cp313-musllinux_1_2_i686.whl", hash = "sha256:5ce7178bd66cffe4eb4ce40c2ff525f42ccfa6e2e31eeea27293fe5bd0ae2d93"},
+    {file = "ruamel.yaml.clib-0.2.13-cp313-cp313-musllinux_1_2_x86_64.whl", hash = "sha256:490c5dfaf9f218f335f2f6f7ba52f7ce5460e94d67a42c8dd0096deae7684d23"},
+    {file = "ruamel.yaml.clib-0.2.13-cp313-cp313-win32.whl", hash = "sha256:b5e32adbb14ffdb1130c699128070766e5cf781b3b05dd87049c16bb94395212"},
+    {file = "ruamel.yaml.clib-0.2.13-cp313-cp313-win_amd64.whl", hash = "sha256:826ce141d368f10a99a4fc6fab332ba4203f63da25828853d7957e76d13f7d41"},
+    {file = "ruamel.yaml.clib-0.2.13-cp314-cp314-macosx_15_0_arm64.whl", hash = "sha256:817a3d8dbbefc337e9081d9bddd54ee6ef5d5351cccb5240d731d604c1d86d29"},
+    {file = "ruamel.yaml.clib-0.2.13-cp314-cp314-musllinux_1_2_i686.whl", hash = "sha256:b29e3a746dd774a49ec6412529dc6a7338efe0828230b7c5da2aef3ee6eb7cbc"},
+    {file = "ruamel.yaml.clib-0.2.13-cp314-cp314-musllinux_1_2_x86_64.whl", hash = "sha256:bae8383e02ef5a7c6b44a594746dcdb0994b8bdf4317d2fba3bbafe8262dfa9d"},
+    {file = "ruamel.yaml.clib-0.2.13-cp39-cp39-macosx_12_0_arm64.whl", hash = "sha256:2270edaf057306be7351197aa30846a936b699bb5f0ad003e69d6055b09b8cd5"},
+    {file = "ruamel.yaml.clib-0.2.13-cp39-cp39-manylinux2014_aarch64.whl", hash = "sha256:c86a68e443a30281e8228c5e0b612ffc639918b2c62dd9c77a29356ba8a9a891"},
+    {file = "ruamel.yaml.clib-0.2.13-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:7e9d71e1a0b7655dc82168b55f6399067990804065546d39d45973a0c15fe777"},
+    {file = "ruamel.yaml.clib-0.2.13-cp39-cp39-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:e26eda047e90595c4086d2ad79170f26838097de1fb6b5efe91ca5de45065ab4"},
+    {file = "ruamel.yaml.clib-0.2.13-cp39-cp39-musllinux_1_1_aarch64.whl", hash = "sha256:44ad995de7c8397d81459ab9cd5e64b0c2f72b9812368bbf6c57969288d030ad"},
+    {file = "ruamel.yaml.clib-0.2.13-cp39-cp39-musllinux_1_2_i686.whl", hash = "sha256:20b475065c89ef2399f4cde03a1969d376b48257d1e4c1d9a6bb077a0f518f30"},
+    {file = "ruamel.yaml.clib-0.2.13-cp39-cp39-musllinux_1_2_x86_64.whl", hash = "sha256:cc9512ca10d2158daa30b4f918916e2bd9ee6391291209a2b2ede37ccfefbb81"},
+    {file = "ruamel.yaml.clib-0.2.13-cp39-cp39-win32.whl", hash = "sha256:8a8ba6b52f06d33a3ed010b1529ef9a44097ca896ef896967d7ebcdb4d642624"},
+    {file = "ruamel.yaml.clib-0.2.13-cp39-cp39-win_amd64.whl", hash = "sha256:e440a8f7e59455b1c2960f0e4d5b51657ca7884cc033d80ac6f27cc1c9921938"},
+    {file = "ruamel.yaml.clib-0.2.13.tar.gz", hash = "sha256:8d4f8d7853053a5a19171a0f515f1e14f503bd3e772c4da6bafe7d0893d4f299"},
 ]
 
 [[package]]
@@ -6611,11 +6708,36 @@ widechars = ["wcwidth"]
 
 [[package]]
 name = "tensorboard"
+version = "2.18.0"
+description = "TensorBoard lets you watch Tensors Flow"
+optional = false
+python-versions = ">=3.9"
+groups = ["dev"]
+markers = "python_version >= \"3.13\""
+files = [
+    {file = "tensorboard-2.18.0-py3-none-any.whl", hash = "sha256:107ca4821745f73e2aefa02c50ff70a9b694f39f790b11e6f682f7d326745eab"},
+]
+
+[package.dependencies]
+absl-py = ">=0.4"
+grpcio = ">=1.48.2"
+markdown = ">=2.6.8"
+numpy = ">=1.12.0"
+packaging = "*"
+protobuf = ">=3.19.6,<4.24.0 || >4.24.0"
+setuptools = ">=41.0.0"
+six = ">1.9"
+tensorboard-data-server = ">=0.7.0,<0.8.0"
+werkzeug = ">=1.0.1"
+
+[[package]]
+name = "tensorboard"
 version = "2.20.0"
 description = "TensorBoard lets you watch Tensors Flow"
 optional = false
 python-versions = ">=3.9"
 groups = ["dev"]
+markers = "python_version <= \"3.12\""
 files = [
     {file = "tensorboard-2.20.0-py3-none-any.whl", hash = "sha256:9dc9f978cb84c0723acf9a345d96c184f0293d18f166bb8d59ee098e6cfaaba6"},
 ]
@@ -6647,37 +6769,68 @@ files = [
 
 [[package]]
 name = "tensorflow"
-version = "1.5.1"
-description = "TensorFlow helps the tensors flow"
+version = "2.18.1"
+description = "TensorFlow is an open source machine learning framework for everyone."
 optional = false
-python-versions = "*"
+python-versions = ">=3.9"
 groups = ["dev"]
 markers = "python_version >= \"3.13\""
 files = [
-    {file = "tensorflow-1.5.1-cp27-cp27m-macosx_10_11_x86_64.whl", hash = "sha256:3a927d2f8683f6b6ad9d67d9e2626f0be762e32df955bbe265c2c020d8617816"},
-    {file = "tensorflow-1.5.1-cp27-cp27mu-manylinux1_x86_64.whl", hash = "sha256:b8f3585ed23bc3f45b190b290ebb48dea03f494e24965139b93ecec67d33addc"},
-    {file = "tensorflow-1.5.1-cp33-cp33m-macosx_10_11_x86_64.whl", hash = "sha256:1133f8a6b5f554cace92e6e20fa0a381ad821a5996e1630e0005c205ceda0ac5"},
-    {file = "tensorflow-1.5.1-cp33-cp33m-manylinux1_x86_64.whl", hash = "sha256:bafad56c48f4919505bb92ead746993e9789481a3c438f6186c2b364a87b9b1a"},
-    {file = "tensorflow-1.5.1-cp34-cp34m-macosx_10_11_x86_64.whl", hash = "sha256:72315ef618699eaacabc28e069923300a5abb188b21185f12c76f3b01ece646e"},
-    {file = "tensorflow-1.5.1-cp34-cp34m-manylinux1_x86_64.whl", hash = "sha256:01f30a4dfa9222729dff633fdd2490e75bc6a85327b46a1806499f0af4fa5af3"},
-    {file = "tensorflow-1.5.1-cp35-cp35m-macosx_10_11_x86_64.whl", hash = "sha256:492314b645f771509a975b25abb3932a4961f7faab696293aee09f4d45a3da8e"},
-    {file = "tensorflow-1.5.1-cp35-cp35m-manylinux1_x86_64.whl", hash = "sha256:68cd670162e73b7b91f75ce476163c783edacc1013603893d62db4bf2ba8b24d"},
-    {file = "tensorflow-1.5.1-cp35-cp35m-win_amd64.whl", hash = "sha256:1b41ac74f9eea046f691ad7a376c48df8dc3bce797319b5e6cd1693d9cfd51b3"},
-    {file = "tensorflow-1.5.1-cp36-cp36m-macosx_10_11_x86_64.whl", hash = "sha256:34f0a928371dc840c671984ee600ea657856fd72e0c1595fb7056f1bad691fbf"},
-    {file = "tensorflow-1.5.1-cp36-cp36m-manylinux1_x86_64.whl", hash = "sha256:24e5b3c9114be12685cd5c95a364196544b4b2a68fbd3be6e4b537988218eeba"},
-    {file = "tensorflow-1.5.1-cp36-cp36m-win_amd64.whl", hash = "sha256:4402aa865a23e10d05bee38a367c7a76c186f0170cbac916ac63824a8ce78095"},
+    {file = "tensorflow-2.18.1-cp310-cp310-macosx_12_0_arm64.whl", hash = "sha256:8baba2b0f9f286f8115a0005d17c020d2febf95e434302eaf758f2020c1c4de5"},
+    {file = "tensorflow-2.18.1-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:2dd7284768f5a6b10e41a700e8141de70756dc62ed5d0b93360d131ccc0a6ba8"},
+    {file = "tensorflow-2.18.1-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:1f929842999d60e7da67743ae5204b477259f3b771c02e5e437d232267e49f18"},
+    {file = "tensorflow-2.18.1-cp310-cp310-win_amd64.whl", hash = "sha256:db1d186c17b6a7c51813e275d0a83e964669822372aa01d074cf64b853ee76ac"},
+    {file = "tensorflow-2.18.1-cp311-cp311-macosx_12_0_arm64.whl", hash = "sha256:661029cd769b311db910b79a3a6ef50a5a61ecc947172228c777a49989722508"},
+    {file = "tensorflow-2.18.1-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:8a6485edd2148f70d011dbd1d8dc2c775e91774a5a159466e83d0d1f21580944"},
+    {file = "tensorflow-2.18.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:c9f87e5d2a680a4595f5dc30daf6bbaec9d4129b46d7ef1b2af63c46ac7d2828"},
+    {file = "tensorflow-2.18.1-cp311-cp311-win_amd64.whl", hash = "sha256:99223d0dde08aec4ceebb3bf0f80da7802e18462dab0d5048225925c064d2af7"},
+    {file = "tensorflow-2.18.1-cp312-cp312-macosx_12_0_arm64.whl", hash = "sha256:98afa9c7f21481cdc6ccd09507a7878d533150fbb001840cc145e2132eb40942"},
+    {file = "tensorflow-2.18.1-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:1ba52b9c06ab8102b31e50acfaf56899b923171e603c8942f2bfeb181d6bb59e"},
+    {file = "tensorflow-2.18.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:442d2a774811789a8ad948e7286cb950fe3d87d3754e8cc6449d53b03dbfdaa6"},
+    {file = "tensorflow-2.18.1-cp312-cp312-win_amd64.whl", hash = "sha256:210baf6d421f3e044b6e09efd04494a33b75334922fe6cf11970e2885172620a"},
+    {file = "tensorflow-2.18.1-cp39-cp39-macosx_12_0_arm64.whl", hash = "sha256:e0ffa318b969779baad01a11e7799dda9677ee33ccbbcdbf7b735c27f53d2a9b"},
+    {file = "tensorflow-2.18.1-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:1c0cd29c323908ed35ce72fbcce66f2ef7c8657f9c5024860ffd7ea64cf5d35d"},
+    {file = "tensorflow-2.18.1-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:4ecbb9b3cd3f223ff6861faa1a4c2719c138d870dba90545826685b1c5ba5901"},
+    {file = "tensorflow-2.18.1-cp39-cp39-win_amd64.whl", hash = "sha256:0f84a4c87a30cfb279c30b0077541cb5aaac7506d32adde585adb185277e49d2"},
 ]
 
 [package.dependencies]
-absl-py = ">=0.1.6"
-"backports.weakref" = ">=1.0rc1"
-enum34 = ">=1.1.6"
-mock = ">=2.0.0"
-numpy = ">=1.12.1"
-protobuf = ">=3.4.0"
-six = ">=1.10.0"
-tensorflow-tensorboard = ">=1.5.0,<1.6.0"
-wheel = "*"
+absl-py = ">=1.0.0"
+astunparse = ">=1.6.0"
+flatbuffers = ">=24.3.25"
+gast = ">=0.2.1,<0.5.0 || >0.5.0,<0.5.1 || >0.5.1,<0.5.2 || >0.5.2"
+google-pasta = ">=0.1.1"
+grpcio = ">=1.24.3,<2.0"
+h5py = ">=3.11.0"
+keras = ">=3.5.0"
+libclang = ">=13.0.0"
+ml-dtypes = ">=0.4.0,<1.0.0"
+numpy = ">=1.26.0,<2.1.0"
+nvidia-cublas-cu12 = {version = "12.5.3.2", optional = true, markers = "extra == \"and-cuda\""}
+nvidia-cuda-cupti-cu12 = {version = "12.5.82", optional = true, markers = "extra == \"and-cuda\""}
+nvidia-cuda-nvcc-cu12 = {version = "12.5.82", optional = true, markers = "extra == \"and-cuda\""}
+nvidia-cuda-nvrtc-cu12 = {version = "12.5.82", optional = true, markers = "extra == \"and-cuda\""}
+nvidia-cuda-runtime-cu12 = {version = "12.5.82", optional = true, markers = "extra == \"and-cuda\""}
+nvidia-cudnn-cu12 = {version = "9.3.0.75", optional = true, markers = "extra == \"and-cuda\""}
+nvidia-cufft-cu12 = {version = "11.2.3.61", optional = true, markers = "extra == \"and-cuda\""}
+nvidia-curand-cu12 = {version = "10.3.6.82", optional = true, markers = "extra == \"and-cuda\""}
+nvidia-cusolver-cu12 = {version = "11.6.3.83", optional = true, markers = "extra == \"and-cuda\""}
+nvidia-cusparse-cu12 = {version = "12.5.1.3", optional = true, markers = "extra == \"and-cuda\""}
+nvidia-nccl-cu12 = {version = "2.21.5", optional = true, markers = "extra == \"and-cuda\""}
+nvidia-nvjitlink-cu12 = {version = "12.5.82", optional = true, markers = "extra == \"and-cuda\""}
+opt-einsum = ">=2.3.2"
+packaging = "*"
+protobuf = ">=3.20.3,<4.21.0 || >4.21.0,<4.21.1 || >4.21.1,<4.21.2 || >4.21.2,<4.21.3 || >4.21.3,<4.21.4 || >4.21.4,<4.21.5 || >4.21.5,<6.0.0dev"
+requests = ">=2.21.0,<3"
+setuptools = "*"
+six = ">=1.12.0"
+tensorboard = ">=2.18,<2.19"
+termcolor = ">=1.1.0"
+typing-extensions = ">=3.6.6"
+wrapt = ">=1.11.0"
+
+[package.extras]
+and-cuda = ["nvidia-cublas-cu12 (==12.5.3.2)", "nvidia-cuda-cupti-cu12 (==12.5.82)", "nvidia-cuda-nvcc-cu12 (==12.5.82)", "nvidia-cuda-nvrtc-cu12 (==12.5.82)", "nvidia-cuda-runtime-cu12 (==12.5.82)", "nvidia-cudnn-cu12 (==9.3.0.75)", "nvidia-cufft-cu12 (==11.2.3.61)", "nvidia-curand-cu12 (==10.3.6.82)", "nvidia-cusolver-cu12 (==11.6.3.83)", "nvidia-cusparse-cu12 (==12.5.1.3)", "nvidia-nccl-cu12 (==2.21.5)", "nvidia-nvjitlink-cu12 (==12.5.82)"]
 
 [[package]]
 name = "tensorflow"
@@ -6748,29 +6901,6 @@ wrapt = ">=1.11.0"
 [package.extras]
 and-cuda = ["nvidia-cublas-cu12 (>=12.5.3.2,<13.0)", "nvidia-cuda-cupti-cu12 (>=12.5.82,<13.0)", "nvidia-cuda-nvcc-cu12 (>=12.5.82,<13.0)", "nvidia-cuda-nvrtc-cu12 (>=12.5.82,<13.0)", "nvidia-cuda-runtime-cu12 (>=12.5.82,<13.0)", "nvidia-cudnn-cu12 (>=9.3.0.75,<10.0)", "nvidia-cufft-cu12 (>=11.2.3.61,<12.0)", "nvidia-curand-cu12 (>=10.3.6.82,<11.0)", "nvidia-cusolver-cu12 (>=11.6.3.83,<12.0)", "nvidia-cusparse-cu12 (>=12.5.1.3,<13.0)", "nvidia-nccl-cu12 (>=2.25.1,<3.0)", "nvidia-nvjitlink-cu12 (>=12.5.82,<13.0)"]
 gcs-filesystem = ["tensorflow-io-gcs-filesystem (>=0.23.1) ; sys_platform != \"win32\" and python_version < \"3.13\"", "tensorflow-io-gcs-filesystem (>=0.23.1) ; sys_platform == \"win32\" and python_version < \"3.12\""]
-
-[[package]]
-name = "tensorflow-tensorboard"
-version = "1.5.1"
-description = "TensorBoard lets you watch Tensors Flow"
-optional = false
-python-versions = ">= 2.7, != 3.0.*, != 3.1.*"
-groups = ["dev"]
-markers = "python_version >= \"3.13\""
-files = [
-    {file = "tensorflow_tensorboard-1.5.1-py2-none-any.whl", hash = "sha256:47f985cdcaeae697d978dcaca5441ff22533cbcc9ebc4f50b606e7485b931436"},
-    {file = "tensorflow_tensorboard-1.5.1-py3-none-any.whl", hash = "sha256:749845a950009cc2a95b9ba7cd915eff01b363e3e2a71d3eee056890f37ecdb3"},
-]
-
-[package.dependencies]
-bleach = "1.5.0"
-html5lib = "0.9999999"
-markdown = ">=2.6.8"
-numpy = ">=1.12.0"
-protobuf = ">=3.4.0"
-six = ">=1.10.0"
-werkzeug = ">=0.11.10"
-wheel = {version = ">=0.26", markers = "python_version >= \"3\""}
 
 [[package]]
 name = "termcolor"
@@ -7448,14 +7578,14 @@ workspaces = ["wandb-workspaces"]
 
 [[package]]
 name = "wcwidth"
-version = "0.2.13"
+version = "0.2.14"
 description = "Measures the displayed width of unicode strings in a terminal"
 optional = false
-python-versions = "*"
+python-versions = ">=3.6"
 groups = ["dev"]
 files = [
-    {file = "wcwidth-0.2.13-py2.py3-none-any.whl", hash = "sha256:3da69048e4540d84af32131829ff948f1e022c1c6bdb8d6102117aac784f6859"},
-    {file = "wcwidth-0.2.13.tar.gz", hash = "sha256:72ea0c06399eb286d978fdedb6923a9eb47e1c486ce63e9b4e64fc18303972b5"},
+    {file = "wcwidth-0.2.14-py2.py3-none-any.whl", hash = "sha256:a7bb560c8aee30f9957e5f9895805edd20602f2d7f720186dfd906e82b4982e1"},
+    {file = "wcwidth-0.2.14.tar.gz", hash = "sha256:4d478375d31bc5395a3c55c40ccdf3354688364cd61c4f6adacaa9215d0b3605"},
 ]
 
 [[package]]
@@ -7904,4 +8034,4 @@ propcache = ">=0.2.1"
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10"
-content-hash = "6a98767708fe71748771fc3158bac4d63abf61813146f09cda24d37913a45045"
+content-hash = "0ba1383fa849294150cffaf4101c102156876cda93d55d335ab7b540db7aa58b"
