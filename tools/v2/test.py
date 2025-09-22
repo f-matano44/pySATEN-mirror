@@ -13,8 +13,9 @@ from silero_vad import get_speech_timestamps, load_silero_vad, read_audio
 from soundfile import write
 from tqdm import tqdm
 
-import pysaten
 from pysaten.utility.WavLabHandler import WavLabHandler
+from pysaten.v1 import vsed_debug_v1
+from pysaten.v2 import vsed_debug_v2
 
 rvad = rVADfast()
 inaSegmenter = Segmenter(detect_gender=False)
@@ -71,15 +72,11 @@ def _main():
                     ans_list.extend(handler.get_answer())
 
                     # SATEN
-                    _, _, _, _, S, E, _, _, _ = pysaten.v1.vsed_debug_v1(
-                        x, fs, noise_seed=i
-                    )
+                    _, _, _, _, S, E, _, _, _ = vsed_debug_v1(x, fs, noise_seed=i)
                     saten_list.extend([S, E])
 
                     # SATEN2
-                    saten2_list.extend(
-                        pysaten.v2.vsed_debug_v2(x, fs, noise_seed=i).get_result()
-                    )
+                    saten2_list.extend(vsed_debug_v2(x, fs, noise_seed=i).get_result())
 
                     # rVAD
                     rvad_list.extend(_rvad_fast(x, fs))
