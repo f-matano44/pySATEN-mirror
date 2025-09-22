@@ -1,3 +1,7 @@
+```sh
+TF_ENABLE_ONEDNN_OPTS=0 python test.py
+```
+
 |SNR|pySATEN|pySATEN2|rVAD|inaSpeechSegmenter|MarbleNet|Silero_vad|
 |:---:|---:|---:|---:|---:|---:|---:|
 |inf|0.038 (1.00)|0.023 (1.00)|0.155 (1.00)|0.032 (1.00)|0.271 (1.00)|0.060 (1.00)|
