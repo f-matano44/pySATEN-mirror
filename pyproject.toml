@@ -39,11 +39,6 @@ nemo-toolkit = {extras = ["asr"], version = "^2.4.0"}
 silero-vad = "^6.0.0"
 rvadfast = "^0.0.5"
 
-[[tool.poetry.source]]
-name = "torch_cpu"
-url = "https://download.pytorch.org/whl/cpu"
-priority = "explicit"
-
 [tool.black]
 line-length = 90
 
