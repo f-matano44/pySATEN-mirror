@@ -36,10 +36,7 @@ pandas = "^2.2.3"
 inaspeechsegmenter = "^0.8.0"
 tqdm = "^4.67.1"
 nemo-toolkit = {extras = ["asr"], version = "^2.4.0"}
-silero-vad = {extras = ["asr"], version = "^6.0.0"}
-torch = "^2.7.0"
-torchvision = "^0.22.0"
-torchaudio = "^2.7.0"
+silero-vad = "^6.0.0"
 rvadfast = "^0.0.5"
 
 [[tool.poetry.source]]
