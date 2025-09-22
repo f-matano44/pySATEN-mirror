@@ -5,7 +5,7 @@ build-backend = "poetry.core.masonry.api"
 [project]
 name = "pysaten"
 description = "Detect silence segment from speech signal."
-version = "2.0.2.post2"
+version = "2.0.2.post3"
 authors = [
     {name = "Fumiyoshi MATANO", email = "fumiyoshi.matano@gmail.com"}
 ]
@@ -14,7 +14,7 @@ dependencies = [
     "numpy>=1.20",  # for numpy.typing
     "noisereduce",
     "librosa",
-    "soundfile",
+    "soundfile",  # for cli_runner
     "scipy",
     "torch>=1.7"  # for torch.fft
 ]
@@ -33,13 +33,13 @@ pysaten_trim = "pysaten.pysaten:cli_runner"
 [tool.poetry.group.dev.dependencies]
 matplotlib = "^3.10.3"
 pandas = "^2.2.3"
-inaspeechsegmenter = "^0.7.14"
+inaspeechsegmenter = "^0.8.0"
 tqdm = "^4.67.1"
-nemo-toolkit = {extras = ["asr"], version = "^2.3.0"}
-silero-vad = "^5.1.2"
-torch = {version = "^2.7.0", source = "torch_cpu"}
-torchvision = {version = "^0.22.0", source = "torch_cpu"}
-torchaudio = {version = "^2.7.0", source = "torch_cpu"}
+nemo-toolkit = {extras = ["asr"], version = "^2.4.0"}
+silero-vad = {extras = ["asr"], version = "^6.0.0"}
+torch = "^2.7.0"
+torchvision = "^0.22.0"
+torchaudio = "^2.7.0"
 rvadfast = "^0.0.5"
 
 [[tool.poetry.source]]
