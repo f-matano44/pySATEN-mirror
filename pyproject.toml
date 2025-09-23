@@ -39,6 +39,7 @@ nemo-toolkit = {extras = ["asr"], version = "^2.4.0", markers = "sys_platform ==
 silero-vad = {version = "^6.0.0", markers = "sys_platform == 'linux'"}
 rvadfast = {version = "^0.0.5", markers = "sys_platform == 'linux'"}
 optuna = "^4.5.0"
+optuna-dashboard = "^0.19.0"
 
 [tool.black]
 line-length = 90
