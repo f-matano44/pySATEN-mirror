@@ -33,12 +33,12 @@ pysaten_trim = "pysaten.pysaten:cli_runner"
 [tool.poetry.group.dev.dependencies]
 matplotlib = "^3.10.3"
 pandas = "^2.2.3"
-inaspeechsegmenter = "^0.8.0"
+inaspeechsegmenter = {version = "^0.8.0", markers = "sys_platform == 'linux'"}
 tqdm = "^4.67.1"
-nemo-toolkit = {extras = ["asr"], version = "^2.4.0"}
-silero-vad = "^6.0.0"
-rvadfast = "^0.0.5"
-jedi = "^0.19.2"
+nemo-toolkit = {extras = ["asr"], version = "^2.4.0", markers = "sys_platform == 'linux'"}
+silero-vad = {version = "^6.0.0", markers = "sys_platform == 'linux'"}
+rvadfast = {version = "^0.0.5", markers = "sys_platform == 'linux'"}
+optuna = "^4.5.0"
 
 [tool.black]
 line-length = 90
