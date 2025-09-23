@@ -55,7 +55,9 @@ class vsed_debug_v2:
         self.y_zcr: Final[npt.NDArray] = _02_zcr(y_nr, SR, win_length, hop_length)
         self.y_zcr.flags.writeable = False
         # get rms weight
-        rms_weight: Final[npt.NDArray] = (1 - self.y_zcr) * _gaussian_curve(self.y_zcr)
+        self.bell = _gaussian_curve(self.y_zcr)
+        self.bell.flags.writeable = False
+        rms_weight: Final[npt.NDArray] = (1 - self.y_zcr) * self.bell
         rms_weight.flags.writeable = False
 
         # step1: Root mean square -------------------------------------------
