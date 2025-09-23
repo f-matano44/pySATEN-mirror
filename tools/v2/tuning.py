@@ -59,6 +59,7 @@ def _main():
         direction="minimize",
         storage="sqlite:///study.db",
         sampler=optuna.samplers.TPESampler(seed=SEED),
+        load_if_exists=True,
     )
     study.optimize(objective, n_trials=100)
     print(study.best_value, study.best_params)
