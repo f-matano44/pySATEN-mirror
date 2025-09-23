@@ -20,7 +20,7 @@ class vsed_debug_v2:
     def __init__(
         self,
         y: npt.NDArray,
-        orig_sr: int,
+        orig_sr: int | float,
         # -------------------------------------------
         win_length_s: Optional[float] = None,
         hop_length_s: float = 0.005,
