@@ -24,7 +24,7 @@ class vsed_debug_v2:
         # -------------------------------------------
         win_length_s: Optional[float] = None,
         hop_length_s: float = 0.005,
-        zcr_margin_s: float = 0.1,
+        zcr_margin_s: float = 0.08,
         # -------------------------------------------
         rms_threshold: float = 0.03,
         zcr_threshold: float = 0.67,

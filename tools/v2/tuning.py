@@ -11,9 +11,7 @@ from pysaten.v2 import vsed_debug_v2
 SEED: Final[int] = 20250923
 
 
-def function(
-    rms_thres: float, zcr_thres: float, zcr_margin_s: float, offset_s: float
-) -> float:
+def function(rms_thres: float, zcr_thres: float) -> float:
     error: list[float] = []
 
     for i in tqdm(range(1, 101)):
@@ -31,8 +29,7 @@ def function(
                 fs,
                 rms_threshold=rms_thres,
                 zcr_threshold=zcr_thres,
-                zcr_margin_s=zcr_margin_s,
-                offset_s=offset_s,
+                offset_s=0,
                 noise_seed=SEED,
             ).get_result()
 
@@ -46,9 +43,7 @@ def function(
 def objective(trial: optuna.Trial) -> float:
     rms_thres = trial.suggest_float("rms_thres", 0.0, 0.5)
     zcr_thres = trial.suggest_float("zcr_thres", 0.0, 1.0, step=0.01)
-    zcr_margin_s = trial.suggest_float("zcr_margin_s", 0.0, 0.5, step=0.005)
-    offset_s = trial.suggest_float("offset_s", -0.1, 0.1, step=0.005)
-    value = function(rms_thres, zcr_thres, zcr_margin_s, offset_s)
+    value = function(rms_thres, zcr_thres)
     trial.report(value, step=0)
     return value
 
