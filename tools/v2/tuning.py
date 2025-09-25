@@ -1,3 +1,4 @@
+from functools import lru_cache
 from pathlib import Path
 from typing import Final
 
@@ -11,18 +12,25 @@ from pysaten.v2 import vsed_debug_v2
 SEED: Final[int] = 20250923
 
 
+@lru_cache(maxsize=None)
+def _load_item(i: int, character: str):
+    wav = f"wav_and_lab/{character}/ITA_emotion_normal_synchronized_wav"
+    wav_path = Path(f"{wav}/emoNormal{i:03}.wav")
+    lab = f"wav_and_lab/{character}/ITA_emotion_normal_label"
+    lab_path = Path(f"{lab}/emoNormal{i:03}.lab")
+
+    handler = WavLabHandler(wav_path, lab_path)
+    x, fs = handler.get_noise_signal2(20, "pink", SEED)
+    ans_s, ans_e = handler.get_answer()
+    return x, fs, ans_s, ans_e
+
+
 def function(rms_thres: float, zcr_thres: float) -> float:
     error: list[float] = []
 
     for i in tqdm(range(1, 101)):
         for character in ["zundamon", "tohoku_itako"]:
-            wav = f"wav_and_lab/{character}/ITA_emotion_normal_synchronized_wav"
-            wav_path = Path(f"{wav}/emoNormal{i:03}.wav")
-            lab = f"wav_and_lab/{character}/ITA_emotion_normal_label"
-            lab_path = Path(f"{lab}/emoNormal{i:03}.lab")
-
-            handler = WavLabHandler(wav_path, lab_path)
-            x, fs = handler.get_noise_signal2(20, "pink", SEED)
+            x, fs, ans_s, ans_e = _load_item(i, character)
 
             S, E = vsed_debug_v2(
                 x,
@@ -33,7 +41,6 @@ def function(rms_thres: float, zcr_thres: float) -> float:
                 noise_seed=SEED,
             ).get_result()
 
-            ans_s, ans_e = handler.get_answer()
             error.append(S - ans_s)
             error.append(E - ans_e)
     err = np.asarray(error, dtype=np.float64)
