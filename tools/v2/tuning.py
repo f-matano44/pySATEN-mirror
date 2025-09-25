@@ -41,7 +41,7 @@ def function(rms_thres: float, zcr_thres: float) -> float:
 
 
 def objective(trial: optuna.Trial) -> float:
-    rms_thres = trial.suggest_float("rms_thres", 0.0, 0.5)
+    rms_thres = trial.suggest_float("rms_thres", 0.0, 0.5, step=0.001)
     zcr_thres = trial.suggest_float("zcr_thres", 0.0, 1.0, step=0.01)
     value = function(rms_thres, zcr_thres)
     trial.report(value, step=0)
