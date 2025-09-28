@@ -40,6 +40,7 @@ inaspeechsegmenter = {version = "^0.8.0", markers = "sys_platform == 'linux'"}
 nemo-toolkit = {version = "^2.4.0", extras = ["asr"], markers = "sys_platform == 'linux'"}
 silero-vad = {version = "^6.0.0", markers = "sys_platform == 'linux'"}
 rvadfast = {version = "^0.0.5", markers = "sys_platform == 'linux'"}
+faster-whisper = {version = "^1.2.0", markers = "sys_platform == 'linux'"}
 
 [[tool.poetry.source]]
 name = "torch_cpu"

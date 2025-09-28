@@ -72,6 +72,8 @@ We would like to take this opportunity to express our gratitude.
   * <https://github.com/ina-foss/inaSpeechSegmenter>
 * Silero VAD
   * <https://github.com/snakers4/silero-vad>
+* Faster-whisper
+  * <https://github.com/SYSTRAN/faster-whisper>
 
 ## Cite this
 
