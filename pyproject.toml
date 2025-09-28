@@ -16,7 +16,7 @@ dependencies = [
     "librosa",
     "soundfile",  # for cli_runner
     "scipy",
-    "torch>=1.7"  # for torch.fft
+    "torch>=2"  # for torch.fft
 ]
 readme = "README.md"
 classifiers = [
@@ -34,8 +34,8 @@ pysaten_trim = "pysaten.pysaten:cli_runner"
 matplotlib = "^3.10.3"
 pandas = "^2.2.3"
 tqdm = "^4.67.1"
-torch = {version = "^2.7.1", source = "torch_cpu", markers = "sys_platform == 'linux'"}
-torchaudio = {version = "^2.7.1", source = "torch_cpu", markers = "sys_platform == 'linux'"}
+torch = {version = ">=2", source = "torch_cpu", markers = "sys_platform == 'linux'"}
+torchaudio = {version = ">=2", source = "torch_cpu", markers = "sys_platform == 'linux'"}
 inaspeechsegmenter = {version = "^0.8.0", markers = "sys_platform == 'linux'"}
 nemo-toolkit = {version = "^2.4.0", extras = ["asr"], markers = "sys_platform == 'linux'"}
 silero-vad = {version = "^6.0.0", markers = "sys_platform == 'linux'"}
