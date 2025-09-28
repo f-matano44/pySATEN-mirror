@@ -42,7 +42,7 @@ start_sec, end_sec = pysaten.vsed(y, sr)
 y_trimmed = y[int(start_sec * sr) : int(end_sec * sr)]
 ```
 
-### For development (Linux only)
+### For development
 
 ```sh
 git clone https://gitlab.com/f-matano44/pysaten.git
