@@ -61,7 +61,7 @@ class vsed_debug_v2:
         rms_weight.flags.writeable = False
 
         # step1: Root mean square -------------------------------------------
-        self.y_rms: Final[npt.NDArray] = y_rms * rms_weight
+        self.y_rms: Final[npt.NDArray] = normalize(y_rms * rms_weight)
         self.y_rms.flags.writeable = False
         start1: Final[int] = (
             np.where(rms_threshold < self.y_rms)[0][0]

@@ -45,7 +45,7 @@ def _main() -> None:
         plt.fill_between(x_t, -1, 1, where=section2.tolist(), color="gray", alpha=0.6)
         plt.fill_between(x_t, -1, 1, where=section3.tolist(), color="gray", alpha=0.3)
         plt.plot(x_t, x, color="black")
-        # plt.plot(x_t, cx)
+        plt.plot(x_t, cx)
         plt.plot(result.feats_timestamp, result.y_zcr)
         plt.plot(result.feats_timestamp, result.y_rms)
         plt.plot(x_t, np.ones(len(x)) * result.zcr_threshold)
@@ -54,7 +54,7 @@ def _main() -> None:
         plt.xlabel("Time (s)")
         plt.ylabel("Amplitude & Feature")
         # plt.ylim(-1.0, 1.0)
-        plt.savefig(f"graph/{i:03d}.pdf")
+        plt.savefig(f"graph/{i:03d}.png")
 
 
 def add_noise_to_signal(signal, noise, desired_snr_db):
