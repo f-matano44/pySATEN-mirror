@@ -85,7 +85,7 @@ def _main():
                     ina_list.extend(_ina_speech_segmenter(temp_wav))
 
                     # nemo
-                    nemo_list.extend(marble.vad_test2(temp_wav_16k))
+                    nemo_list.extend(marble.offline_inference(temp_wav_16k))
 
                     # silero vad
                     silero_list.extend(_silero_vad(temp_wav))
