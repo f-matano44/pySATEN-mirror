@@ -33,11 +33,18 @@ pysaten_trim = "pysaten.pysaten:cli_runner"
 [tool.poetry.group.dev.dependencies]
 matplotlib = "^3.10.3"
 pandas = "^2.2.3"
-inaspeechsegmenter = {version = "^0.8.0", markers = "sys_platform == 'linux'"}
 tqdm = "^4.67.1"
-nemo-toolkit = {extras = ["asr"], version = "^2.4.0", markers = "sys_platform == 'linux'"}
+torch = {version = "^2.7.1", source = "torch_cpu"}
+torchaudio = {version = "^2.7.1", source = "torch_cpu"}
+inaspeechsegmenter = {version = "^0.8.0", markers = "sys_platform == 'linux'"}
+nemo-toolkit = {version = "^2.4.0", extras = ["asr"], markers = "sys_platform == 'linux'"}
 silero-vad = {version = "^6.0.0", markers = "sys_platform == 'linux'"}
 rvadfast = {version = "^0.0.5", markers = "sys_platform == 'linux'"}
+
+[[tool.poetry.source]]
+name = "torch_cpu"
+url = "https://download.pytorch.org/whl/cpu"
+priority = "explicit"
 
 [tool.black]
 line-length = 90
