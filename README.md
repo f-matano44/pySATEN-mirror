@@ -70,7 +70,7 @@ We would like to take this opportunity to express our gratitude.
   * <https://github.com/zhenghuatan/rVAD>
 * inaSpeechSegmenter
   * <https://github.com/ina-foss/inaSpeechSegmenter>
-* Silero VAD v5
+* Silero VAD
   * <https://github.com/snakers4/silero-vad>
 
 ## Cite this
