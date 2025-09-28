@@ -15,10 +15,10 @@ lint:
   script:
     - python --version
     - apt-get update && apt-get install -y black isort flake8 mypy python3-numpy
-    - black --check pysaten/
-    - isort --check-only pysaten/
-    - flake8 pysaten/
-    - mypy pysaten/
+    - black --check src/pysaten/
+    - isort --check-only src/pysaten/
+    - flake8 src/pysaten/
+    - mypy src/pysaten/
 
 build:
   stage: build
