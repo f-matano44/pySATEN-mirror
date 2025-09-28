@@ -2,10 +2,8 @@ import copy
 import wave
 from pathlib import Path
 
-import librosa
 import nemo.collections.asr as nemo_asr
 import numpy as np
-import soundfile as sf
 import torch
 from nemo.core.classes import IterableDataset
 from nemo.core.neural_types import AudioSignal, LengthsType, NeuralType
@@ -15,7 +13,7 @@ from torch.utils.data import DataLoader
 class MarbleNet:
     def __init__(self):
         self.vad_model = nemo_asr.models.EncDecClassificationModel.from_pretrained(
-            "vad_marblenet"
+            model_name="vad_multilingual_marblenet"
         )
         self.cfg = copy.deepcopy(self.vad_model._cfg)
         self.vad_model.preprocessor = self.vad_model.from_config_dict(
@@ -213,5 +211,5 @@ class MarbleNet:
             return S, E
 
     def vad_test2(self, temp_wav_16k: Path):
-        step = 0.01
+        step = 0.025
         return self.offline_inference(temp_wav_16k, step)
