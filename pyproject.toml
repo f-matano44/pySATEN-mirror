@@ -9,7 +9,7 @@ version = "2.0.3"
 authors = [
     {name = "Fumiyoshi MATANO", email = "fumiyoshi.matano@gmail.com"}
 ]
-requires-python = ">=3.10"
+requires-python = ">=3.10, <3.13"
 dependencies = [
     "numpy>=1.20",  # for numpy.typing
     "noisereduce",
@@ -37,10 +37,9 @@ tqdm = "^4.67.1"
 torch = {version = ">=2", source = "torch_cpu", markers = "sys_platform == 'linux'"}
 torchaudio = {version = ">=2", source = "torch_cpu", markers = "sys_platform == 'linux'"}
 inaspeechsegmenter = {version = "^0.8.0", markers = "sys_platform == 'linux'"}
-nemo-toolkit = {version = "^2.4.0", extras = ["asr"], markers = "sys_platform == 'linux'"}
 silero-vad = {version = "^6.0.0", markers = "sys_platform == 'linux'"}
 rvadfast = {version = "^0.0.5", markers = "sys_platform == 'linux'"}
-faster-whisper = {version = "^1.2.0", markers = "sys_platform == 'linux'"}
+whisperx = {version = "^3.4.2", markers = "sys_platform == 'linux'"}
 
 [[tool.poetry.source]]
 name = "torch_cpu"
