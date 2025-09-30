@@ -20,11 +20,11 @@ class vsed_debug_v2:
     def __init__(
         self,
         y: npt.NDArray,
-        orig_sr: int,
+        orig_sr: int | float,
         # -------------------------------------------
         win_length_s: Optional[float] = None,
         hop_length_s: float = 0.005,
-        zcr_margin_s: float = 0.1,
+        zcr_margin_s: float = 0.08,
         # -------------------------------------------
         rms_threshold: float = 0.03,
         zcr_threshold: float = 0.67,
@@ -55,11 +55,13 @@ class vsed_debug_v2:
         self.y_zcr: Final[npt.NDArray] = _02_zcr(y_nr, SR, win_length, hop_length)
         self.y_zcr.flags.writeable = False
         # get rms weight
-        rms_weight: Final[npt.NDArray] = (1 - self.y_zcr) * _gaussian_curve(self.y_zcr)
+        self.bell = _gaussian_curve(self.y_zcr)
+        self.bell.flags.writeable = False
+        rms_weight: Final[npt.NDArray] = (1 - self.y_zcr) * self.bell
         rms_weight.flags.writeable = False
 
         # step1: Root mean square -------------------------------------------
-        self.y_rms: Final[npt.NDArray] = y_rms * rms_weight
+        self.y_rms: Final[npt.NDArray] = normalize(y_rms * rms_weight)
         self.y_rms.flags.writeable = False
         start1: Final[int] = (
             np.where(rms_threshold < self.y_rms)[0][0]

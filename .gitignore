@@ -15,6 +15,7 @@ graph_*
 *.pdf
 *.zip
 *.png
+*.db
 
 # file
 /**/blue.py

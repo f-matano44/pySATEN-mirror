@@ -1,11 +1,24 @@
 # ChangeLog
 
+## 2.1.0
+* mod parameter -> re-tested
+    * mod test target
+        * mod container for ci
+* refactoring
+* mod directory structure
+* mod README
+* mod dependency
+* mod support python version
+
+## 2.0.3
+* re-tested
+
 ## 2.0.2
 * Refactoring
 * Update README
 * Downgrade python version for development (@ post1)
 * Modify ci (@ post1, post2)
-* re-tested (@ post3)
+
 
 ## 2.0.1
 * BugFix

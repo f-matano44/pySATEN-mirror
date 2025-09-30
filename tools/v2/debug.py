@@ -14,7 +14,7 @@ def _main() -> None:
     rand = np.random.default_rng(0)
 
     base_dir = "wav_and_lab/tohoku_itako/ITA_emotion_normal"
-    for i in tqdm(range(7, 8)):
+    for i in tqdm(range(1, 10)):
         handler = WavLabHandler(
             wav_path=Path(f"{base_dir}_synchronized_wav/emoNormal{i:03d}.wav"),
             lab_path=Path(f"{base_dir}_label/emoNormal{i:03d}.lab"),
@@ -38,25 +38,23 @@ def _main() -> None:
 
         # draw graph
         plt.clf()
-        plt.rcParams["font.family"] = "Liberation Serif"
+        # plt.rcParams["font.family"] = "Liberation Serif"
         plt.rcParams["font.size"] = 16
         x_t = np.linspace(0, len(x) / fs, len(x))
-        # plt.fill_between(x_t, -1, 1, where=section1.tolist(), color="gray", alpha=0.9)
-        # plt.fill_between(x_t, -1, 1, where=section2.tolist(), color="gray", alpha=0.6)
-        plt.fill_between(x_t, -1, 1, where=section3.tolist(), color="gray", alpha=0.9)
+        plt.fill_between(x_t, -1, 1, where=section1.tolist(), color="gray", alpha=0.9)
+        plt.fill_between(x_t, -1, 1, where=section2.tolist(), color="gray", alpha=0.6)
+        plt.fill_between(x_t, -1, 1, where=section3.tolist(), color="gray", alpha=0.3)
         plt.plot(x_t, x, color="black")
-        plt.plot(x_t, cx, color="white")
-        # plt.plot(result.feats_timestamp, result.y_rms, color="gray")
-        # plt.plot(result.feats_timestamp, result.y_zcr, color="gray")
-        # plt.plot(x_t, np.ones(len(x)) * result.zcr_threshold)
-        # plt.plot(x_t, np.ones(len(x)) * result.rms_threshold)
-        # plt.plot(result.feats_timestamp, result.bell, color="gray")
+        plt.plot(x_t, cx)
+        plt.plot(result.feats_timestamp, result.y_zcr)
+        plt.plot(result.feats_timestamp, result.y_rms)
+        plt.plot(x_t, np.ones(len(x)) * result.zcr_threshold)
+        plt.plot(x_t, np.ones(len(x)) * result.rms_threshold)
+        plt.plot(result.feats_timestamp, result.bell)
         plt.xlabel("Time (s)")
         plt.ylabel("Amplitude & Feature")
-        plt.ylim(-0.5, 0.5)
-        plt.xlim(0, 11.5)
-        # plt.savefig(f"graph/{i:03d}.pdf")
-        plt.show()
+        # plt.ylim(-1.0, 1.0)
+        plt.savefig(f"graph/{i:03d}.png")
 
 
 def add_noise_to_signal(signal, noise, desired_snr_db):

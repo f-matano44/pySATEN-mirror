@@ -3,24 +3,24 @@ from math import inf
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
-import librosa
 import numpy as np
 import pandas as pd
+import whisperx
 from inaSpeechSegmenter import Segmenter
-from marblenet import marblenet
 from rVADfast import rVADfast
 from silero_vad import get_speech_timestamps, load_silero_vad, read_audio
 from soundfile import write
 from tqdm import tqdm
 
 from pysaten.utility.WavLabHandler import WavLabHandler
-from pysaten.v1 import vsed_debug_v1
 from pysaten.v2 import vsed_debug_v2
 
 rvad = rVADfast()
 inaSegmenter = Segmenter(detect_gender=False)
-marble = marblenet.MarbleNet()
 silero = load_silero_vad()
+whisper_model = whisperx.load_model("large-v3", "cpu", compute_type="int8", language="ja")
+
+noise_type = "pink"
 
 
 def _main():
@@ -41,12 +41,11 @@ def _main():
     with TemporaryDirectory() as temp_dir:
         for snr in [inf, 20, 15, 10, 5, 0, -5, -inf]:
             ans_list = []
-            saten_list = []
             saten2_list = []
             rvad_list = []
             ina_list = []
-            nemo_list = []
             silero_list = []
+            whisper_list = []
 
             print(f"SNR: {snr}", file=sys.stderr)
             for i in tqdm(range(1, 324 + 1)):
@@ -58,22 +57,15 @@ def _main():
 
                     # create noised signal
                     x, fs = handler.get_noise_signal2(
-                        snr, "pink", int(rand.integers(0, 20250922))
+                        snr, noise_type, int(rand.integers(0, 20250922))
                     )
 
                     # save noise signal
                     temp_wav = f"{temp_dir}/temp.wav"
                     write(temp_wav, x, fs)
-                    temp_wav_16k = f"{temp_dir}/temp_16k.wav"
-                    x_16k = librosa.resample(x, orig_sr=fs, target_sr=16000)
-                    write(temp_wav_16k, x_16k, 16000)
 
                     # get answer label
                     ans_list.extend(handler.get_answer())
-
-                    # SATEN
-                    _, _, _, _, S, E, _, _, _ = vsed_debug_v1(x, fs, noise_seed=i)
-                    saten_list.extend([S, E])
 
                     # SATEN2
                     saten2_list.extend(vsed_debug_v2(x, fs, noise_seed=i).get_result())
@@ -84,23 +76,22 @@ def _main():
                     # ina
                     ina_list.extend(_ina_speech_segmenter(temp_wav))
 
-                    # nemo
-                    nemo_list.extend(marble.vad_test2(temp_wav_16k))
-
                     # silero vad
                     silero_list.extend(_silero_vad(temp_wav))
+
+                    # whisperx
+                    whisper_list.extend(_whisper(temp_wav))
 
             pd.DataFrame(
                 {
                     "answer": ans_list,
-                    "pySATEN": saten_list,
                     "pySATEN2": saten2_list,
                     "rVAD": rvad_list,
                     "inaSpeechSegmenter": ina_list,
-                    "MarbleNet": nemo_list,
                     "Silero_vad": silero_list,
+                    "WhisperX": whisper_list,
                 }
-            ).to_csv(f"test_result/pink_{str(snr)}.csv", index=False)
+            ).to_csv(f"test_result/{noise_type}_{str(snr)}.csv", index=False)
 
 
 def _rvad_fast(x, fs):
@@ -113,8 +104,8 @@ def _rvad_fast(x, fs):
         return valid_only[0], valid_only[-1]
 
 
-def _ina_speech_segmenter(temp_wav: Path):
-    segments = inaSegmenter(temp_wav)
+def _ina_speech_segmenter(audio_file: Path):
+    segments = inaSegmenter(audio_file)
     ina_temp = []
     for segment in segments:
         label, s, e = segment
@@ -126,13 +117,27 @@ def _ina_speech_segmenter(temp_wav: Path):
     return S, E
 
 
-def _silero_vad(tempfile):
-    wav = read_audio(tempfile)
+def _silero_vad(audio_file):
+    wav = read_audio(audio_file)
     speech_timestamps = get_speech_timestamps(wav, silero, return_seconds=True)
 
     seg = []
     for segment in speech_timestamps:
         # print(segment)
+        seg.append(segment["start"])
+        seg.append(segment["end"])
+
+    S = seg[0] if len(seg) != 0 else None
+    E = seg[-1] if len(seg) != 0 else None
+    return S, E
+
+
+def _whisper(audio_file):
+    audio = whisperx.load_audio(audio_file)
+    result = whisper_model.transcribe(audio, batch_size=16)
+
+    seg = []
+    for segment in result["segments"]:
         seg.append(segment["start"])
         seg.append(segment["end"])
 

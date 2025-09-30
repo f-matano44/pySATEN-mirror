@@ -1,17 +1,15 @@
 from math import inf
 
-# import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
 snr_list = [inf, 20, 15, 10, 5, 0, -5, -inf]
 vad = [
-    "pySATEN",
     "pySATEN2",
     "rVAD",
     "inaSpeechSegmenter",
-    "MarbleNet",
     "Silero_vad",
+    "WhisperX",
 ]
 result: dict[str, list] = {
     "label": ["Inf", "20", "15", "10", "5", "0", "-5", "-Inf"],
@@ -20,12 +18,11 @@ result: dict[str, list] = {
     vad[2]: [],
     vad[3]: [],
     vad[4]: [],
-    vad[5]: [],
 }
 
 with open("pink_result.md", "w") as f:
-    f.write(f"|SNR|{vad[0]}|{vad[1]}|{vad[2]}|{vad[3]}|{vad[4]}|{vad[5]}|\n")
-    f.write("|:---:|---:|---:|---:|---:|---:|---:|\n")
+    f.write(f"|SNR|{vad[0]}|{vad[1]}|{vad[2]}|{vad[3]}|{vad[4]}|\n")
+    f.write("|:---:|---:|---:|---:|---:|---:|\n")
     for snr in snr_list:
         f.write(f"|{snr}|")
         file_path = f"test_result/pink_{str(snr)}.csv"

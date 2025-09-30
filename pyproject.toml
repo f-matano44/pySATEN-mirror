@@ -9,14 +9,14 @@ version = "2.0.3"
 authors = [
     {name = "Fumiyoshi MATANO", email = "fumiyoshi.matano@gmail.com"}
 ]
-requires-python = ">=3.10"
+requires-python = ">=3.10, <3.13"
 dependencies = [
     "numpy>=1.20",  # for numpy.typing
     "noisereduce",
     "librosa",
     "soundfile",  # for cli_runner
     "scipy",
-    "torch>=1.7"  # for torch.fft
+    "torch>=2"  # for torch.fft
 ]
 readme = "README.md"
 classifiers = [
@@ -33,12 +33,18 @@ pysaten_trim = "pysaten.pysaten:cli_runner"
 [tool.poetry.group.dev.dependencies]
 matplotlib = "^3.10.3"
 pandas = "^2.2.3"
-inaspeechsegmenter = "^0.8.0"
 tqdm = "^4.67.1"
-nemo-toolkit = {extras = ["asr"], version = "^2.4.0"}
-silero-vad = "^6.0.0"
-rvadfast = "^0.0.5"
-jedi = "^0.19.2"
+torch = {version = ">=2", source = "torch_cpu", markers = "sys_platform == 'linux'"}
+torchaudio = {version = ">=2", source = "torch_cpu", markers = "sys_platform == 'linux'"}
+inaspeechsegmenter = {version = "^0.8.0", markers = "sys_platform == 'linux'"}
+silero-vad = {version = "^6.0.0", markers = "sys_platform == 'linux'"}
+rvadfast = {version = "^0.0.5", markers = "sys_platform == 'linux'"}
+whisperx = {version = "^3.4.2", markers = "sys_platform == 'linux'"}
+
+[[tool.poetry.source]]
+name = "torch_cpu"
+url = "https://download.pytorch.org/whl/cpu"
+priority = "explicit"
 
 [tool.black]
 line-length = 90

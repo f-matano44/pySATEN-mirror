@@ -42,7 +42,7 @@ start_sec, end_sec = pysaten.vsed(y, sr)
 y_trimmed = y[int(start_sec * sr) : int(end_sec * sr)]
 ```
 
-### For development (Linux only)
+### For development
 
 ```sh
 git clone https://gitlab.com/f-matano44/pysaten.git
@@ -59,23 +59,22 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 
 You should have received a copy of the GNU General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.
 
-## Acknowledgements
+## Acknowledgements 🙏
 
-The following programs were used to [\[evaluate the performance of pysaten\]](tools/v2/).
-We would like to take this opportunity to express our gratitude.
-
-* test/marblenet: Apache License Version 2.0
+* tools/v1/marblenet: Apache License Version 2.0
   * <https://github.com/NVIDIA/NeMo>
-* test/rvad: MIT License
+* tools/v1/rvad: MIT License
   * <https://github.com/zhenghuatan/rVAD>
 * inaSpeechSegmenter
   * <https://github.com/ina-foss/inaSpeechSegmenter>
-* Silero VAD v5
+* Silero VAD
   * <https://github.com/snakers4/silero-vad>
+* WhisperX
+  * <https://github.com/m-bain/whisperX>
 
 ## Cite this
 
-### Library version 2.0 (Non-peer-reviewed)
+### Library version 2.x (Non-peer-reviewed)
 
 #### Japanese
 
