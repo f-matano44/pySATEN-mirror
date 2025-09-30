@@ -1,5 +1,14 @@
 # ChangeLog
 
+## 2.1.0
+* mod parameter -> re-tested
+    * mod test target
+* refactoring
+* mod directory structure
+* mod README
+* mod dependency
+* mod support python version
+
 ## 2.0.2
 * Refactoring
 * Update README
