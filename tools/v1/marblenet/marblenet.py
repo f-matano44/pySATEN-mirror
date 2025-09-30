@@ -13,7 +13,7 @@ from torch.utils.data import DataLoader
 class MarbleNet:
     def __init__(self):
         self.vad_model = nemo_asr.models.EncDecClassificationModel.from_pretrained(
-            model_name="vad_multilingual_marblenet"
+            "vad_marblenet"
         )
         self.cfg = copy.deepcopy(self.vad_model._cfg)
         self.vad_model.preprocessor = self.vad_model.from_config_dict(
@@ -203,8 +203,13 @@ class MarbleNet:
         return start, end
 
     def vad_test(self, temp_wav_16k: Path):
-        S, E = self.offline_inference(temp_wav_16k)
+        step = 0.025
+        S, E = self.offline_inference(temp_wav_16k, step)
         if S == "Failed" and E == "Failed":
             return 0, 0
         else:
             return S, E
+
+    def vad_test2(self, temp_wav_16k: Path):
+        step = 0.01
+        return self.offline_inference(temp_wav_16k, step)
