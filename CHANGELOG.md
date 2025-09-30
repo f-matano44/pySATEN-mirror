@@ -3,6 +3,7 @@
 ## 2.1.0
 * mod parameter -> re-tested
     * mod test target
+        * mod container for ci
 * refactoring
 * mod directory structure
 * mod README
