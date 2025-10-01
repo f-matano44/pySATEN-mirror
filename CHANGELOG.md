@@ -1,5 +1,9 @@
 # ChangeLog
 
+## 2.1.1
+* {White, pluse} noise test
+* mod noise generator behavior
+
 ## 2.1.0
 * mod parameter -> re-tested
     * mod test target
