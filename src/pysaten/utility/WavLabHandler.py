@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from math import inf
 from pathlib import Path
-from typing import Final
+from typing import Final, Optional
 
 import librosa
 import numpy as np
@@ -97,9 +97,10 @@ class WavLabHandler:
         return noised_x, sr
 
     def get_noise_signal2(
-        self, snr: float, noise_type: str, noise_seed: int
+        self, snr: Optional[float], noise_type: str, noise_seed: int
     ) -> tuple[npt.NDArray, float]:
         x: npt.NDArray = self.__x
+        noised_x: npt.NDArray = x.copy()
         ans_s_sec, ans_e_sec = self.get_answer()
         speech_start_idx: Final[int] = int(ans_s_sec * self.__sr)
         speech_end_idx: Final[int] = int(ans_e_sec * self.__sr)
@@ -107,7 +108,7 @@ class WavLabHandler:
         color_flag = False
 
         for nt in noise_type.split():
-            if not color_flag and (nt == "white" or nt == "pink"):
+            if not color_flag and (nt == "white" or nt == "pink") and snr is not None:
                 # generate color noise
                 noise: npt.NDArray[np.floating] = (
                     (
@@ -121,7 +122,7 @@ class WavLabHandler:
 
                 # mix stationary noise and signal (in specified snr)
                 if snr == inf:
-                    noised_x = x.copy()
+                    pass
                 elif snr == -inf:
                     noised_x = noise
                 else:
@@ -135,7 +136,7 @@ class WavLabHandler:
             # add pulse noise
             if nt == "pulse":
                 rand.seed(noise_seed)
-                pulse: npt.NDArray[np.floating] = rand.random(2) - 0.5 * 2
+                pulse: npt.NDArray[np.floating] = rand.choice((-1, 1), size=2)
                 # determine index adding pulse noise
                 start_pulse_index: int = np.random.randint(0, speech_start_idx)
                 end_pulse_index: int = np.random.randint(speech_end_idx, len(x) - 1)

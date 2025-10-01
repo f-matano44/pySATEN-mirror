@@ -1,5 +1,3 @@
-import sys
-from math import inf
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
@@ -20,8 +18,6 @@ inaSegmenter = Segmenter(detect_gender=False)
 silero = load_silero_vad()
 whisper_model = whisperx.load_model("large-v3", "cpu", compute_type="int8", language="ja")
 
-noise_type = "white"
-
 
 def _main():
     rand = np.random.default_rng(0)
@@ -39,7 +35,7 @@ def _main():
     ]
 
     with TemporaryDirectory() as temp_dir:
-        for snr in [inf, 20, 15, 10, 5, 0, -5, -inf]:
+        for noise_type in ["", "pulse"]:
             ans_list = []
             saten2_list = []
             rvad_list = []
@@ -47,7 +43,6 @@ def _main():
             silero_list = []
             whisper_list = []
 
-            print(f"SNR: {snr}", file=sys.stderr)
             for i in tqdm(range(1, 324 + 1)):
                 for speaker in [0, 1, 2]:
                     # load wav and label
@@ -57,7 +52,7 @@ def _main():
 
                     # create noised signal
                     x, fs = handler.get_noise_signal2(
-                        snr, noise_type, int(rand.integers(0, 20250922))
+                        None, noise_type, int(rand.integers(0, 20250922))
                     )
 
                     # save noise signal
@@ -91,7 +86,10 @@ def _main():
                     "Silero_vad": silero_list,
                     "WhisperX": whisper_list,
                 }
-            ).to_csv(f"test_result/{noise_type}_{str(snr)}.csv", index=False)
+            ).to_csv(
+                f"test_result/{'with' if noise_type == 'pulse' else 'without'}_pulse.csv",
+                index=False,
+            )
 
 
 def _rvad_fast(x, fs):
