@@ -20,7 +20,7 @@ inaSegmenter = Segmenter(detect_gender=False)
 silero = load_silero_vad()
 whisper_model = whisperx.load_model("large-v3", "cpu", compute_type="int8", language="ja")
 
-noise_type = "pink"
+noise_type = "white"
 
 
 def _main():
