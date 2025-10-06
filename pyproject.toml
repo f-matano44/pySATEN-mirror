@@ -53,5 +53,4 @@ line-length = 90
 profile = "black"
 
 [tool.mypy]
-plugins = "numpy.typing.mypy_plugin"
 ignore_missing_imports = true
