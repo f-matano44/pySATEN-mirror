@@ -5,6 +5,9 @@ stages:
   - build
   - deploy
 
+variables:
+  PIP_ROOT_USER_ACTION: "ignore"
+
 lint:
   stage: lint
   rules:
