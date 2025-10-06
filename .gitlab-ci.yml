@@ -27,8 +27,8 @@ build:
   dependencies:
     - lint
   script:
-    - pip install "poetry>=2"
-    - poetry build
+    - apt-get update && apt-get install -y python3-build
+    - python3 -m build
   artifacts:
     paths:
       - dist/
@@ -43,5 +43,5 @@ deploy:  # https://docs.pypi.org/trusted-publishers/using-a-publisher/#gitlab-ci
     PYPI_ID_TOKEN:
       aud: pypi
   script:
-    - pip install "twine>=6.1"
+    - apt-get update && apt-get install -y twine
     - twine --no-color upload dist/* --disable-progress-bar
