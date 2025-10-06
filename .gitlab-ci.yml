@@ -5,13 +5,16 @@ stages:
   - build
   - deploy
 
+variables:
+  PIP_ROOT_USER_ACTION: "ignore"
+
 lint:
   stage: lint
   rules:
     - when: always
   script:
-    - python --version
-    - apt-get update && apt-get install -y black isort flake8 mypy python3-numpy
+    - python3 --version
+    - python3 -m pip install -U black isort flake8 mypy numpy
     - black --check src/pysaten/
     - isort --check-only src/pysaten/
     - flake8 src/pysaten/
@@ -24,7 +27,7 @@ build:
   dependencies:
     - lint
   script:
-    - apt-get update && apt-get install -y python3-build
+    - python3 -m pip install -U build
     - python3 -m build
   artifacts:
     paths:
@@ -40,5 +43,5 @@ deploy:  # https://docs.pypi.org/trusted-publishers/using-a-publisher/#gitlab-ci
     PYPI_ID_TOKEN:
       aud: pypi
   script:
-    - apt-get update && apt-get install -y twine
+    - python3 -m pip install -U twine
     - twine --no-color upload dist/* --disable-progress-bar
