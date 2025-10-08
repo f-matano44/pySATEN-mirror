@@ -42,6 +42,7 @@ inaspeechsegmenter = "^0.8.0"
 silero-vad = "^6.0.0"
 rvadfast = "^0.0.5"
 whisperx = "^3.4.2"
+speechbrain = "^1.0.3"
 
 [tool.black]
 line-length = 90

@@ -3,6 +3,7 @@ from math import inf
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
+import librosa
 import numpy as np
 import pandas as pd
 import whisperx
@@ -10,6 +11,7 @@ from inaSpeechSegmenter import Segmenter
 from rVADfast import rVADfast
 from silero_vad import get_speech_timestamps, load_silero_vad, read_audio
 from soundfile import write
+from speechbrain.inference.VAD import VAD as speechbrain
 from tqdm import tqdm
 
 from pysaten.utility.WavLabHandler import WavLabHandler
@@ -18,9 +20,11 @@ from pysaten.v2 import vsed_debug_v2
 rvad = rVADfast()
 inaSegmenter = Segmenter(detect_gender=False)
 silero = load_silero_vad()
+speechbrain_model = speechbrain.from_hparams(source="speechbrain/vad-crdnn-libriparty")
 whisper_model = whisperx.load_model("large-v3", "cpu", compute_type="int8", language="ja")
 
-noise_type = "white"
+
+noise_type = "pink"
 
 
 def _main():
@@ -45,6 +49,7 @@ def _main():
             rvad_list = []
             ina_list = []
             silero_list = []
+            speechbrain_list = []
             whisper_list = []
 
             print(f"SNR: {snr}", file=sys.stderr)
@@ -63,6 +68,9 @@ def _main():
                     # save noise signal
                     temp_wav = f"{temp_dir}/temp.wav"
                     write(temp_wav, x, fs)
+                    temp_wav_16k = f"{temp_dir}/temp_16k.wav"
+                    x_16k = librosa.resample(x, orig_sr=fs, target_sr=16000)
+                    write(temp_wav_16k, x_16k, 16000)
 
                     # get answer label
                     ans_list.extend(handler.get_answer())
@@ -79,6 +87,9 @@ def _main():
                     # silero vad
                     silero_list.extend(_silero_vad(temp_wav))
 
+                    # speechbrain
+                    speechbrain_list.extend(_SpeechBrainVAD(temp_wav_16k))
+
                     # whisperx
                     whisper_list.extend(_whisper(temp_wav))
 
@@ -89,6 +100,7 @@ def _main():
                     "rVAD": rvad_list,
                     "inaSpeechSegmenter": ina_list,
                     "Silero_vad": silero_list,
+                    "SpeechBrain": speechbrain_list,
                     "WhisperX": whisper_list,
                 }
             ).to_csv(f"results/{noise_type}_{str(snr)}.csv", index=False)
@@ -126,6 +138,19 @@ def _silero_vad(audio_file):
         # print(segment)
         seg.append(segment["start"])
         seg.append(segment["end"])
+
+    S = seg[0] if len(seg) != 0 else None
+    E = seg[-1] if len(seg) != 0 else None
+    return S, E
+
+
+def _SpeechBrainVAD(audio_file16k):
+    boundaries = speechbrain_model.get_speech_segments(audio_file16k)
+
+    seg = []
+    for segment in boundaries:
+        seg.append(float(segment[0]))
+        seg.append(float(segment[1]))
 
     S = seg[0] if len(seg) != 0 else None
     E = seg[-1] if len(seg) != 0 else None
