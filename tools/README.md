@@ -9,4 +9,4 @@ TF_ENABLE_ONEDNN_OPTS=0 python eval.py
 
 ## White noise MdAE
 
-# Pulse noise MdAE
+## Pulse noise MdAE
