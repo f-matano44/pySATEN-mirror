@@ -35,9 +35,9 @@ matplotlib = "^3.10.3"
 pandas = "^2.2.3"
 tqdm = "^4.67.1"
 
-[tool.poetry.group.evaluation]
+[tool.poetry.group.eval]
 optional = true
-[tool.poetry.group.evaluation.dependencies]
+[tool.poetry.group.eval.dependencies]
 inaspeechsegmenter = "^0.8.0"
 silero-vad = "^6.0.0"
 rvadfast = "^0.0.5"
