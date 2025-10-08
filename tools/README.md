@@ -1,6 +1,7 @@
 # Error Evaluate v2
 
 ```sh
+poetry install --with test
 TF_ENABLE_ONEDNN_OPTS=0 python test.py
 ```
 
