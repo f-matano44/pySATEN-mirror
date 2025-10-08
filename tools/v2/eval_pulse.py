@@ -87,7 +87,7 @@ def _main():
                     "WhisperX": whisper_list,
                 }
             ).to_csv(
-                f"test_result/{'with' if noise_type == 'pulse' else 'without'}_pulse.csv",
+                f"results/{'with' if noise_type == 'pulse' else 'without'}_pulse.csv",
                 index=False,
             )
 

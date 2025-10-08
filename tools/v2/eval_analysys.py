@@ -27,7 +27,7 @@ with open(f"{color}_result.md", "w") as f:
     f.write("|:---:|---:|---:|---:|---:|---:|\n")
     for snr in snr_list:
         f.write(f"|{snr}|")
-        file_path = f"test_result/{color}_{str(snr)}.csv"
+        file_path = f"results/{color}_{str(snr)}.csv"
         df = pd.read_csv(file_path)
         for method in vad:
             method_np = df[method].to_numpy(dtype=float)

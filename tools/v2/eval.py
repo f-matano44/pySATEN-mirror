@@ -91,7 +91,7 @@ def _main():
                     "Silero_vad": silero_list,
                     "WhisperX": whisper_list,
                 }
-            ).to_csv(f"test_result/{noise_type}_{str(snr)}.csv", index=False)
+            ).to_csv(f"results/{noise_type}_{str(snr)}.csv", index=False)
 
 
 def _rvad_fast(x, fs):
