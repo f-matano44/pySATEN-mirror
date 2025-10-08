@@ -2,7 +2,7 @@
 
 ```sh
 poetry install --with eval
-TF_ENABLE_ONEDNN_OPTS=0 python eval.py
+TF_ENABLE_ONEDNN_OPTS=0 PYTHONWARNINGS="ignore" python eval.py
 ```
 
 ## Pink noise MdAE (Median Absolute Error)
