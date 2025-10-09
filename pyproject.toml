@@ -16,7 +16,7 @@ dependencies = [
     "librosa",
     "soundfile",  # for cli_runner
     "scipy",
-    "torch>=2"  # for torch.fft
+    "torch>=2, <2.9"  # for torch.fft, torchaudio
 ]
 readme = "README.md"
 classifiers = [
