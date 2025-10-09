@@ -44,6 +44,7 @@ rvadfast = "^0.0.5"
 whisperx = "^3.4.2"
 speechbrain = "^1.0.3"
 webrtcvad = "^2.0.10"
+setuptools = "<81"
 
 [tool.black]
 line-length = 90
