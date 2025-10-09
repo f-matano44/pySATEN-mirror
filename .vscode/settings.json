@@ -12,11 +12,8 @@
         "tohoku",
         "usagi",
         "vsed",
+        "whisperx",
         "zundamon"
     ],
-    "editor.formatOnSave": true,
-    "editor.defaultFormatter": "ms-python.black-formatter",
-    "editor.codeActionsOnSave": {
-        "source.organizeImports": "always"
-    },
+    "editor.defaultFormatter": "ms-python.black-formatter"
 }
