@@ -3,11 +3,12 @@ from math import inf
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
-import librosa
 import numpy as np
 import pandas as pd
+import webrtcvad
 import whisperx
 from inaSpeechSegmenter import Segmenter
+from librosa import resample
 from rVADfast import rVADfast
 from silero_vad import get_speech_timestamps, load_silero_vad, read_audio
 from soundfile import write
@@ -68,9 +69,10 @@ def _main():
                     # save noise signal
                     temp_wav = f"{temp_dir}/temp.wav"
                     write(temp_wav, x, fs)
+                    temp_wav_48k = f"{temp_dir}/temp_48k.wav"
+                    write(temp_wav_48k, resample(x, orig_sr=fs, target_sr=48000), 48000)
                     temp_wav_16k = f"{temp_dir}/temp_16k.wav"
-                    x_16k = librosa.resample(x, orig_sr=fs, target_sr=16000)
-                    write(temp_wav_16k, x_16k, 16000)
+                    write(temp_wav_16k, resample(x, orig_sr=fs, target_sr=16000), 16000)
 
                     # get answer label
                     ans_list.extend(handler.get_answer())
