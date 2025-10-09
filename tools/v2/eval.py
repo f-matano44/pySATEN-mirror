@@ -17,9 +17,9 @@ from tqdm import tqdm
 from pysaten.utility.WavLabHandler import WavLabHandler
 from pysaten.v2 import vsed_debug_v2
 
-rvad = rVADfast()
-inaSegmenter = Segmenter(detect_gender=False)
-silero = load_silero_vad()
+rvad_model = rVADfast()
+ina_model = Segmenter(detect_gender=False)
+silero_model = load_silero_vad()
 speechbrain_model = speechbrain.from_hparams(source="speechbrain/vad-crdnn-libriparty")
 whisper_model = whisperx.load_model("large-v3", "cpu", compute_type="int8", language="ja")
 
@@ -107,7 +107,7 @@ def _main():
 
 
 def _rvad_fast(x, fs):
-    label, timestamp = rvad(x, fs)
+    label, timestamp = rvad_model(x, fs)
     if not any(label):
         return None, None
     else:
@@ -117,7 +117,7 @@ def _rvad_fast(x, fs):
 
 
 def _ina_speech_segmenter(audio_file: Path):
-    segments = inaSegmenter(audio_file)
+    segments = ina_model(audio_file)
     ina_temp = []
     for segment in segments:
         label, s, e = segment
@@ -131,7 +131,7 @@ def _ina_speech_segmenter(audio_file: Path):
 
 def _silero_vad(audio_file):
     wav = read_audio(audio_file)
-    speech_timestamps = get_speech_timestamps(wav, silero, return_seconds=True)
+    speech_timestamps = get_speech_timestamps(wav, silero_model, return_seconds=True)
 
     seg = []
     for segment in speech_timestamps:
