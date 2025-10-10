@@ -9,12 +9,6 @@ class WebRTC_VAD(webrtcvad.Vad):
         super().__init__()
 
     @staticmethod
-    def _float_to_pcm16(x: np.ndarray) -> bytes:
-        y = np.clip(x, -1.0, 1.0)
-        y = (y * 32767.0).astype(np.int16, copy=False)
-        return y.tobytes()
-
-    @staticmethod
     def _frame_bytes(sig_pcm16: bytes, frame_samples: int) -> list[bytes]:
         step = frame_samples * 2
         n = len(sig_pcm16)
@@ -29,7 +23,7 @@ class WebRTC_VAD(webrtcvad.Vad):
         frame_ms: int = 10
         frame_sec = frame_ms / 1000.0
 
-        pcm = self._float_to_pcm16(x)
+        pcm = (x * 32767.0).astype(np.int16).tobytes()
         frame_samples = int(sr * frame_ms / 1000)
         frames = self._frame_bytes(pcm, frame_samples)
 
