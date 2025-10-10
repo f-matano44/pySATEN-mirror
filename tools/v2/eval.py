@@ -5,10 +5,10 @@ from tempfile import TemporaryDirectory
 
 import numpy as np
 import pandas as pd
-import webrtcvad
 import whisperx
 from inaSpeechSegmenter import Segmenter
 from librosa import resample
+from my_webrtcvad import WebRTC_VAD
 from rVADfast import rVADfast
 from silero_vad import get_speech_timestamps, load_silero_vad, read_audio
 from soundfile import write
@@ -22,8 +22,8 @@ rvad_model = rVADfast()
 ina_model = Segmenter(detect_gender=False)
 silero_model = load_silero_vad()
 speechbrain_model = speechbrain.from_hparams(source="speechbrain/vad-crdnn-libriparty")
+webrtc_model = WebRTC_VAD()
 whisper_model = whisperx.load_model("large-v3", "cpu", compute_type="int8", language="ja")
-
 
 noise_type = "pink"
 
@@ -51,10 +51,11 @@ def _main():
             ina_list = []
             silero_list = []
             speechbrain_list = []
+            webrtc_list = []
             whisper_list = []
 
             print(f"SNR: {snr}", file=sys.stderr)
-            for i in tqdm(range(1, 324 + 1)):
+            for i in tqdm(range(1, 3 + 1)):
                 for speaker in [0, 1, 2]:
                     # load wav and label
                     wav_path = Path(f"{wav_files[speaker]}{i:03}.wav")
@@ -69,8 +70,6 @@ def _main():
                     # save noise signal
                     temp_wav = f"{temp_dir}/temp.wav"
                     write(temp_wav, x, fs)
-                    temp_wav_48k = f"{temp_dir}/temp_48k.wav"
-                    write(temp_wav_48k, resample(x, orig_sr=fs, target_sr=48000), 48000)
                     temp_wav_16k = f"{temp_dir}/temp_16k.wav"
                     write(temp_wav_16k, resample(x, orig_sr=fs, target_sr=16000), 16000)
 
@@ -92,6 +91,13 @@ def _main():
                     # speechbrain
                     speechbrain_list.extend(_SpeechBrainVAD(temp_wav_16k))
 
+                    # WebRTC VAD
+                    webrtc_list.extend(
+                        webrtc_model.detect_segments(
+                            resample(x, orig_sr=fs, target_sr=48000), 48000
+                        )
+                    )
+
                     # whisperx
                     whisper_list.extend(_whisper(temp_wav))
 
@@ -103,6 +109,7 @@ def _main():
                     "inaSpeechSegmenter": ina_list,
                     "Silero_vad": silero_list,
                     "SpeechBrain": speechbrain_list,
+                    "WebRTC": webrtc_list,
                     "WhisperX": whisper_list,
                 }
             ).to_csv(f"results/{noise_type}_{str(snr)}.csv", index=False)

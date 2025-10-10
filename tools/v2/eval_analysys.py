@@ -12,6 +12,7 @@ vad = [
     "inaSpeechSegmenter",
     "Silero_vad",
     "SpeechBrain",
+    "WebRTC",
     "WhisperX",
 ]
 result: dict[str, list] = {
@@ -22,11 +23,12 @@ result: dict[str, list] = {
     vad[3]: [],
     vad[4]: [],
     vad[5]: [],
+    vad[6]: [],
 }
 
 with open(f"{color}_result.md", "w") as f:
-    f.write(f"|SNR|{vad[0]}|{vad[1]}|{vad[2]}|{vad[3]}|{vad[4]}|{vad[5]}|\n")
-    f.write("|:---:|---:|---:|---:|---:|---:|---:|\n")
+    f.write(f"|SNR|{vad[0]}|{vad[1]}|{vad[2]}|{vad[3]}|{vad[4]}|{vad[5]}|{vad[6]}|\n")
+    f.write("|:---:|---:|---:|---:|---:|---:|---:|---:|\n")
     for snr in snr_list:
         f.write(f"|{snr}|")
         file_path = f"results/{color}_{str(snr)}.csv"
