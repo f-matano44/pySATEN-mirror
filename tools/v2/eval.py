@@ -55,7 +55,7 @@ def _main():
             whisper_list = []
 
             print(f"SNR: {snr}", file=sys.stderr)
-            for i in tqdm(range(1, 3 + 1)):
+            for i in tqdm(range(1, 324 + 1)):
                 for speaker in [0, 1, 2]:
                     # load wav and label
                     wav_path = Path(f"{wav_files[speaker]}{i:03}.wav")
