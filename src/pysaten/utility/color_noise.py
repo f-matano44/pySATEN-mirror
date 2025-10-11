@@ -1,43 +1,42 @@
-import torch
+import numpy as np
+from numpy.typing import NDArray
 
 
-def white(length: int, seed: int, device: str = "cpu") -> torch.Tensor:
-    gen = torch.Generator(device=device)
-    gen.manual_seed(seed)
-    return torch.rand(length, generator=gen, device=device) * 2.0 - 1.0
+def white(length: int, seed: int) -> NDArray:
+    return np.random.default_rng(seed).uniform(-1, 1, length)
 
 
-def blue(length: int, sr: float, seed: int, device: str = "cpu") -> torch.Tensor:
+def blue(length: int, sr: float, seed: int) -> NDArray:
     offset = int(length / 2)
     # white noise
-    wh = white(length + (offset * 2), seed, device)
+    wh = white(length + (offset * 2), seed)
     # fft
-    WH_f = torch.fft.rfft(wh)
-    freqs = torch.fft.rfftfreq(len(wh), 1 / sr).to(WH_f.device)
+    WH_f = np.fft.rfft(wh)
+    freqs = np.fft.rfftfreq(len(wh), 1 / sr)
     # white -> blue
-    BL_f = WH_f * torch.sqrt(freqs)
+    BL_f = WH_f * np.sqrt(freqs)
     # irfft
-    bl = torch.fft.irfft(BL_f)
+    bl = np.fft.irfft(BL_f)
     # normalize
-    bl /= bl.abs().max()
+    bl /= np.abs(bl).max()
 
     return bl[offset : length + offset]
 
 
-def pink(length: int, sr: float, seed: int, device: str = "cpu") -> torch.Tensor:
+def pink(length: int, sr: float, seed: int) -> NDArray:
     offset = int(length / 2)
     # white noise
-    wh = white(length + (offset * 2), seed, device)
+    wh = white(length + (offset * 2), seed)
     # fft
-    WH_f = torch.fft.rfft(wh)
-    freqs = torch.fft.rfftfreq(len(wh), 1 / sr).to(WH_f.device)
+    WH_f = np.fft.rfft(wh)
+    freqs = np.fft.rfftfreq(len(wh), 1 / sr)
     # white -> pink
     mask = freqs > 20.0
-    PK_f = torch.zeros_like(WH_f)
-    PK_f[mask] = WH_f[mask] / torch.sqrt(freqs[mask])
+    PK_f = np.zeros_like(WH_f)
+    PK_f[mask] = WH_f[mask] / np.sqrt(freqs[mask])
     # irfft
-    pk = torch.fft.irfft(PK_f)
+    pk = np.fft.irfft(PK_f)
     # normalize
-    pk /= pk.abs().max()
+    pk /= np.abs(pk).max()
 
     return pk[offset : length + offset]

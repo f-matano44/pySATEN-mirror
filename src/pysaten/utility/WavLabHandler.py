@@ -64,13 +64,7 @@ class WavLabHandler:
 
         # generate noise (white or pink)
         noise: npt.NDArray[np.floating] = (
-            (
-                wh_noise(len(x), noise_seed)
-                if is_white
-                else pk_noise(len(x), sr, noise_seed)
-            )
-            .cpu()
-            .numpy()
+            wh_noise(len(x), noise_seed) if is_white else pk_noise(len(x), sr, noise_seed)
         )
 
         # mix stationary noise and signal (in specified snr)
@@ -111,13 +105,9 @@ class WavLabHandler:
             if not color_flag and (nt == "white" or nt == "pink") and snr is not None:
                 # generate color noise
                 noise: npt.NDArray[np.floating] = (
-                    (
-                        wh_noise(len(x), noise_seed)
-                        if nt == "white"
-                        else pk_noise(len(x), self.__sr, noise_seed)
-                    )
-                    .cpu()
-                    .numpy()
+                    wh_noise(len(x), noise_seed)
+                    if nt == "white"
+                    else pk_noise(len(x), self.__sr, noise_seed)
                 )
 
                 # mix stationary noise and signal (in specified snr)

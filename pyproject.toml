@@ -16,7 +16,6 @@ dependencies = [
     "librosa",
     "soundfile",  # for cli_runner
     "scipy",
-    "torch>=2, <2.9"  # for torch.fft, torchaudio
 ]
 readme = "README.md"
 classifiers = [
@@ -38,6 +37,7 @@ tqdm = "^4.67.1"
 [tool.poetry.group.eval]
 optional = true
 [tool.poetry.group.eval.dependencies]
+torch = "<2.9"
 inaspeechsegmenter = "^0.8.0"
 silero-vad = "^6.0.0"
 rvadfast = "^0.0.5"
