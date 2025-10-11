@@ -30,11 +30,11 @@ def pink(length: int, sr: float, seed: int, device: str = "cpu") -> torch.Tensor
     wh = white(length + (offset * 2), seed, device)
     # fft
     WH_f = torch.fft.rfft(wh)
-    freqs = torch.fft.rfftfreq(len(wh), 1 / sr)
+    freqs = torch.fft.rfftfreq(len(wh), 1 / sr).to(WH_f.device)
     # white -> pink
-    PK_f = WH_f.clone()
-    for i in range(len(WH_f)):
-        PK_f[i] = WH_f[i] / torch.sqrt(freqs[i]) if 20 < freqs[i] else 0
+    mask = freqs > 20.0
+    PK_f = torch.zeros_like(WH_f)
+    PK_f[mask] = WH_f[mask] / torch.sqrt(freqs[mask])
     # irfft
     pk = torch.fft.irfft(PK_f)
     # normalize
