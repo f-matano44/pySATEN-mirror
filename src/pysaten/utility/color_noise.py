@@ -13,7 +13,7 @@ def blue(length: int, sr: float, seed: int, device: str = "cpu") -> torch.Tensor
     wh = white(length + (offset * 2), seed, device)
     # fft
     WH_f = torch.fft.rfft(wh)
-    freqs = torch.fft.rfftfreq(len(wh), 1 / sr)
+    freqs = torch.fft.rfftfreq(len(wh), 1 / sr).to(WH_f.device)
     # white -> blue
     BL_f = WH_f * torch.sqrt(freqs)
     # irfft
