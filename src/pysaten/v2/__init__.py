@@ -117,7 +117,7 @@ def _00_preprocess(y: np.ndarray, sr: int, noise_seed: int) -> tuple:
     signal_amp = data_rms[-2]
     noise_amp = max(data_rms[1], 1e-10)
     snr = min(20 * np.log10(signal_amp / noise_amp), 10)
-    noise = color_noise.white(len(y), noise_seed)
+    noise = color_noise.blue(len(y), sr, noise_seed)
     y_blue = y + noise * (signal_amp / 10 ** (snr / 20))
     y_nr = nr.reduce_noise(y_blue, sr)
     yf_nr = nr.reduce_noise(y_blue[::-1], sr)
