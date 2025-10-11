@@ -1,9 +1,10 @@
 import numpy as np
 from numpy.typing import NDArray
+from scipy.stats import truncnorm
 
 
 def white(length: int, seed: int) -> NDArray:
-    return np.random.default_rng(seed).uniform(-1, 1, length)
+    return truncnorm.rvs(-3, 3, loc=0, scale=1, size=length, random_state=seed)
 
 
 def blue(length: int, sr: float, seed: int) -> NDArray:
