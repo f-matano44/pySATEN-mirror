@@ -131,6 +131,9 @@ class WavLabHandler:
                     )
                     noised_x = x + noise * noise_scale
 
+                if 1 < np.max(np.abs(noised_x)):
+                    noised_x /= np.max(np.abs(noised_x))
+
                 color_flag = True
 
             # add pulse noise
