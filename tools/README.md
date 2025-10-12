@@ -1,4 +1,4 @@
-# Error Evaluate v2
+# Error Evaluate v2 (on Linux)
 
 ```sh
 poetry install --with eval
