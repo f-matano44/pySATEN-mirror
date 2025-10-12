@@ -37,7 +37,7 @@ tqdm = "^4.67.1"
 [tool.poetry.group.eval]
 optional = true
 [tool.poetry.group.eval.dependencies]
-torch = "<2.9"
+torch = {version = "<2.9", source = "torch_cpu"}
 inaspeechsegmenter = "^0.8.0"
 silero-vad = "^6.0.0"
 rvadfast = "^0.0.5"
@@ -45,6 +45,11 @@ whisperx = "^3.4.2"
 speechbrain = "^1.0.3"
 webrtcvad = "^2.0.10"
 setuptools = "<81"
+
+[[tool.poetry.source]]
+name = "torch_cpu"
+url = "https://download.pytorch.org/whl/cpu"
+priority = "explicit"
 
 [tool.black]
 line-length = 90
