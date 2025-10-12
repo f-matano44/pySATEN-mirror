@@ -38,6 +38,7 @@ tqdm = "^4.67.1"
 optional = true
 [tool.poetry.group.eval.dependencies]
 torch = {version = "<2.9", source = "torch_cpu"}
+torchaudio = {version = "<2.9", source = "torch_cpu"}
 inaspeechsegmenter = "^0.8.0"
 silero-vad = "^6.0.0"
 rvadfast = "^0.0.5"
