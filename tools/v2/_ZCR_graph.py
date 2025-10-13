@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from numpy.typing import NDArray
 
-from pysaten.utility.signal import normalize, zero_crossing_rate
+from pysaten.utility.signal import zero_crossing_rate
 from pysaten.v2 import _00_preprocess, _02_zcr
 
 linewidth = 2.27
@@ -13,10 +13,16 @@ plt.rcParams["font.family"] = "serif"
 
 def _main() -> None:
     wav = "wav_and_lab/tohoku_itako/ITA_emotion_normal_synchronized_wav/emoNormal001.wav"
+    lab = "wav_and_lab/tohoku_itako/ITA_emotion_normal_label/emoNormal001.lab"
 
-    # データ読み込み
+    # データ読み込み: wav
     y1, fs = librosa.load(wav)
     t1 = np.linspace(0, len(y1) / fs, len(y1))
+    # データ読み込み: lab
+    with open(lab) as f:
+        ans = [line.rstrip("\n").split(" ") for line in f]
+    start = float(ans[0][1]) / 1e7
+    end = float(ans[-1][0]) / 1e7
 
     hop_length: int = int(0.005 * fs)
     win_length: int = hop_length * 4
@@ -25,7 +31,7 @@ def _main() -> None:
     zcr_t = np.linspace(0, len(y1) / fs, len(zcr_1))
 
     y2, _ = _00_preprocess(y1, int(fs), 0)
-    zcr_2 = 1 - normalize(_02_zcr(y2, fs, win_length, hop_length))
+    zcr_2 = _02_zcr(y2, fs, win_length, hop_length)
 
     # データ形式の定義
     data_list: list[tuple[NDArray, NDArray, str]] = [
@@ -41,9 +47,10 @@ def _main() -> None:
     # 描画
     fig, axes = plt.subplots(len(data_list), ncols=1, figsize=(8, 6))
     for ax, (x, y, label) in zip(axes, data_list):
+        ax.axvspan(start, end, color="lightgray")
         ax.plot(x, y, color="black", linewidth=linewidth)
         ax.set_ylabel(label)
-        ax.tick_params(labelleft=False)
+        ax.tick_params(labelleft=False, axis="y", length=0)
         ax.set_xlim(x_min, x_max)
         # Wave の中心を０に
         if label == "Wave":
