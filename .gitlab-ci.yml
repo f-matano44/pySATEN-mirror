@@ -1,7 +1,7 @@
 image: python:3.12-slim
 
 stages:
-  - markdown-lint
+  - md-lint
   - lint
   - build
   - deploy
