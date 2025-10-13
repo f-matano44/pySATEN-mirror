@@ -10,7 +10,7 @@
 
 This library detects silence segment from speech signal.
 
-![\(alt: Image of voice segment detection\)](https://gitlab.com/f-matano44/pysaten/-/raw/main/image/signal_graph.svg)
+![\(alt: Image of Voice Start-End Detection\)](https://gitlab.com/f-matano44/pysaten/-/raw/main/image/signal_graph.svg)
 
 ## Installation
 
@@ -59,7 +59,7 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 
 You should have received a copy of the GNU General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.
 
-## Acknowledgements 🙏
+### Acknowledgements 🙏
 
 * tools/v1/marblenet: Apache License Version 2.0
   * <https://github.com/NVIDIA/NeMo>
@@ -71,6 +71,8 @@ You should have received a copy of the GNU General Public License along with thi
   * <https://github.com/snakers4/silero-vad>
 * WhisperX
   * <https://github.com/m-bain/whisperX>
+* WebRTC VAD
+  * <https://github.com/wiseman/py-webrtcvad>
 
 ## Cite this
 
