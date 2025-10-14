@@ -1,6 +1,7 @@
 image: python:3.12-slim
 
 stages:
+  - md-lint
   - lint
   - build
   - deploy
@@ -20,6 +21,16 @@ lint:
     - isort --check-only src/pysaten/
     - flake8 src/pysaten/
     - mypy src/pysaten/
+
+markdown-lint:
+  stage: md-lint
+  rules:
+    - when: always
+  script:
+    - pip3 install -U pymarkdownlnt
+    - pymarkdownlnt scan README.md
+    - pymarkdownlnt scan CHANGELOG.md
+    - pymarkdownlnt scan tools/README.md
 
 build:
   stage: build
