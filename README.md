@@ -69,10 +69,12 @@ You should have received a copy of the GNU General Public License along with thi
   * <https://github.com/ina-foss/inaSpeechSegmenter>
 * Silero VAD
   * <https://github.com/snakers4/silero-vad>
-* WhisperX
-  * <https://github.com/m-bain/whisperX>
+* SpeechBrain VAD
+  * <https://huggingface.co/speechbrain/vad-crdnn-libriparty>
 * WebRTC VAD
   * <https://github.com/wiseman/py-webrtcvad>
+* WhisperX
+  * <https://github.com/m-bain/whisperX>
 
 ## Cite this
 
