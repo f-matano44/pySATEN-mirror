@@ -2,7 +2,7 @@
 
 ## 2.2.0
 
-* fix algorithm
+* fix algorithm (<- BUG)
   * re-test all noise
 * mod ci
   * add markdown lint
