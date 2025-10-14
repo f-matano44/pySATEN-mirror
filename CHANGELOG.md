@@ -1,5 +1,15 @@
 # ChangeLog
 
+## 2.2.0
+
+* fix algorithm
+  * re-test all noise
+* mod ci
+  * add markdown lint
+* mod editor setting
+* add test target (SpeechBrain, WebRTC)
+* mod dependency
+
 ## 2.1.1
 
 * {White, pluse} noise test
