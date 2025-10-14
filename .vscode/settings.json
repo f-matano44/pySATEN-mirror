@@ -1,26 +1,21 @@
 {
     "cSpell.words": [
-        "filtfilt",
-        "freqs",
         "itako",
         "marblenet",
         "metan",
         "nemo",
+        "pymarkdownlnt",
         "pysaten",
         "rvad",
         "SATEN",
         "silero",
         "thres",
         "tohoku",
+        "torchaudio",
         "usagi",
-        "xlabel",
-        "ylabel",
-        "ylim",
+        "vsed",
+        "whisperx",
         "zundamon"
     ],
-    "editor.formatOnSave": true,
-    "editor.defaultFormatter": "ms-python.black-formatter",
-    "editor.codeActionsOnSave": {
-        "source.organizeImports": "always"
-    },
+    "editor.defaultFormatter": "ms-python.black-formatter"
 }

@@ -8,7 +8,7 @@ import numpy.typing as npt
 from librosa import resample
 from scipy.signal import cheby1, filtfilt, firwin, sosfilt
 
-from ..utility import color_noise
+from ..utility.color_noise import blue as blue_noise
 from ..utility.constants import F0_CEIL, F0_FLOOR, SR
 from ..utility.signal import normalize
 from ..utility.signal import root_mean_square as rms
@@ -117,7 +117,7 @@ def _00_preprocess(y: np.ndarray, sr: int, noise_seed: int) -> tuple:
     signal_amp = data_rms[-2]
     noise_amp = max(data_rms[1], 1e-10)
     snr = min(20 * np.log10(signal_amp / noise_amp), 10)
-    noise = color_noise.white(len(y), noise_seed).cpu().numpy()
+    noise = blue_noise(len(y), sr, noise_seed)
     y_blue = y + noise * (signal_amp / 10 ** (snr / 20))
     y_nr = nr.reduce_noise(y_blue, sr)
     yf_nr = nr.reduce_noise(y_blue[::-1], sr)

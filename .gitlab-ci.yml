@@ -1,12 +1,14 @@
 image: python:3.12-slim
 
 stages:
+  - md-lint
   - lint
   - build
   - deploy
 
 variables:
   PIP_ROOT_USER_ACTION: "ignore"
+  PIP_PROGRESS_BAR: "off"
 
 lint:
   stage: lint
@@ -14,11 +16,21 @@ lint:
     - when: always
   script:
     - python3 --version
-    - python3 -m pip install -U black isort flake8 mypy
+    - pip3 install -U black isort flake8 mypy
     - black --check src/pysaten/
     - isort --check-only src/pysaten/
     - flake8 src/pysaten/
     - mypy src/pysaten/
+
+markdown-lint:
+  stage: md-lint
+  rules:
+    - when: always
+  script:
+    - pip3 install -U pymarkdownlnt
+    - pymarkdownlnt scan README.md
+    - pymarkdownlnt scan CHANGELOG.md
+    - pymarkdownlnt scan tools/README.md
 
 build:
   stage: build
@@ -27,7 +39,7 @@ build:
   dependencies:
     - lint
   script:
-    - python3 -m pip install -U build
+    - pip3 install -U build
     - python3 -m build
   artifacts:
     paths:
@@ -43,5 +55,5 @@ deploy:  # https://docs.pypi.org/trusted-publishers/using-a-publisher/#gitlab-ci
     PYPI_ID_TOKEN:
       aud: pypi
   script:
-    - python3 -m pip install -U twine
+    - pip3 install -U twine
     - twine --no-color upload dist/* --disable-progress-bar

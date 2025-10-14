@@ -93,7 +93,7 @@ def _00_preprocess(y: npt.NDArray, sr: int, noise_seed: int) -> npt.NDArray:
     signal_amp: Final[float] = data_rms[-2]
     noise_amp: Final[float] = max(data_rms[1], 1e-10)
     snr: Final[float] = min(20 * np.log10(signal_amp / noise_amp), 10)
-    noise: Final[npt.NDArray] = color_noise.blue(len(y), sr, noise_seed).cpu().numpy()
+    noise: Final[npt.NDArray] = color_noise.blue(len(y), sr, noise_seed)
     y_blue: Final[npt.NDArray] = y + noise * (signal_amp / 10 ** (snr / 20))
     y_blue_normalized: Final[npt.NDArray] = (
         y_blue if np.max(np.abs(y_blue)) <= 1 else y_blue / np.max(np.abs(y_blue))

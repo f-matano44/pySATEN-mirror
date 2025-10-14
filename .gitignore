@@ -28,7 +28,7 @@ graph_*
 # keep
 !requirements*.txt
 !/**/tuning_*.csv
-!/**/test_result/*
+!/**/*result*/*
 !/image/*
 !/**/image/*.svg
 !/**/image/*.pdf
