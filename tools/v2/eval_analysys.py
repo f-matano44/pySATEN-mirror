@@ -3,7 +3,7 @@ from math import inf
 import numpy as np
 import pandas as pd
 
-color = "pink"
+color = "white"
 
 snr_list = [inf, 20, 15, 10, 5, 0, -5, -inf]
 vad = [

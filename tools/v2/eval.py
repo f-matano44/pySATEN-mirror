@@ -25,7 +25,7 @@ speechbrain_model = speechbrain.from_hparams(source="speechbrain/vad-crdnn-libri
 webrtc_model = WebRTC_VAD()
 whisper_model = whisperx.load_model("large-v3", "cpu", compute_type="int8", language="ja")
 
-noise_type = "pink"
+noise_type = "white"
 
 
 def _main():
