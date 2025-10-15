@@ -8,7 +8,7 @@ TF_ENABLE_ONEDNN_OPTS=0 PYTHONWARNINGS="ignore" python eval_pulse.py
 
 ## White noise MdAE
 
-|SNR|pySATEN2|rVAD|inaSpeechSegmenter|Silero_vad|SpeechBrain|WebRTC|WhisperX|
+|SNR|SATEN|rVAD|inaSpeechSegmenter|Silero_vad|SpeechBrain|WebRTC|WhisperX|
 |:---:|---:|---:|---:|---:|---:|---:|---:|
 |inf|0.024 (1.00)|0.154 (1.00)|0.032 (1.00)|0.058 (1.00)|0.212 (0.97)|0.778 (1.00)|0.045 (1.00)|
 |20|0.025 (1.00)|0.061 (1.00)|0.229 (0.99)|0.060 (1.00)|0.305 (1.00)|0.140 (1.00)|0.044 (1.00)|
@@ -34,7 +34,7 @@ TF_ENABLE_ONEDNN_OPTS=0 PYTHONWARNINGS="ignore" python eval_pulse.py
 
 ## Pulse noise MdAE
 
-|SNR|pySATEN2|rVAD|inaSpeechSegmenter|Silero_vad|SpeechBrain|WebRTC|WhisperX|
+|SNR|SATEN|rVAD|inaSpeechSegmenter|Silero_vad|SpeechBrain|WebRTC|WhisperX|
 |:---:|---:|---:|---:|---:|---:|---:|---:|
 |without_pulse|0.024 (1.00)|0.154 (1.00)|0.032 (1.00)|0.058 (1.00)|0.212 (0.97)|0.778 (1.00)|0.045 (1.00)|
 |with_pulse|0.025 (1.00)|0.158 (1.00)|0.031 (0.99)|0.058 (1.00)|0.193 (0.97)|1.190 (1.00)|0.051 (1.00)|

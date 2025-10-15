@@ -9,6 +9,7 @@
 * mod editor setting
 * add test target (SpeechBrain, WebRTC)
 * mod dependency
+* fix document (@post1)
 
 ## 2.1.1
 
