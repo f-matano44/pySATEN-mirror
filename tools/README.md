@@ -1,4 +1,4 @@
-# Error Evaluate v2 (on Linux)
+# Error Evaluate v2.2.0 (on Linux)
 
 ```sh
 poetry install --with eval
@@ -6,7 +6,7 @@ TF_ENABLE_ONEDNN_OPTS=0 PYTHONWARNINGS="ignore" python eval.py
 TF_ENABLE_ONEDNN_OPTS=0 PYTHONWARNINGS="ignore" python eval_pulse.py
 ```
 
-## White noise MdAE
+## White noise Median Absolute Error (MdAE)
 
 |SNR|SATEN|rVAD|inaSpeechSegmenter|Silero_vad|SpeechBrain|WebRTC|WhisperX|
 |:---:|---:|---:|---:|---:|---:|---:|---:|
@@ -19,7 +19,7 @@ TF_ENABLE_ONEDNN_OPTS=0 PYTHONWARNINGS="ignore" python eval_pulse.py
 |-5|0.095 (1.00)|None (0.00)|None (0.00)|0.084 (1.00)|0.170 (0.96)|0.609 (1.00)|0.112 (0.99)|
 |-inf|1.303 (1.00)|None (0.00)|None (0.00)|None (0.00)|None (0.00)|1.543 (1.00)|3.344 (0.00)|
 
-## Pink noise Median Absolute Error (MdAE)
+## Pink noise MdAE
 
 |SNR|SATEN|rVAD|inaSpeechSegmenter|Silero_vad|SpeechBrain|WebRTC|WhisperX|
 |:---:|---:|---:|---:|---:|---:|---:|---:|
