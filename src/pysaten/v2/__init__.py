@@ -158,7 +158,4 @@ def _gaussian_curve(zcr: npt.NDArray) -> np.ndarray:
     idx = np.linspace(0.0, 1.0, zcr.size)
     mu = np.average(np.arange(zcr.size), weights=(1.0 - zcr)) / zcr.size
     sigma = min(mu, 1.0 - mu) / 2.0
-    coef = 1.0 / (sigma * np.sqrt(2.0 * np.pi))
-    exponent = -0.5 * ((idx - mu) / sigma) ** 2
-    pdf = coef * np.exp(exponent)
-    return normalize(pdf)
+    return normalize(np.exp(-0.5 * ((idx - mu) / sigma) ** 2))
