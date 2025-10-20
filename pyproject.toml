@@ -31,20 +31,20 @@ pysaten_trim = "pysaten.pysaten:cli_runner"
 
 [dependency-groups]
 dev = [
-    "matplotlib>=3.10.3,<4",
-    "pandas>=2.2.3,<3",
-    "tqdm>=4.67.1,<5",
+    "matplotlib>=3.10.3",
+    "pandas>=2.2.3",
+    "tqdm>=4.67.1",
 ]
 
 eval = [
     "torch<2.9",
     "torchaudio<2.9",
-    "inaspeechsegmenter>=0.8.0,<0.9",
-    "silero-vad>=6.0.0,<7",
-    "rvadfast>=0.0.5,<0.0.6",
-    "whisperx>=3.4.2,<4",
-    "speechbrain>=1.0.3,<2",
-    "webrtcvad>=2.0.10,<3",
+    "inaspeechsegmenter>=0.8.0",
+    "silero-vad>=6.0.0",
+    "rvadfast>=0.0.5",
+    "whisperx>=3.4.2",
+    "speechbrain>=1.0.3",
+    "webrtcvad>=2.0.10",
     "setuptools<81",
 ]
 
