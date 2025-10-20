@@ -1,5 +1,9 @@
 # ChangeLog
 
+## 2.2.1
+
+* bugfix of preprocess
+
 ## 2.2.0
 
 * fix algorithm (<- BUG)
