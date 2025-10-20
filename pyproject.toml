@@ -9,7 +9,7 @@ version = "2.2.1"
 authors = [
     {name = "Fumiyoshi MATANO", email = "fumiyoshi.matano@gmail.com"}
 ]
-requires-python = ">=3.10, <3.13"
+requires-python = ">=3.10"
 dependencies = [
     "numpy>=1.20",  # for numpy.typing
     "noisereduce",
@@ -56,6 +56,9 @@ explicit = true
 [tool.uv.sources]
 torch = { index = "torch_cpu" }
 torchaudio = { index = "torch_cpu" }
+
+[tool.uv.dependency-groups]
+eval = {requires-python = "<3.13"}
 
 [tool.black]
 line-length = 90
