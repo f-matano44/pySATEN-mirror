@@ -8,8 +8,8 @@ from pysaten.utility.signal import root_mean_square
 from pysaten.utility.WavLabHandler import WavLabHandler
 from pysaten.v2 import vsed_debug_v2
 
-linewidth = 2.27
-plt.rcParams["font.size"] = 30
+linewidth = 1.15
+plt.rcParams["font.size"] = 20
 plt.rcParams["font.family"] = "serif"
 
 

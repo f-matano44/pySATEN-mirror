@@ -6,8 +6,8 @@ from numpy.typing import NDArray
 from pysaten.utility.signal import zero_crossing_rate
 from pysaten.v2 import vsed_debug_v2
 
-linewidth = 2.27
-plt.rcParams["font.size"] = 30
+linewidth = 1.15
+plt.rcParams["font.size"] = 20
 plt.rcParams["font.family"] = "serif"
 
 
