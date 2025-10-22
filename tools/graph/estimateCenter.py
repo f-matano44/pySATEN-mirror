@@ -8,7 +8,7 @@ from pysaten.utility.WavLabHandler import WavLabHandler
 from pysaten.v2 import vsed_debug_v2
 
 linewidth = 2.27
-plt.rcParams["font.size"] = 32
+plt.rcParams["font.size"] = 30
 plt.rcParams["font.family"] = "serif"
 
 
@@ -16,13 +16,13 @@ def _main() -> None:
     # データ形式の定義
     data_list: list[tuple[WavLabHandler, int]] = []
 
-    base_dir = "wav_and_lab/tohoku_itako"
-    for snr in [15, 5, -5]:
-        i = snr + 10
-        handler = WavLabHandler(
-            Path(f"{base_dir}/ITA_emotion_normal_synchronized_wav/emoNormal{i:03d}.wav"),
-            Path(f"{base_dir}/ITA_emotion_normal_label/emoNormal{i:03d}.lab"),
-        )
+    base_dir = "wav_and_lab/zundamon"
+    handler = WavLabHandler(
+        Path(f"{base_dir}/ITA_emotion_normal_synchronized_wav/emoNormal001.wav"),
+        Path(f"{base_dir}/ITA_emotion_normal_label/emoNormal001.lab"),
+    )
+
+    for snr in [20, 10, 0]:
         data_list.append((handler, snr))
 
     # 描画
@@ -45,12 +45,12 @@ def _main() -> None:
             linestyle="--",
             linewidth=linewidth,
         )
-        ax.set_ylabel(f"SNR {snr}[dB]")
+        ax.set_ylabel(f"{snr}[dB]")
         ax.tick_params(labelleft=False, axis="y", length=0)
         ax.set_xlim(x.min(), x.max())
         # Wave の中心を０に
         amp = np.max(np.abs(y))
-        ax.set_ylim(-amp * 1.15, amp * 1.15)
+        ax.set_ylim(-amp * 1.5, amp * 1.5)
         # 枠線の太さを調整
         for spine in ax.spines.values():
             spine.set_linewidth(linewidth * 0.7)

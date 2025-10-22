@@ -6,22 +6,22 @@ from numpy.typing import NDArray
 
 from pysaten.utility.signal import root_mean_square
 from pysaten.utility.WavLabHandler import WavLabHandler
-from pysaten.v2 import _00_preprocess, _01_rms
+from pysaten.v2 import vsed_debug_v2
 
 linewidth = 2.27
-plt.rcParams["font.size"] = 32
+plt.rcParams["font.size"] = 30
 plt.rcParams["font.family"] = "serif"
 
 
 def _main() -> None:
-    wav = "wav_and_lab/tohoku_itako/ITA_emotion_normal_synchronized_wav/emoNormal001.wav"
-    lab = "wav_and_lab/tohoku_itako/ITA_emotion_normal_label/emoNormal001.lab"
+    wav = "wav_and_lab/zundamon/ITA_emotion_normal_synchronized_wav/emoNormal001.wav"
+    lab = "wav_and_lab/zundamon/ITA_emotion_normal_label/emoNormal001.lab"
 
     # データ読み込み
     handler = WavLabHandler(Path(wav), Path(lab))
     y0, _ = handler.get_signal()
-    y1, fs = handler.get_noise_signal2(snr=0, noise_type="pink", noise_seed=0)
-    t1 = np.linspace(0, len(y1) / fs, len(y1))
+    y, fs = handler.get_noise_signal2(snr=0, noise_type="pink", noise_seed=0)
+    t = np.linspace(0, len(y) / fs, len(y))
     # データ読み込み: lab
     with open(lab) as f:
         ans = [line.rstrip("\n").split(" ") for line in f]
@@ -31,17 +31,16 @@ def _main() -> None:
     hop_length: int = int(0.005 * fs)
     win_length: int = hop_length * 4
 
-    zcr_1 = root_mean_square(y1, win_length, hop_length)
-    zcr_t = np.linspace(0, len(y1) / fs, len(zcr_1))
+    rms_1 = root_mean_square(y, win_length, hop_length)
+    rms = np.linspace(0, len(y) / fs, len(rms_1))
 
-    y2, yf = _00_preprocess(y1, int(fs), 0)
-    zcr_2 = _01_rms(y2, yf, fs, win_length, hop_length)
+    zcr_2 = vsed_debug_v2(y, fs).y_rms
 
     # データ形式の定義
     data_list: list[tuple[NDArray, NDArray, str]] = [
-        (t1, y1, "Wave"),
-        (zcr_t, zcr_1, "RMS"),
-        (zcr_t, zcr_2, "W-RMS"),
+        (t, y, "Wave"),
+        (rms, rms_1, "RMS"),
+        (rms, zcr_2, "W-RMS"),
     ]
 
     # 最初のx範囲を基準とする
