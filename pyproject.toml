@@ -1,14 +1,12 @@
 [build-system]
-requires = ["flit_core"]
+requires = ["flit_core>=3.12.0, <4"]
 build-backend = "flit_core.buildapi"
 
 [project]
 name = "pysaten"
 description = "Detect silence segment from speech signal."
 version = "2.2.1"
-authors = [
-    {name = "Fumiyoshi MATANO", email = "fumiyoshi.matano@gmail.com"}
-]
+authors = [{name = "Fumiyoshi MATANO", email = "fumiyoshi.matano@gmail.com"}]
 requires-python = ">=3.10"
 dependencies = [
     "numpy>=1.20",  # for numpy.typing
