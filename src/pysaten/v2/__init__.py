@@ -113,17 +113,21 @@ class vsed_debug_v2:
 
 
 def _00_preprocess(y: np.ndarray, sr: int, noise_seed: int) -> tuple:
+    # determine target SNR
     data_rms = np.sort(rms(y, 2048, 512))  # <- default of librosa
-    signal_amp = data_rms[-2]
-    noise_amp = max(data_rms[1], 1e-10)
-    snr = min(20 * np.log10(signal_amp / noise_amp), 10)
+    signal_rms = data_rms[-2]
+    noise_rms = max(data_rms[1], 1e-10)  # prevent zero-divide
+    snr = min(20 * np.log10(signal_rms / noise_rms), 10)
+    # generate blue noise
     noise = blue_noise(len(y), sr, noise_seed)
-    y_blue = y + noise * (signal_amp / 10 ** (snr / 20))
+    blue_rms = np.sqrt(np.mean(noise**2))
+    # generate
+    y_blue = y + noise * (((signal_rms / blue_rms) / 10 ** (snr / 20)))
     y_nr = nr.reduce_noise(y_blue, sr)
     yf_nr = nr.reduce_noise(y_blue[::-1], sr)
     return (
         y_nr / np.abs(y_nr).max(),
-        yf_nr / np.abs(y_nr).max(),
+        yf_nr / np.abs(yf_nr).max(),
     )  # return normalized value
 
 
@@ -154,7 +158,4 @@ def _gaussian_curve(zcr: npt.NDArray) -> np.ndarray:
     idx = np.linspace(0.0, 1.0, zcr.size)
     mu = np.average(np.arange(zcr.size), weights=(1.0 - zcr)) / zcr.size
     sigma = min(mu, 1.0 - mu) / 2.0
-    coef = 1.0 / (sigma * np.sqrt(2.0 * np.pi))
-    exponent = -0.5 * ((idx - mu) / sigma) ** 2
-    pdf = coef * np.exp(exponent)
-    return normalize(pdf)
+    return normalize(np.exp(-0.5 * ((idx - mu) / sigma) ** 2))

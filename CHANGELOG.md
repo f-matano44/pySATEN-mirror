@@ -1,5 +1,9 @@
 # ChangeLog
 
+## 2.2.1
+
+* bugfix of preprocess
+
 ## 2.2.0
 
 * fix algorithm (<- BUG)
@@ -9,7 +13,7 @@
 * mod editor setting
 * add test target (SpeechBrain, WebRTC)
 * mod dependency
-* fix document (@ post1)
+* fix document (@ post1, post3)
 * mod gitignore (@ post2)
 
 ## 2.1.1
