@@ -1,15 +1,13 @@
 [build-system]
-requires = ["poetry-core>=2.0.0,<3.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["flit_core>=3.12.0, <4"]
+build-backend = "flit_core.buildapi"
 
 [project]
 name = "pysaten"
 description = "Detect silence segment from speech signal."
-version = "2.2.0.post3"
-authors = [
-    {name = "Fumiyoshi MATANO", email = "fumiyoshi.matano@gmail.com"}
-]
-requires-python = ">=3.10, <3.13"
+version = "2.2.1"
+authors = [{name = "Fumiyoshi MATANO", email = "fumiyoshi.matano@gmail.com"}]
+requires-python = ">=3.10"
 dependencies = [
     "numpy>=1.20",  # for numpy.typing
     "noisereduce",
@@ -29,28 +27,36 @@ Repository = "https://gitlab.com/f-matano44/pysaten.git"
 [project.scripts]
 pysaten_trim = "pysaten.pysaten:cli_runner"
 
-[tool.poetry.group.dev.dependencies]
-matplotlib = "^3.10.3"
-pandas = "^2.2.3"
-tqdm = "^4.67.1"
+[dependency-groups]
+dev = [
+    "matplotlib>=3.10.3",
+    "pandas>=2.2.3",
+    "tqdm>=4.67.1",
+]
 
-[tool.poetry.group.eval]
-optional = true
-[tool.poetry.group.eval.dependencies]
-torch = {version = "<2.9", source = "torch_cpu"}
-torchaudio = {version = "<2.9", source = "torch_cpu"}
-inaspeechsegmenter = "^0.8.0"
-silero-vad = "^6.0.0"
-rvadfast = "^0.0.5"
-whisperx = "^3.4.2"
-speechbrain = "^1.0.3"
-webrtcvad = "^2.0.10"
-setuptools = "<81"
+eval = [
+    "torch<2.9",
+    "torchaudio<2.9",
+    "inaspeechsegmenter>=0.8.0",
+    "silero-vad>=6.0.0",
+    "rvadfast>=0.0.5",
+    "whisperx>=3.4.2",
+    "speechbrain>=1.0.3",
+    "webrtcvad>=2.0.10",
+    "setuptools<81",
+]
 
-[[tool.poetry.source]]
+[[tool.uv.index]]
 name = "torch_cpu"
 url = "https://download.pytorch.org/whl/cpu"
-priority = "explicit"
+explicit = true
+
+[tool.uv.sources]
+torch = { index = "torch_cpu" }
+torchaudio = { index = "torch_cpu" }
+
+[tool.uv.dependency-groups]
+eval = {requires-python = "<3.13"}
 
 [tool.black]
 line-length = 90

@@ -1,5 +1,12 @@
 # ChangeLog
 
+## 2.2.1
+
+* bugfix of preprocess
+* mod ci version
+* poetry -> uv
+* refactoring
+
 ## 2.2.0
 
 * fix algorithm (<- BUG)
