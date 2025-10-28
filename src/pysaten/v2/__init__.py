@@ -5,6 +5,7 @@ from typing import Final, Optional
 import noisereduce as nr
 import numpy as np
 from librosa import resample
+from numpy import floating
 from numpy.typing import NDArray
 from scipy.signal import cheby1, filtfilt, firwin, sosfilt
 
@@ -19,8 +20,8 @@ from ..utility.signal import zero_crossing_rate as zcr
 class vsed_debug_v2:
     def __init__(
         self,
-        y: NDArray[float],
-        orig_sr: int | float,
+        y: NDArray[floating],
+        orig_sr: float,
         # -------------------------------------------
         win_length_s: Optional[float] = None,
         hop_length_s: float = 0.005,
@@ -37,7 +38,7 @@ class vsed_debug_v2:
         self.zcr_threshold: Final[float] = zcr_threshold
 
         # Resample -------------------------------------------
-        y_rsp: Final[NDArray[float]] = resample(y=y, orig_sr=orig_sr, target_sr=SR)
+        y_rsp: Final[NDArray[floating]] = resample(y=y, orig_sr=orig_sr, target_sr=SR)
         y_length_s: Final[float] = len(y_rsp) / SR
 
         # constants -------------------------------------------
@@ -49,19 +50,19 @@ class vsed_debug_v2:
         # Preprocess -------------------------------------------
         y_nr, yf_nr = _00_preprocess(y_rsp, SR, noise_seed)
         # get root-mean-square
-        y_rms: Final[NDArray] = _01_rms(y_nr, yf_nr, SR, win_length, hop_length)
+        y_rms: Final[NDArray[floating]] = _01_rms(y_nr, yf_nr, SR, win_length, hop_length)
         y_rms.flags.writeable = False
         # get zero-crossing-rate
-        self.y_zcr: Final[NDArray] = _02_zcr(y_nr, SR, win_length, hop_length)
+        self.y_zcr: Final[NDArray[floating]] = _02_zcr(y_nr, SR, win_length, hop_length)
         self.y_zcr.flags.writeable = False
         # get rms weight
         self.bell = _gaussian_curve(self.y_zcr)
         self.bell.flags.writeable = False
-        rms_weight: Final[NDArray] = (1 - self.y_zcr) * self.bell
+        rms_weight: Final[NDArray[floating]] = (1 - self.y_zcr) * self.bell
         rms_weight.flags.writeable = False
 
         # step1: Root mean square -------------------------------------------
-        self.y_rms: Final[NDArray] = normalize(y_rms * rms_weight)
+        self.y_rms: Final[NDArray[floating]] = normalize(y_rms * rms_weight)
         self.y_rms.flags.writeable = False
         start1: Final[int] = (
             np.where(rms_threshold < self.y_rms)[0][0]
@@ -103,7 +104,7 @@ class vsed_debug_v2:
         self.end3_s: Final[float] = min(self.end2_s + offset_s, y_length_s)
 
         # get timestamp of features -------------------------------------------
-        self.feats_timestamp: Final[NDArray] = np.linspace(
+        self.feats_timestamp: Final[NDArray[floating]] = np.linspace(
             0, len(self.y_zcr) * hop_length_s, len(self.y_zcr)
         )
         self.feats_timestamp.flags.writeable = False
@@ -113,8 +114,8 @@ class vsed_debug_v2:
 
 
 def _00_preprocess(
-    y: NDArray[float], sr: int, noise_seed: int
-) -> tuple[NDArray[float], NDArray[float]]:
+    y: NDArray[floating], sr: int, noise_seed: int
+) -> tuple[NDArray[floating], NDArray[floating]]:
     # determine target SNR
     data_rms = np.sort(rms(y, 2048, 512))  # <- default of librosa
     signal_rms = data_rms[-2]
@@ -134,12 +135,12 @@ def _00_preprocess(
 
 
 def _01_rms(
-    y: NDArray[float],
-    yf: NDArray[float],
+    y: NDArray[floating],
+    yf: NDArray[floating],
     sr: int,
     win_length: int,
     hop_length: int,
-) -> NDArray[float]:
+) -> NDArray[floating]:
     wp = (F0_FLOOR, F0_CEIL)
     band_sos = cheby1(N=12, rp=1, Wn=wp, btype="bandpass", output="sos", fs=sr)
     # normal
@@ -155,8 +156,8 @@ def _01_rms(
 
 
 def _02_zcr(
-    y: NDArray[float], sr: int, win_length: int, hop_length: int
-) -> NDArray[float]:
+    y: NDArray[floating], sr: int, win_length: int, hop_length: int
+) -> NDArray[floating]:
     high_b = firwin(101, F0_CEIL, pass_zero=False, fs=sr)
     y_hpf = filtfilt(high_b, 1.0, y)
     y_zcr = normalize(zcr(y_hpf, win_length, hop_length))
@@ -164,7 +165,7 @@ def _02_zcr(
     return y_zcr
 
 
-def _gaussian_curve(zcr: NDArray[float]) -> NDArray[float]:
+def _gaussian_curve(zcr: NDArray[floating]) -> NDArray[floating]:
     idx = np.linspace(0.0, 1.0, zcr.size)
     mu = np.average(np.arange(zcr.size), weights=(1.0 - zcr)) / zcr.size
     sigma = min(mu, 1.0 - mu) / 2.0
