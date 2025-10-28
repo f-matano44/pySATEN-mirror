@@ -6,7 +6,8 @@ from typing import Final, Optional
 import librosa
 import numpy as np
 import numpy.random as rand
-import numpy.typing as npt
+from numpy import floating
+from numpy.typing import NDArray
 
 from .color_noise import pink as pk_noise
 from .color_noise import white as wh_noise
@@ -21,7 +22,7 @@ class _TimeAlignment:
 
 
 class WavLabHandler:
-    __x: Final[npt.NDArray[np.floating]]
+    __x: Final[NDArray[floating]]
     __sr: Final[float]
     __monophone_label: Final[list[_TimeAlignment]]
 
@@ -50,20 +51,20 @@ class WavLabHandler:
             self.__monophone_label[-1].start,
         )
 
-    def get_signal(self) -> tuple[npt.NDArray[np.floating], float]:
+    def get_signal(self) -> tuple[NDArray[floating], float]:
         return self.__x, self.__sr
 
     def get_noise_signal(
         self, snr: float, is_white: bool, with_pulse: bool, noise_seed: int
-    ) -> tuple[npt.NDArray, int]:
-        x: npt.NDArray[np.floating] = self.__x.copy()
+    ) -> tuple[NDArray[floating], int]:
+        x: NDArray[floating] = self.__x.copy()
         sr: int = int(self.__sr)
         ans_s_sec, ans_e_sec = self.get_answer()
         speech_start_idx: int = int(ans_s_sec * sr)
         speech_end_idx: int = int(ans_e_sec * sr)
 
         # generate noise (white or pink)
-        noise: npt.NDArray[np.floating] = (
+        noise: NDArray[floating] = (
             wh_noise(len(x), noise_seed) if is_white else pk_noise(len(x), sr, noise_seed)
         )
 
@@ -81,7 +82,7 @@ class WavLabHandler:
         # add pulse noise
         if with_pulse:
             rand.seed(noise_seed)
-            pulse: npt.NDArray[np.floating] = rand.random(2) - 0.5 * 2
+            pulse: NDArray[floating] = rand.random(2) - 0.5 * 2
             # determine index adding pulse noise
             start_pulse_index: int = np.random.randint(0, speech_start_idx)
             end_pulse_index: int = np.random.randint(speech_end_idx, len(x) - 1)
@@ -92,9 +93,9 @@ class WavLabHandler:
 
     def get_noise_signal2(
         self, snr: Optional[float], noise_type: str, noise_seed: int
-    ) -> tuple[npt.NDArray, float]:
-        x: npt.NDArray = self.__x
-        noised_x: npt.NDArray = x.copy()
+    ) -> tuple[NDArray[floating], float]:
+        x: NDArray[floating] = self.__x
+        noised_x: NDArray[floating] = x.copy()
         ans_s_sec, ans_e_sec = self.get_answer()
         speech_start_idx: Final[int] = int(ans_s_sec * self.__sr)
         speech_end_idx: Final[int] = int(ans_e_sec * self.__sr)
@@ -104,7 +105,7 @@ class WavLabHandler:
         for nt in noise_type.split():
             if not color_flag and (nt == "white" or nt == "pink") and snr is not None:
                 # generate color noise
-                noise: npt.NDArray[np.floating] = (
+                noise: NDArray[floating] = (
                     wh_noise(len(x), noise_seed)
                     if nt == "white"
                     else pk_noise(len(x), self.__sr, noise_seed)
@@ -129,7 +130,7 @@ class WavLabHandler:
             # add pulse noise
             if nt == "pulse":
                 rand.seed(noise_seed)
-                pulse: npt.NDArray[np.floating] = rand.choice((-1, 1), size=2)
+                pulse: NDArray[floating] = rand.choice((-1, 1), size=2)
                 # determine index adding pulse noise
                 start_pulse_index: int = np.random.randint(0, speech_start_idx)
                 end_pulse_index: int = np.random.randint(speech_end_idx, len(x) - 1)
@@ -141,8 +142,8 @@ class WavLabHandler:
 
 
 def _determine_noise_scale(
-    signal: npt.NDArray[np.floating],
-    noise: npt.NDArray[np.floating],
+    signal: NDArray[floating],
+    noise: NDArray[floating],
     desired_snr_db: int,
 ) -> float:
     desired_snr_linear: float = 10 ** (desired_snr_db / 10)
