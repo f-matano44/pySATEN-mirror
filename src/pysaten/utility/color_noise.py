@@ -1,13 +1,19 @@
+from typing import cast
+
 import numpy as np
+from numpy import floating
 from numpy.typing import NDArray
 from scipy.stats import truncnorm
 
 
-def white(length: int, seed: int) -> NDArray:
-    return truncnorm.rvs(-3, 3, loc=0, scale=1, size=length, random_state=seed)
+def white(length: int, seed: int) -> NDArray[floating]:
+    return cast(
+        NDArray[floating],
+        truncnorm.rvs(-3, 3, loc=0, scale=1, size=length, random_state=seed),
+    )
 
 
-def blue(length: int, sr: float, seed: int) -> NDArray:
+def blue(length: int, sr: float, seed: int) -> NDArray[floating]:
     offset = int(length / 2)
     # white noise
     wh = white(length + (offset * 2), seed)
@@ -24,7 +30,7 @@ def blue(length: int, sr: float, seed: int) -> NDArray:
     return bl[offset : length + offset]
 
 
-def pink(length: int, sr: float, seed: int) -> NDArray:
+def pink(length: int, sr: float, seed: int) -> NDArray[floating]:
     offset = int(length / 2)
     # white noise
     wh = white(length + (offset * 2), seed)
