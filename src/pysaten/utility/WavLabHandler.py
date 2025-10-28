@@ -14,7 +14,7 @@ from .color_noise import white as wh_noise
 
 @dataclass
 class _TimeAlignment:
-    def __init__(self, start, end, phoneme) -> None:
+    def __init__(self, start: float, end: float, phoneme: str) -> None:
         self.start: Final[float] = start
         self.end: Final[float] = end
         self.phoneme: Final[str] = phoneme
