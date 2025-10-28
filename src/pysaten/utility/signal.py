@@ -1,8 +1,11 @@
 import numpy as np
-import numpy.typing as npt
+from numpy import floating
+from numpy.typing import NDArray
 
 
-def root_mean_square(y: npt.NDArray, win_length: int, hop_length: int) -> npt.NDArray:
+def root_mean_square(
+    y: NDArray[floating], win_length: int, hop_length: int
+) -> NDArray[floating]:
     rms = np.zeros(int(np.ceil(float(len(y)) / hop_length)))
     for i in range(len(rms)):
         # get target array
@@ -15,7 +18,9 @@ def root_mean_square(y: npt.NDArray, win_length: int, hop_length: int) -> npt.ND
     return rms
 
 
-def zero_crossing_rate(y: npt.NDArray, win_length: int, hop_length: int) -> npt.NDArray:
+def zero_crossing_rate(
+    y: NDArray[floating], win_length: int, hop_length: int
+) -> NDArray[floating]:
     zcr = np.zeros(int(np.ceil(float(len(y)) / hop_length)))
     for i in range(len(zcr)):
         # get target array
@@ -29,13 +34,13 @@ def zero_crossing_rate(y: npt.NDArray, win_length: int, hop_length: int) -> npt.
     return zcr
 
 
-def normalize(y: npt.NDArray) -> npt.NDArray:
-    return (y - y.min()) / (y.max() - y.min())
+def normalize(y: NDArray[floating]) -> NDArray[floating]:
+    return (y - float(y.min())) / (float(y.max()) - float(y.min()))
 
 
 def slide_index(
     goto_min: bool,
-    y: np.ndarray,
+    y: NDArray[floating],
     start_idx: int,
     threshold: float,
     margin: int,
