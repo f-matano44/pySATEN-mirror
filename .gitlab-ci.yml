@@ -16,7 +16,7 @@ lint:
     - when: always
   script:
     - python3 --version
-    - pip3 install -U black isort flake8 mypy
+    - python3 -m install -U black isort flake8 mypy ./
     - black --check src/pysaten/
     - isort --check-only src/pysaten/
     - flake8 src/pysaten/
@@ -27,7 +27,7 @@ markdown-lint:
   rules:
     - when: always
   script:
-    - pip3 install -U pymarkdownlnt
+    - python3 -m pip install -U pymarkdownlnt
     - pymarkdownlnt scan README.md
     - pymarkdownlnt scan CHANGELOG.md
     - pymarkdownlnt scan tools/README.md
@@ -39,7 +39,7 @@ build:
   dependencies:
     - lint
   script:
-    - pip3 install -U build
+    - python3 -m pip install -U build
     - python3 -m build
   artifacts:
     paths:
@@ -55,5 +55,5 @@ deploy:  # https://docs.pypi.org/trusted-publishers/using-a-publisher/#gitlab-ci
     PYPI_ID_TOKEN:
       aud: pypi
   script:
-    - pip3 install -U twine
+    - python3 -m pip install -U twine
     - twine --no-color upload dist/* --disable-progress-bar
