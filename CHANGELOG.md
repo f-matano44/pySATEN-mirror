@@ -6,6 +6,7 @@
 * mod ci version
 * poetry -> uv
 * refactoring
+* add annotation (@ post1)
 
 ## 2.2.0
 
