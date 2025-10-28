@@ -1,4 +1,4 @@
-image: python:slim
+image: python:3.13-slim
 
 stages:
   - md-lint
