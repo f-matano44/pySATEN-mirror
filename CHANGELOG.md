@@ -1,5 +1,9 @@
 # ChangeLog
 
+## 2.2.2
+
+* limit default seed
+
 ## 2.2.1
 
 * bugfix of preprocess

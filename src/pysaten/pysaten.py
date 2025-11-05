@@ -26,7 +26,9 @@ def trim(y: NDArray[floating], sr: float) -> NDArray[floating]:
     return y[int(s_sec * sr) : int(e_sec * sr)]
 
 
-def vsed(y: NDArray[floating], sr: float, seed: int = time_ns()) -> tuple[float, float]:
+def vsed(
+    y: NDArray[floating], sr: float, seed: int = time_ns() % 2**32
+) -> tuple[float, float]:
     # shape check (monaural only)
     if y.ndim != 1:
         raise ValueError("PySaten only supports monaural audio.")
