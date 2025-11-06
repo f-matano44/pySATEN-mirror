@@ -3,8 +3,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 from numpy.typing import NDArray
 
-linewidth = 2.27
-plt.rcParams["font.size"] = 32
+linewidth = 1.15
+plt.rcParams["font.size"] = 20
 plt.rcParams["font.family"] = "serif"
 
 
@@ -23,8 +23,8 @@ def _main() -> None:
 
     # データ形式の定義
     data_list: list[tuple[NDArray, NDArray, str]] = [
-        (t1, y1, "VAD"),
-        (t1, y1, "VSED"),
+        (t1, y1, "(a) VAD"),
+        (t1, y1, "(b) VSED"),
     ]
 
     # 最初のx範囲を基準とする
@@ -34,7 +34,7 @@ def _main() -> None:
     # 描画
     fig, axes = plt.subplots(len(data_list), ncols=1, figsize=(8, 6))
     for ax, (x, y, label) in zip(axes, data_list):
-        if label == "VAD":
+        if "VAD" in label:
             for line in ans:
                 if not (line[2] == "sil" or line[2] == "pau"):
                     ax.axvspan(
@@ -42,11 +42,11 @@ def _main() -> None:
                         int(line[1]) / 1e7,
                         color="lightgray",
                     )
-        elif label == "VSED":
+        elif "VSED" in label:
             ax.axvspan(start, end, color="lightgray")
         ax.plot(x, y, color="black", linewidth=linewidth)
         ax.set_title(label)
-        ax.set_ylabel("Amplitude")
+        # ax.set_ylabel("Amplitude")
         ax.tick_params(labelleft=False, axis="y", length=0)
         ax.set_xlim(x_min, x_max)
         amp = np.max(np.abs(y))

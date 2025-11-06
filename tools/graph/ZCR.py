@@ -34,9 +34,9 @@ def _main() -> None:
 
     # データ形式の定義
     data_list: list[tuple[NDArray, NDArray, str]] = [
-        (t, y, "Amplitude"),
-        (zcr_t, zcr_1, "ZCR"),
-        (v2.feats_timestamp, v2.y_zcr, "Fixed ZCR"),
+        (t, y, "(c) Clean Speech Waveform"),
+        (zcr_t, zcr_1, "(d) Conventional ZCR"),
+        (v2.feats_timestamp, v2.y_zcr, "(e) Fixed ZCR"),
     ]
 
     # 最初のx範囲を基準とする
@@ -48,11 +48,11 @@ def _main() -> None:
     for ax, (x, y, label) in zip(axes, data_list):
         ax.axvspan(start, end, color="lightgray")
         ax.plot(x, y, color="black", linewidth=linewidth)
-        ax.set_ylabel(label)
+        ax.set_title(label)
         ax.tick_params(labelleft=False, axis="y", length=0)
         ax.set_xlim(x_min, x_max)
         # Wave の中心を０に
-        if label == "Wave":
+        if "Wave" in label:
             amp = np.max(np.abs(y))
             ax.set_ylim(-amp * 1.15, amp * 1.15)
         # 枠線の太さを調整

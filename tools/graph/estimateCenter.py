@@ -45,12 +45,12 @@ def _main() -> None:
             linestyle="--",
             linewidth=linewidth,
         )
-        ax.set_ylabel(f"{snr} dB")
+        ax.set_title(f"SNR {snr} [dB]")
         ax.tick_params(labelleft=False, axis="y", length=0)
         ax.set_xlim(x.min(), x.max())
         # Wave の中心を０に
         amp = np.max(np.abs(y))
-        ax.set_ylim(-amp * 1.5, amp * 1.5)
+        ax.set_ylim(-amp * 1.15, amp * 1.15)
         # 枠線の太さを調整
         for spine in ax.spines.values():
             spine.set_linewidth(linewidth * 0.7)
