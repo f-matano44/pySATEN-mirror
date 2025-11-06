@@ -34,7 +34,7 @@ def _main() -> None:
 
     # データ形式の定義
     data_list: list[tuple[NDArray, NDArray, str]] = [
-        (t, y, "Wave"),
+        (t, y, "Amplitude"),
         (zcr_t, zcr_1, "ZCR"),
         (v2.feats_timestamp, v2.y_zcr, "Fixed ZCR"),
     ]

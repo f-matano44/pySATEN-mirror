@@ -45,7 +45,7 @@ def _main() -> None:
             linestyle="--",
             linewidth=linewidth,
         )
-        ax.set_ylabel(f"{snr}[dB]")
+        ax.set_ylabel(f"{snr} dB")
         ax.tick_params(labelleft=False, axis="y", length=0)
         ax.set_xlim(x.min(), x.max())
         # Wave の中心を０に

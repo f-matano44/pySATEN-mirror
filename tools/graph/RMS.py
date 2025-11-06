@@ -38,7 +38,7 @@ def _main() -> None:
 
     # データ形式の定義
     data_list: list[tuple[NDArray, NDArray, str]] = [
-        (t, y, "Wave"),
+        (t, y, "Amplitude"),
         (rms, rms_1, "RMS"),
         (rms, zcr_2, "W-RMS"),
     ]
