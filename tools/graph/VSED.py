@@ -35,14 +35,18 @@ def _main() -> None:
     fig, axes = plt.subplots(len(data_list), ncols=1, figsize=(8, 6))
     for ax, (x, y, label) in zip(axes, data_list):
         if label == "VAD":
-            ax.axvspan(1.39, 2.885, color="lightgray")
-            ax.axvspan(3.28, 5.9299144, color="lightgray")
-            ax.axvspan(6.48, 7.11, color="lightgray")
-            ax.axvspan(7.54, 9.4032094, color="lightgray")
+            for line in ans:
+                if not (line[2] == "sil" or line[2] == "pau"):
+                    ax.axvspan(
+                        int(line[0]) / 1e7,
+                        int(line[1]) / 1e7,
+                        color="lightgray",
+                    )
         elif label == "VSED":
             ax.axvspan(start, end, color="lightgray")
         ax.plot(x, y, color="black", linewidth=linewidth)
-        ax.set_ylabel(label)
+        ax.set_title(label)
+        ax.set_ylabel("Amplitude")
         ax.tick_params(labelleft=False, axis="y", length=0)
         ax.set_xlim(x_min, x_max)
         amp = np.max(np.abs(y))
