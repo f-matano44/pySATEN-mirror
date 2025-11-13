@@ -50,7 +50,7 @@ def _main() -> None:
         elif "VSED" in label:
             ax.axvspan(start, end, color="lightgray")
         ax.plot(x, y, color="black", linewidth=linewidth)
-        ax.set_title(label)
+        ax.set_title(label, fontsize=int(config["font"]["size"]) * 1.1)
         # ax.set_ylabel("Amplitude")
         ax.tick_params(labelleft=False, axis="y", length=0)
         ax.set_xlim(x_min, x_max)

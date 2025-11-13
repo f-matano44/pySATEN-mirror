@@ -49,7 +49,7 @@ def _main() -> None:
             linestyle="--",
             linewidth=linewidth,
         )
-        ax.set_title(f"SNR {snr} [dB]")
+        ax.set_title(f"SNR {snr} [dB]", fontsize=int(config["font"]["size"]) * 1.1)
         ax.tick_params(labelleft=False, axis="y", length=0)
         ax.set_xlim(x.min(), x.max())
         # Wave の中心を０に
