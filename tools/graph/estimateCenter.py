@@ -1,3 +1,4 @@
+from configparser import ConfigParser
 from pathlib import Path
 
 import matplotlib.pyplot as plt
@@ -7,9 +8,12 @@ from numpy.typing import NDArray
 from pysaten.utility.WavLabHandler import WavLabHandler
 from pysaten.v2 import vsed_debug_v2
 
-linewidth = 1.15
-plt.rcParams["font.size"] = 20
-plt.rcParams["font.family"] = "serif"
+config = ConfigParser()
+config.read("config.ini")
+
+linewidth = float(config["line"]["width"])
+plt.rcParams["font.size"] = int(config["font"]["size"])
+plt.rcParams["font.family"] = config["font"]["family"]
 
 
 def _main() -> None:
