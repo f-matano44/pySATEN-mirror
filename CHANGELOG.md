@@ -3,6 +3,7 @@
 ## 2.2.2
 
 * limit default seed
+* mod readme (@ post1)
 
 ## 2.2.1
 
