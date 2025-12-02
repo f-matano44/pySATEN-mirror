@@ -52,6 +52,7 @@ def _main() -> None:
         ax.set_title(f"SNR {snr} [dB]", fontsize=int(config["font"]["size"]) * 1.1)
         ax.tick_params(labelleft=False, axis="y", length=0)
         ax.set_xlim(x.min(), x.max())
+        ax.set_ylabel("Amp.")
         # Wave の中心を０に
         amp = np.max(np.abs(y))
         ax.set_ylim(-amp * 1.15, amp * 1.15)

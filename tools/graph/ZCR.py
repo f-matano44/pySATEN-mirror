@@ -60,6 +60,9 @@ def _main() -> None:
         if "Wave" in label:
             amp = np.max(np.abs(y))
             ax.set_ylim(-amp * 1.15, amp * 1.15)
+            ax.set_ylabel("Amp.")
+        else:
+            ax.set_ylabel("ZCR")
         # 枠線の太さを調整
         for spine in ax.spines.values():
             spine.set_linewidth(linewidth * 0.7)

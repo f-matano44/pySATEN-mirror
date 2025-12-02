@@ -51,7 +51,7 @@ def _main() -> None:
             ax.axvspan(start, end, color="lightgray")
         ax.plot(x, y, color="black", linewidth=linewidth)
         ax.set_title(label, fontsize=int(config["font"]["size"]) * 1.1)
-        # ax.set_ylabel("Amplitude")
+        ax.set_ylabel("Amp.")
         ax.tick_params(labelleft=False, axis="y", length=0)
         ax.set_xlim(x_min, x_max)
         amp = np.max(np.abs(y))
