@@ -25,11 +25,24 @@ class WavLabHandler:
     __x: Final[NDArray[floating]]
     __sr: Final[float]
     __monophone_label: Final[list[_TimeAlignment]]
+    __fan_noise: Final[Optional[NDArray[floating]]]
+    __fan_noise_sr: Final[Optional[float]]
 
-    def __init__(self, wav_path: Path, lab_path: Path) -> None:
+    def __init__(
+        self, wav_path: Path, lab_path: Path, fan_noise: Optional[Path] = None
+    ) -> None:
         # load audio
         self.__x, self.__sr = librosa.load(wav_path, sr=None)
         self.__x.flags.writeable = False  # x is immutable
+
+        # load fan noise
+        fan_noise_x: Optional[NDArray[floating]] = None
+        fan_noise_sr: Optional[float] = None
+        if fan_noise is not None:
+            fan_noise_x, fan_noise_sr = librosa.load(fan_noise, sr=int(self.__sr))
+            fan_noise_x.flags.writeable = False
+        self.__fan_noise = fan_noise_x
+        self.__fan_noise_sr = fan_noise_sr
 
         # load label
         with lab_path.open() as f:
@@ -53,6 +66,42 @@ class WavLabHandler:
 
     def get_signal(self) -> tuple[NDArray[floating], float]:
         return self.__x, self.__sr
+
+    def get_fan_noise_signal(
+        self, snr: Optional[float], noise_seed: int
+    ) -> tuple[NDArray[floating], float]:
+        if self.__fan_noise is None or self.__fan_noise_sr is None:
+            raise ValueError("Fan noise is not loaded")
+        if len(self.__fan_noise) < len(self.__x):
+            raise ValueError("Fan noise must be longer than or equal to input audio")
+
+        x: NDArray[floating] = self.__x
+        noised_x: NDArray[floating] = x.copy()
+
+        max_start: int = len(self.__fan_noise) - len(x)
+        rng = np.random.default_rng(noise_seed)
+        noise_start: int = int(rng.integers(0, max_start + 1))
+        noise = self.__fan_noise[noise_start : noise_start + len(x)]
+
+        if snr is None or snr == inf:
+            return noised_x, self.__sr
+        if snr == -inf:
+            return noise.copy(), self.__sr
+
+        ans_s_sec, ans_e_sec = self.get_answer()
+        speech_start_idx: int = int(ans_s_sec * self.__sr)
+        speech_end_idx: int = int(ans_e_sec * self.__sr)
+        noise_scale = _determine_noise_scale(
+            x[speech_start_idx:speech_end_idx],
+            noise[speech_start_idx:speech_end_idx],
+            int(snr),
+        )
+        noised_x = x + noise * noise_scale
+
+        if 1 < np.max(np.abs(noised_x)):
+            noised_x /= np.max(np.abs(noised_x))
+
+        return noised_x, self.__sr
 
     def get_noise_signal(
         self, snr: float, is_white: bool, with_pulse: bool, noise_seed: int

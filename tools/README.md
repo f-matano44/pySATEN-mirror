@@ -3,6 +3,7 @@
 ```sh
 uv sync --group eval
 TF_ENABLE_ONEDNN_OPTS=0 PYTHONWARNINGS="ignore" python eval.py
+TF_ENABLE_ONEDNN_OPTS=0 PYTHONWARNINGS="ignore" python eval_fan.py
 TF_ENABLE_ONEDNN_OPTS=0 PYTHONWARNINGS="ignore" python eval_pulse.py
 ```
 
