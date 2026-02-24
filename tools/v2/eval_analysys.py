@@ -3,7 +3,7 @@ from math import inf
 import numpy as np
 import pandas as pd
 
-color = "pink"
+color = "fan"
 
 snr_list = [inf, 20, 15, 10, 5, 0, -5, -inf]
 vad = [
@@ -15,7 +15,7 @@ vad = [
     "WebRTC",
     "WhisperX",
 ]
-result: dict[str, list] = {
+result: dict[str, list[str | float]] = {
     "label": ["Inf", "20", "15", "10", "5", "0", "-5", "-Inf"],
     vad[0]: [],
     vad[1]: [],
