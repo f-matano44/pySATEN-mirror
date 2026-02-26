@@ -48,7 +48,18 @@ def _main() -> None:
                         color="lightgray",
                     )
         elif "VSED" in label:
-            ax.axvspan(start, end, color="lightgray")
+            ax.axvline(
+                start,
+                color="black",
+                linestyle="--",
+                linewidth=linewidth * 2,
+            )
+            ax.axvline(
+                end,
+                color="black",
+                linestyle="--",
+                linewidth=linewidth * 2,
+            )
         ax.plot(x, y, color="black", linewidth=linewidth)
         ax.set_title(label, fontsize=int(config["font"]["size"]))
         ax.set_ylabel("Amp.")
