@@ -64,6 +64,9 @@ eval = {requires-python = "<3.13"}
 [tool.black]
 line-length = 90
 
+[tool.ruff]
+line-length = 90
+
 [tool.isort]
 profile = "black"
 
