@@ -1,9 +1,10 @@
 from math import inf
+from typing import Literal
 
 import numpy as np
 import pandas as pd
 
-color = "fan"
+noise_type: Literal["white", "pink", "fun"] = "white"
 
 snr_list = [inf, 20, 15, 10, 5, 0, -5, -inf]
 vad = [
@@ -14,6 +15,7 @@ vad = [
     "SpeechBrain",
     "WebRTC",
     "WhisperX",
+    "SE + RMS",
 ]
 result: dict[str, list[str | float]] = {
     "label": ["Inf", "20", "15", "10", "5", "0", "-5", "-Inf"],
@@ -26,12 +28,14 @@ result: dict[str, list[str | float]] = {
     vad[6]: [],
 }
 
-with open(f"{color}_result.md", "w") as f:
-    f.write(f"|SNR|{vad[0]}|{vad[1]}|{vad[2]}|{vad[3]}|{vad[4]}|{vad[5]}|{vad[6]}|\n")
-    f.write("|:---:|---:|---:|---:|---:|---:|---:|---:|\n")
+with open(f"{noise_type}_result.md", "w") as f:
+    f.write(
+        f"|SNR|{vad[0]}|{vad[1]}|{vad[2]}|{vad[3]}|{vad[4]}|{vad[5]}|{vad[6]}|{vad[7]}|\n"
+    )
+    f.write("|:---:|---:|---:|---:|---:|---:|---:|---:|---:|\n")
     for snr in snr_list:
         f.write(f"|{snr}|")
-        file_path = f"results/{color}_{str(snr)}.csv"
+        file_path = f"results/{noise_type}_{str(snr)}.csv"
         df = pd.read_csv(file_path)
         for method in vad:
             method_np = df[method].to_numpy(dtype=float)
