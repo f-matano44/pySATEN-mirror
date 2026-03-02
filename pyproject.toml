@@ -44,6 +44,7 @@ eval = [
     "speechbrain>=1.0.3",
     "webrtcvad>=2.0.10",
     "setuptools<81",
+    "pyside6>=6.10.2",
 ]
 
 [[tool.uv.index]]

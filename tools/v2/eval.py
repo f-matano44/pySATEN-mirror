@@ -178,7 +178,7 @@ def _silero_vad(audio_file: Path) -> tuple[Optional[float], Optional[float]]:
 
 
 def _SpeechBrainVAD(audio_file16k: Path) -> tuple[Optional[float], Optional[float]]:
-    boundaries = speechbrain_model.get_speech_segments(audio_file16k)
+    boundaries = speechbrain_model.get_speech_segments(str(audio_file16k))
 
     seg = []
     for segment in boundaries:
@@ -205,8 +205,8 @@ def _whisper(audio_file: Path) -> tuple[Optional[float], Optional[float]]:
 
 
 def _SE_RMS(audio_file: Path) -> tuple[Optional[float], Optional[float]]:
-    enhanced = speech_enhancer.enhance_file(audio_file)
-    _, index = librosa.effects.trim(enhanced, top_db=29.471941)
+    enhanced = speech_enhancer.enhance_file(str(audio_file))
+    _, index = librosa.effects.trim(enhanced, top_db=29.439991)
     S = index[0] / 16000.0 if len(index) != 0 else None
     E = index[1] / 16000.0 if len(index) != 0 else None
     return S, E
