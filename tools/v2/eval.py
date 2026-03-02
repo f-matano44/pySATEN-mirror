@@ -32,7 +32,7 @@ speech_enhancer = WaveformEnhancement.from_hparams(
     source="speechbrain/mtl-mimic-voicebank"
 )
 
-noise_type: Literal["white", "pink", "fun"] = "white"
+noise_type: Literal["white", "pink", "fan"] = "white"
 
 
 def _main() -> None:
