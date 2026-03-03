@@ -1,12 +1,16 @@
 from typing import Optional
 
 import numpy as np
+import numpy.typing as npt
 import webrtcvad
 
 
-class WebRTC_VAD(webrtcvad.Vad):
-    def __init__(self):
-        super().__init__()
+class WebRTC_VAD:
+    def __init__(self) -> None:
+        self._vad = webrtcvad.Vad()
+
+    def set_mode(self, mode: int) -> None:
+        self._vad.set_mode(mode)
 
     @staticmethod
     def _frame_bytes(sig_pcm16: bytes, frame_samples: int) -> list[bytes]:
@@ -15,7 +19,7 @@ class WebRTC_VAD(webrtcvad.Vad):
         return [sig_pcm16[i : i + step] for i in range(0, n - (n % step), step)]
 
     def detect_segments(
-        self, x: np.ndarray, sr: int
+        self, x: npt.NDArray[np.floating], sr: int
     ) -> tuple[Optional[float], Optional[float]]:
         assert x.ndim == 1
         assert sr in (8000, 16000, 32000, 48000)
@@ -32,7 +36,7 @@ class WebRTC_VAD(webrtcvad.Vad):
         start_f = 0
 
         for i, fb in enumerate(frames):
-            sp = self.is_speech(fb, sample_rate=sr)
+            sp = self._vad.is_speech(fb, sample_rate=sr)
             if sp and not in_speech:
                 in_speech = True
                 start_f = i

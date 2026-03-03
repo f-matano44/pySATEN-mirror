@@ -1,8 +1,17 @@
 # ChangeLog
 
+## 2.2.2
+
+* limit default seed
+* mod readme (@ post1)
+
 ## 2.2.1
 
 * bugfix of preprocess
+* mod ci version
+* poetry -> uv
+* refactoring
+* add annotation (@ post1)
 
 ## 2.2.0
 

@@ -6,7 +6,8 @@ from typing import Final, Optional
 import librosa
 import numpy as np
 import numpy.random as rand
-import numpy.typing as npt
+from numpy import floating
+from numpy.typing import NDArray
 
 from .color_noise import pink as pk_noise
 from .color_noise import white as wh_noise
@@ -14,21 +15,34 @@ from .color_noise import white as wh_noise
 
 @dataclass
 class _TimeAlignment:
-    def __init__(self, start, end, phoneme) -> None:
+    def __init__(self, start: float, end: float, phoneme: str) -> None:
         self.start: Final[float] = start
         self.end: Final[float] = end
         self.phoneme: Final[str] = phoneme
 
 
 class WavLabHandler:
-    __x: Final[npt.NDArray[np.floating]]
+    __x: Final[NDArray[floating]]
     __sr: Final[float]
     __monophone_label: Final[list[_TimeAlignment]]
+    __fan_noise: Final[Optional[NDArray[floating]]]
+    __fan_noise_sr: Final[Optional[float]]
 
-    def __init__(self, wav_path: Path, lab_path: Path) -> None:
+    def __init__(
+        self, wav_path: Path, lab_path: Path, fan_noise: Optional[Path] = None
+    ) -> None:
         # load audio
         self.__x, self.__sr = librosa.load(wav_path, sr=None)
         self.__x.flags.writeable = False  # x is immutable
+
+        # load fan noise
+        fan_noise_x: Optional[NDArray[floating]] = None
+        fan_noise_sr: Optional[float] = None
+        if fan_noise is not None:
+            fan_noise_x, fan_noise_sr = librosa.load(fan_noise, sr=int(self.__sr))
+            fan_noise_x.flags.writeable = False
+        self.__fan_noise = fan_noise_x
+        self.__fan_noise_sr = fan_noise_sr
 
         # load label
         with lab_path.open() as f:
@@ -50,20 +64,56 @@ class WavLabHandler:
             self.__monophone_label[-1].start,
         )
 
-    def get_signal(self) -> tuple[npt.NDArray[np.floating], float]:
+    def get_signal(self) -> tuple[NDArray[floating], float]:
         return self.__x, self.__sr
+
+    def get_fan_noise_signal(
+        self, snr: Optional[float], noise_seed: int
+    ) -> tuple[NDArray[floating], float]:
+        if self.__fan_noise is None or self.__fan_noise_sr is None:
+            raise ValueError("Fan noise is not loaded")
+        if len(self.__fan_noise) < len(self.__x):
+            raise ValueError("Fan noise must be longer than or equal to input audio")
+
+        x: NDArray[floating] = self.__x
+        noised_x: NDArray[floating] = x.copy()
+
+        max_start: int = len(self.__fan_noise) - len(x)
+        rng = np.random.default_rng(noise_seed)
+        noise_start: int = int(rng.integers(0, max_start + 1))
+        noise = self.__fan_noise[noise_start : noise_start + len(x)]
+
+        if snr is None or snr == inf:
+            return noised_x, self.__sr
+        if snr == -inf:
+            return noise.copy(), self.__sr
+
+        ans_s_sec, ans_e_sec = self.get_answer()
+        speech_start_idx: int = int(ans_s_sec * self.__sr)
+        speech_end_idx: int = int(ans_e_sec * self.__sr)
+        noise_scale = _determine_noise_scale(
+            x[speech_start_idx:speech_end_idx],
+            noise[speech_start_idx:speech_end_idx],
+            int(snr),
+        )
+        noised_x = x + noise * noise_scale
+
+        if 1 < np.max(np.abs(noised_x)):
+            noised_x /= np.max(np.abs(noised_x))
+
+        return noised_x, self.__sr
 
     def get_noise_signal(
         self, snr: float, is_white: bool, with_pulse: bool, noise_seed: int
-    ) -> tuple[npt.NDArray, int]:
-        x: npt.NDArray[np.floating] = self.__x.copy()
+    ) -> tuple[NDArray[floating], int]:
+        x: NDArray[floating] = self.__x.copy()
         sr: int = int(self.__sr)
         ans_s_sec, ans_e_sec = self.get_answer()
         speech_start_idx: int = int(ans_s_sec * sr)
         speech_end_idx: int = int(ans_e_sec * sr)
 
         # generate noise (white or pink)
-        noise: npt.NDArray[np.floating] = (
+        noise: NDArray[floating] = (
             wh_noise(len(x), noise_seed) if is_white else pk_noise(len(x), sr, noise_seed)
         )
 
@@ -81,7 +131,7 @@ class WavLabHandler:
         # add pulse noise
         if with_pulse:
             rand.seed(noise_seed)
-            pulse: npt.NDArray[np.floating] = rand.random(2) - 0.5 * 2
+            pulse: NDArray[floating] = rand.random(2) - 0.5 * 2
             # determine index adding pulse noise
             start_pulse_index: int = np.random.randint(0, speech_start_idx)
             end_pulse_index: int = np.random.randint(speech_end_idx, len(x) - 1)
@@ -92,9 +142,9 @@ class WavLabHandler:
 
     def get_noise_signal2(
         self, snr: Optional[float], noise_type: str, noise_seed: int
-    ) -> tuple[npt.NDArray, float]:
-        x: npt.NDArray = self.__x
-        noised_x: npt.NDArray = x.copy()
+    ) -> tuple[NDArray[floating], float]:
+        x: NDArray[floating] = self.__x
+        noised_x: NDArray[floating] = x.copy()
         ans_s_sec, ans_e_sec = self.get_answer()
         speech_start_idx: Final[int] = int(ans_s_sec * self.__sr)
         speech_end_idx: Final[int] = int(ans_e_sec * self.__sr)
@@ -104,7 +154,7 @@ class WavLabHandler:
         for nt in noise_type.split():
             if not color_flag and (nt == "white" or nt == "pink") and snr is not None:
                 # generate color noise
-                noise: npt.NDArray[np.floating] = (
+                noise: NDArray[floating] = (
                     wh_noise(len(x), noise_seed)
                     if nt == "white"
                     else pk_noise(len(x), self.__sr, noise_seed)
@@ -129,7 +179,7 @@ class WavLabHandler:
             # add pulse noise
             if nt == "pulse":
                 rand.seed(noise_seed)
-                pulse: npt.NDArray[np.floating] = rand.choice((-1, 1), size=2)
+                pulse: NDArray[floating] = rand.choice((-1, 1), size=2)
                 # determine index adding pulse noise
                 start_pulse_index: int = np.random.randint(0, speech_start_idx)
                 end_pulse_index: int = np.random.randint(speech_end_idx, len(x) - 1)
@@ -141,8 +191,8 @@ class WavLabHandler:
 
 
 def _determine_noise_scale(
-    signal: npt.NDArray[np.floating],
-    noise: npt.NDArray[np.floating],
+    signal: NDArray[floating],
+    noise: NDArray[floating],
     desired_snr_db: int,
 ) -> float:
     desired_snr_linear: float = 10 ** (desired_snr_db / 10)

@@ -46,7 +46,7 @@ y_trimmed = y[int(start_sec * sr) : int(end_sec * sr)]
 
 ```sh
 git clone https://gitlab.com/f-matano44/pysaten.git
-poetry install
+uv sync
 ```
 
 ## License
