@@ -4,7 +4,7 @@ from typing import Literal
 import numpy as np
 import pandas as pd
 
-noise_type: Literal["white", "pink", "fun"] = "white"
+noise_type: Literal["white", "pink", "fun"] = "pink"
 
 snr_list = [inf, 20, 15, 10, 5, 0, -5, -inf]
 vad = [
