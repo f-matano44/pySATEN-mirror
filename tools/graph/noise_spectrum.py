@@ -30,7 +30,7 @@ def _parse_args() -> Namespace:
     parser.add_argument(
         "--duration-sec",
         type=int,
-        default=1,
+        default=5,
         help="スペクトル計算に使う秒数",
     )
     return parser.parse_args()
@@ -39,7 +39,9 @@ def _parse_args() -> Namespace:
 def _compute_long_term_spectrum(
     y: NDArray[np.float64], fs: int
 ) -> tuple[NDArray[np.float64], NDArray[np.float64]]:
-    spectrum = np.fft.rfft(y)
+    window = np.hanning(y.shape[0]).astype(np.float64)
+    y_windowed = y * window
+    spectrum = np.fft.rfft(y_windowed)
     power = np.abs(spectrum) ** 2
     eps = np.finfo(np.float64).eps
     power_db = 10.0 * np.log10(np.maximum(power, eps))
