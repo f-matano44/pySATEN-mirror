@@ -12,8 +12,9 @@ vad = [
     "SpeechBrain",
     "WebRTC",
     "WhisperX",
+    "SE + RMS",
 ]
-result: dict[str, list] = {
+result: dict[str, list[float | str]] = {
     vad[0]: [],
     vad[1]: [],
     vad[2]: [],
@@ -24,8 +25,10 @@ result: dict[str, list] = {
 }
 
 with open(f"{color}_result.md", "w") as f:
-    f.write(f"|SNR|{vad[0]}|{vad[1]}|{vad[2]}|{vad[3]}|{vad[4]}|{vad[5]}|{vad[6]}|\n")
-    f.write("|:---:|---:|---:|---:|---:|---:|---:|---:|\n")
+    f.write(
+        f"|SNR|{vad[0]}|{vad[1]}|{vad[2]}|{vad[3]}|{vad[4]}|{vad[5]}|{vad[6]}|{vad[7]}|\n"
+    )
+    f.write("|:---:|---:|---:|---:|---:|---:|---:|---:|---:|\n")
     for snr in snr_list:
         f.write(f"|{snr}|")
         file_path = f"results/{str(snr)}.csv"

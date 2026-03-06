@@ -1,7 +1,10 @@
 from pathlib import Path
 from tempfile import TemporaryDirectory
+from typing import Any, Optional
 
+import librosa
 import numpy as np
+import numpy.typing as npt
 import pandas as pd
 import whisperx
 from inaSpeechSegmenter import Segmenter
@@ -10,6 +13,7 @@ from my_webrtcvad import WebRTC_VAD
 from rVADfast import rVADfast
 from silero_vad import get_speech_timestamps, load_silero_vad, read_audio
 from soundfile import write
+from speechbrain.inference.enhancement import WaveformEnhancement
 from speechbrain.inference.VAD import VAD as speechbrain
 from tqdm import tqdm
 
@@ -22,9 +26,12 @@ silero_model = load_silero_vad()
 speechbrain_model = speechbrain.from_hparams(source="speechbrain/vad-crdnn-libriparty")
 webrtc_model = WebRTC_VAD()
 whisper_model = whisperx.load_model("large-v3", "cpu", compute_type="int8", language="ja")
+speech_enhancer = WaveformEnhancement.from_hparams(
+    source="speechbrain/mtl-mimic-voicebank"
+)
 
 
-def _main():
+def _main() -> None:
     rand = np.random.default_rng(0)
 
     wav_files = [
@@ -41,14 +48,15 @@ def _main():
 
     with TemporaryDirectory() as temp_dir:
         for noise_type in ["", "pulse"]:
-            ans_list = []
-            saten2_list = []
-            rvad_list = []
-            ina_list = []
-            silero_list = []
-            speechbrain_list = []
-            webrtc_list = []
-            whisper_list = []
+            ans_list: list[Optional[float]] = []
+            saten2_list: list[Optional[float]] = []
+            rvad_list: list[Optional[float]] = []
+            ina_list: list[Optional[float]] = []
+            silero_list: list[Optional[float]] = []
+            speechbrain_list: list[Optional[float]] = []
+            webrtc_list: list[Optional[float]] = []
+            whisper_list: list[Optional[float]] = []
+            serms_list: list[Optional[float]] = []
 
             for i in tqdm(range(1, 324 + 1)):
                 for speaker in [0, 1, 2]:
@@ -63,9 +71,9 @@ def _main():
                     )
 
                     # save noise signal
-                    temp_wav = f"{temp_dir}/temp.wav"
+                    temp_wav = Path(temp_dir) / "temp.wav"
                     write(temp_wav, x, fs)
-                    temp_wav_16k = f"{temp_dir}/temp_16k.wav"
+                    temp_wav_16k = Path(temp_dir) / "temp_16k.wav"
                     write(temp_wav_16k, resample(x, orig_sr=fs, target_sr=16000), 16000)
 
                     # get answer label
@@ -96,6 +104,9 @@ def _main():
                     # whisperx
                     whisper_list.extend(_whisper(temp_wav))
 
+                    # SE + RMS
+                    serms_list.extend(_SE_RMS(temp_wav))
+
             pd.DataFrame(
                 {
                     "answer": ans_list,
@@ -106,6 +117,7 @@ def _main():
                     "SpeechBrain": speechbrain_list,
                     "WebRTC": webrtc_list,
                     "WhisperX": whisper_list,
+                    "SE + RMS": serms_list,
                 }
             ).to_csv(
                 f"results/{'with' if noise_type == 'pulse' else 'without'}_pulse.csv",
@@ -113,7 +125,9 @@ def _main():
             )
 
 
-def _rvad_fast(x, fs):
+def _rvad_fast(
+    x: npt.NDArray[np.floating[Any]], fs: float
+) -> tuple[Optional[float], Optional[float]]:
     label, timestamp = rvad_model(x, fs)
     if not any(label):
         return None, None
@@ -123,7 +137,7 @@ def _rvad_fast(x, fs):
         return valid_only[0], valid_only[-1]
 
 
-def _ina_speech_segmenter(audio_file: Path):
+def _ina_speech_segmenter(audio_file: Path) -> tuple[Optional[float], Optional[float]]:
     segments = ina_model(audio_file)
     ina_temp = []
     for segment in segments:
@@ -136,7 +150,7 @@ def _ina_speech_segmenter(audio_file: Path):
     return S, E
 
 
-def _silero_vad(audio_file):
+def _silero_vad(audio_file: Path) -> tuple[Optional[float], Optional[float]]:
     wav = read_audio(audio_file)
     speech_timestamps = get_speech_timestamps(wav, silero_model, return_seconds=True)
 
@@ -151,8 +165,8 @@ def _silero_vad(audio_file):
     return S, E
 
 
-def _SpeechBrainVAD(audio_file16k):
-    boundaries = speechbrain_model.get_speech_segments(audio_file16k)
+def _SpeechBrainVAD(audio_file16k: Path) -> tuple[Optional[float], Optional[float]]:
+    boundaries = speechbrain_model.get_speech_segments(str(audio_file16k))
 
     seg = []
     for segment in boundaries:
@@ -164,7 +178,7 @@ def _SpeechBrainVAD(audio_file16k):
     return S, E
 
 
-def _whisper(audio_file):
+def _whisper(audio_file: Path) -> tuple[Optional[float], Optional[float]]:
     audio = whisperx.load_audio(audio_file)
     result = whisper_model.transcribe(audio, batch_size=16)
 
@@ -175,6 +189,14 @@ def _whisper(audio_file):
 
     S = seg[0] if len(seg) != 0 else None
     E = seg[-1] if len(seg) != 0 else None
+    return S, E
+
+
+def _SE_RMS(audio_file: Path) -> tuple[Optional[float], Optional[float]]:
+    enhanced = speech_enhancer.enhance_file(str(audio_file))
+    _, index = librosa.effects.trim(enhanced, top_db=29.439991)
+    S = index[0] / 16000.0 if len(index) != 0 else None
+    E = index[1] / 16000.0 if len(index) != 0 else None
     return S, E
 
 
