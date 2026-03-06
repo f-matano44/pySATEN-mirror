@@ -32,7 +32,7 @@ speech_enhancer = WaveformEnhancement.from_hparams(
     source="speechbrain/mtl-mimic-voicebank"
 )
 
-noise_type: Literal["white", "pink", "fan"] = "pink"
+noise_type: Literal["white", "pink", "fan"] = "fan"
 
 
 def _main() -> None:
@@ -75,14 +75,14 @@ def _main() -> None:
                     )
 
                     # create noised signal
-                    x, fs = handler.get_noise_signal2(
-                        snr,
-                        noise_type,
-                        int(
-                            rand.integers(0, 20250922)
-                            if noise_type == "white" or noise_type == "pink"
-                            else rand.integers(0, 20260223)  # fan
-                        ),
+                    x, fs = (
+                        handler.get_noise_signal2(
+                            snr, noise_type, int(rand.integers(0, 20250922))
+                        )
+                        if noise_type == "white" or noise_type == "pink"
+                        else handler.get_fan_noise_signal(
+                            snr, int(rand.integers(0, 20260223))
+                        )
                     )
 
                     # save noise signal
