@@ -78,9 +78,9 @@ def _main() -> None:
 
     fig, ax = plt.subplots(figsize=(8, 4.5))
     ax.semilogx(freq[1:], mean_power_db[1:], color="black", linewidth=linewidth)
-    ax.set_xlim(20, fs / 2)
+    ax.set_xlim(10, fs / 2)
     ax.set_ylim(-100, 3)
-    xticks = [tick for tick in (100.0, 1000.0, 10000.0) if tick <= fs / 2]
+    xticks = [tick for tick in (10.0, 100.0, 1000.0, 10000.0) if tick <= fs / 2]
     ax.set_xticks(xticks)
     ax.set_xticklabels([f"{int(tick)}" for tick in xticks])
     ax.xaxis.set_minor_formatter(NullFormatter())
