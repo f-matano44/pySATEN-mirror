@@ -3178,6 +3178,7 @@ dependencies = [
 dev = [
     { name = "matplotlib" },
     { name = "pandas" },
+    { name = "pyside6" },
     { name = "tqdm" },
 ]
 eval = [
@@ -3208,6 +3209,7 @@ requires-dist = [
 dev = [
     { name = "matplotlib", specifier = ">=3.10.3" },
     { name = "pandas", specifier = ">=2.2.3" },
+    { name = "pyside6", specifier = ">=6.10.0" },
     { name = "tqdm", specifier = ">=4.67.1" },
 ]
 eval = [

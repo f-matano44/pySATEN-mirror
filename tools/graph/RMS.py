@@ -1,3 +1,4 @@
+from configparser import ConfigParser
 from pathlib import Path
 
 import matplotlib.pyplot as plt
@@ -6,22 +7,25 @@ from numpy.typing import NDArray
 
 from pysaten.utility.signal import root_mean_square
 from pysaten.utility.WavLabHandler import WavLabHandler
-from pysaten.v2 import _00_preprocess, _01_rms
+from pysaten.v2 import vsed_debug_v2
 
-linewidth = 2.27
-plt.rcParams["font.size"] = 32
-plt.rcParams["font.family"] = "serif"
+config = ConfigParser()
+config.read("config.ini")
+
+linewidth = float(config["line"]["width"])
+plt.rcParams["font.size"] = int(config["font"]["size"])
+plt.rcParams["font.family"] = config["font"]["family"]
 
 
 def _main() -> None:
-    wav = "wav_and_lab/tohoku_itako/ITA_emotion_normal_synchronized_wav/emoNormal001.wav"
-    lab = "wav_and_lab/tohoku_itako/ITA_emotion_normal_label/emoNormal001.lab"
+    wav = "wav_and_lab/zundamon/ITA_emotion_normal_synchronized_wav/emoNormal001.wav"
+    lab = "wav_and_lab/zundamon/ITA_emotion_normal_label/emoNormal001.lab"
 
     # データ読み込み
     handler = WavLabHandler(Path(wav), Path(lab))
     y0, _ = handler.get_signal()
-    y1, fs = handler.get_noise_signal2(snr=0, noise_type="pink", noise_seed=0)
-    t1 = np.linspace(0, len(y1) / fs, len(y1))
+    y, fs = handler.get_noise_signal2(snr=0, noise_type="pink", noise_seed=0)
+    t = np.linspace(0, len(y) / fs, len(y))
     # データ読み込み: lab
     with open(lab) as f:
         ans = [line.rstrip("\n").split(" ") for line in f]
@@ -31,17 +35,16 @@ def _main() -> None:
     hop_length: int = int(0.005 * fs)
     win_length: int = hop_length * 4
 
-    zcr_1 = root_mean_square(y1, win_length, hop_length)
-    zcr_t = np.linspace(0, len(y1) / fs, len(zcr_1))
+    rms_1 = root_mean_square(y, win_length, hop_length)
+    rms = np.linspace(0, len(y) / fs, len(rms_1))
 
-    y2, yf = _00_preprocess(y1, int(fs), 0)
-    zcr_2 = _01_rms(y2, yf, fs, win_length, hop_length)
+    zcr_2 = vsed_debug_v2(y, fs).y_rms
 
     # データ形式の定義
     data_list: list[tuple[NDArray, NDArray, str]] = [
-        (t1, y1, "Wave"),
-        (zcr_t, zcr_1, "RMS"),
-        (zcr_t, zcr_2, "W-RMS"),
+        (t, y, "(f) Noisy Speech Waveform"),
+        (rms, rms_1, "(g) Conventional RMS"),
+        (rms, zcr_2, "(h) Weighted RMS"),
     ]
 
     # 最初のx範囲を基準とする
@@ -53,13 +56,16 @@ def _main() -> None:
     for ax, (x, y, label) in zip(axes, data_list):
         ax.axvspan(start, end, color="lightgray")
         ax.plot(x, y, color="black", linewidth=linewidth)
-        ax.set_ylabel(label)
+        ax.set_title(label, fontsize=int(config["font"]["size"]))
         ax.tick_params(labelleft=False, axis="y", length=0)
         ax.set_xlim(x_min, x_max)
         # Wave の中心を０に
-        if label == "Wave":
+        if "Wave" in label:
             amp = np.max(np.abs(y))
             ax.set_ylim(-amp * 1.15, amp * 1.15)
+            ax.set_ylabel("Amp.")
+        else:
+            ax.set_ylabel("RMS")
         # 枠線の太さを調整
         for spine in ax.spines.values():
             spine.set_linewidth(linewidth * 0.7)
