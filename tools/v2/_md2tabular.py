@@ -131,10 +131,8 @@ def _is_alignment_cell(cell: str) -> bool:
     if not stripped:
         return False
 
-    if stripped.startswith(":"):
-        stripped = stripped[1:]
-    if stripped.endswith(":"):
-        stripped = stripped[:-1]
+    stripped = stripped.removeprefix(":")
+    stripped = stripped.removesuffix(":")
     return stripped != "" and all(char == "-" for char in stripped)
 
 
@@ -159,7 +157,9 @@ def _convert_table(table_lines: list[str]) -> list[str]:
 
 def _is_pulse_table(rows: list[list[str]]) -> bool:
     labels = [row[0] for row in rows]
-    return labels == ["without_pulse", "with_pulse"]
+    return labels == ["without_pulse", "with_pulse"] and all(
+        _parse_score_cell(cell) is not None for row in rows for cell in row[1:]
+    )
 
 
 def _is_evaluation_table(header_cells: list[str], rows: list[list[str]]) -> bool:
@@ -332,12 +332,18 @@ def _parse_score_cell(cell: str) -> ScoreCell | None:
 def _convert_generic_table(
     header_cells: list[str], alignment_cells: list[str], rows: list[list[str]]
 ) -> list[str]:
-    tabular_lines = [f"\\begin{{tabular}}{{{_build_column_spec(alignment_cells)}}}", "\\hline"]
-    tabular_lines.append(_format_generic_row(header_cells))
+    is_snr_table = header_cells[0] == "SNR"
+    if is_snr_table:
+        column_spec = f"r|{'r' * (len(header_cells) - 1)}"
+    else:
+        column_spec = _build_column_spec(alignment_cells)
+
+    tabular_lines = [f"\\begin{{tabular}}{{{column_spec}}}", "\\hline"]
+    tabular_lines.append(_format_generic_header(header_cells, is_snr_table))
     tabular_lines.append("\\hline")
 
     for row_cells in rows:
-        tabular_lines.append(_format_generic_row(row_cells))
+        tabular_lines.append(_format_generic_row(row_cells, is_snr_table))
 
     tabular_lines.append("\\hline")
     tabular_lines.append("\\end{tabular}")
@@ -357,8 +363,22 @@ def _build_column_spec(alignment_cells: list[str]) -> str:
     return "".join(column_spec)
 
 
-def _format_generic_row(cells: list[str]) -> str:
+def _format_generic_header(cells: list[str], is_snr_table: bool) -> str:
+    formatted_cells: list[str] = []
+    for index, cell in enumerate(cells):
+        label = HEADER_LABELS.get(cell, cell.replace("_", " "))
+        alignment = "c|" if is_snr_table and index == 0 else "c"
+        escaped_label = label if cell == "SNR" else _escape_latex(label)
+        formatted_cells.append(
+            rf"\multicolumn{{1}}{{{alignment}}}{{{escaped_label}}}"
+        )
+    return " & ".join(formatted_cells) + r" \\"
+
+
+def _format_generic_row(cells: list[str], is_snr_table: bool) -> str:
     escaped_cells = [_escape_latex(cell) for cell in cells]
+    if is_snr_table:
+        escaped_cells[0] = _format_snr_label(cells[0])
     return " & ".join(escaped_cells) + r" \\"
 
 
