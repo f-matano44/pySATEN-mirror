@@ -72,6 +72,10 @@ for noise_type in noise_types:
                 recognition_rate = masked_diff.size / method_np.size
                 result_file.write(f"{diff_median} ({recognition_rate:.2f})|")
 
+                if snr == -inf:
+                    rejection_rate_file.write("N/A|")
+                    continue
+
                 estimated_start = method_np[0::2]
                 estimated_end = method_np[1::2]
                 recognized = ~np.isnan(estimated_start) & ~np.isnan(estimated_end)
