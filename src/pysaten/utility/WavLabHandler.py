@@ -58,24 +58,34 @@ class WavLabHandler:
         if len(self.__monophone_label) < 3:
             raise ValueError("Invalid label format")
 
-    def get_answer(self) -> tuple[float, float]:
+    def get_answer(self, padding_sec: float = 0.0) -> tuple[float, float]:
+        padding_samples = self._padding_samples(padding_sec)
+        padding_duration = padding_samples / self.__sr
         return (
-            self.__monophone_label[1].start,
-            self.__monophone_label[-1].start,
+            self.__monophone_label[1].start + padding_duration,
+            self.__monophone_label[-1].start + padding_duration,
         )
 
-    def get_signal(self) -> tuple[NDArray[floating], float]:
-        return self.__x, self.__sr
+    def get_signal(
+        self, padding_sec: float = 0.0
+    ) -> tuple[NDArray[floating], float]:
+        padding_samples = self._padding_samples(padding_sec)
+        if padding_samples == 0:
+            return self.__x, self.__sr
+        return np.pad(self.__x, (padding_samples, padding_samples)), self.__sr
 
     def get_fan_noise_signal(
-        self, snr: Optional[float], noise_seed: int
+        self,
+        snr: Optional[float],
+        noise_seed: int,
+        padding_sec: float = 0.0,
     ) -> tuple[NDArray[floating], float]:
         if self.__fan_noise is None or self.__fan_noise_sr is None:
             raise ValueError("Fan noise is not loaded")
-        if len(self.__fan_noise) < len(self.__x):
+        x, _ = self.get_signal(padding_sec)
+        if len(self.__fan_noise) < len(x):
             raise ValueError("Fan noise must be longer than or equal to input audio")
 
-        x: NDArray[floating] = self.__x
         noised_x: NDArray[floating] = x.copy()
 
         max_start: int = len(self.__fan_noise) - len(x)
@@ -88,7 +98,7 @@ class WavLabHandler:
         if snr == -inf:
             return noise.copy(), self.__sr
 
-        ans_s_sec, ans_e_sec = self.get_answer()
+        ans_s_sec, ans_e_sec = self.get_answer(padding_sec)
         speech_start_idx: int = int(ans_s_sec * self.__sr)
         speech_end_idx: int = int(ans_e_sec * self.__sr)
         noise_scale = _determine_noise_scale(
@@ -102,6 +112,11 @@ class WavLabHandler:
             noised_x /= np.max(np.abs(noised_x))
 
         return noised_x, self.__sr
+
+    def _padding_samples(self, padding_sec: float) -> int:
+        if not np.isfinite(padding_sec) or padding_sec < 0:
+            raise ValueError("padding_sec must be finite and non-negative")
+        return round(padding_sec * self.__sr)
 
     def get_noise_signal(
         self, snr: float, is_white: bool, with_pulse: bool, noise_seed: int
