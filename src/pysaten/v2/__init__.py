@@ -11,9 +11,8 @@ from scipy.signal import cheby1, filtfilt, firwin, sosfilt
 
 from ..utility.color_noise import blue as blue_noise
 from ..utility.constants import F0_CEIL, F0_FLOOR, SR
-from ..utility.signal import normalize
+from ..utility.signal import normalize, slide_index
 from ..utility.signal import root_mean_square as rms
-from ..utility.signal import slide_index
 from ..utility.signal import zero_crossing_rate as zcr
 
 
@@ -125,7 +124,7 @@ def _00_preprocess(
     noise = blue_noise(len(y), sr, noise_seed)
     blue_rms = np.sqrt(np.mean(noise**2))
     # generate
-    y_blue = y + noise * (((signal_rms / blue_rms) / 10 ** (snr / 20)))
+    y_blue = y + noise * ((signal_rms / blue_rms) / 10 ** (snr / 20))
     y_nr = nr.reduce_noise(y_blue, sr)
     yf_nr = nr.reduce_noise(y_blue[::-1], sr)
     return (
