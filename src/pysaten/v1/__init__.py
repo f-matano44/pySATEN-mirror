@@ -11,9 +11,8 @@ from scipy.signal import cheby1, firwin, lfilter, sosfilt
 
 from ..utility import color_noise
 from ..utility.constants import F0_CEIL, F0_FLOOR, NYQ, SR
-from ..utility.signal import normalize
+from ..utility.signal import normalize, slide_index
 from ..utility.signal import root_mean_square as rms
-from ..utility.signal import slide_index
 from ..utility.signal import zero_crossing_rate as zcr
 
 
