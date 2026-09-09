@@ -47,6 +47,10 @@ eval = [
 ]
 
 [[tool.uv.index]]
+url = "https://pypi.flatt.tech/simple/"
+default = true
+
+[[tool.uv.index]]
 name = "torch_cpu"
 url = "https://download.pytorch.org/whl/cpu"
 explicit = true
