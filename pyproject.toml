@@ -5,7 +5,7 @@ build-backend = "flit_core.buildapi"
 [project]
 name = "pysaten"
 description = "Detect silence segment from speech signal."
-version = "2.2.2.post1"
+version = "2.2.2.post3"
 authors = [{name = "Fumiyoshi MATANO", email = "fumiyoshi.matano@gmail.com"}]
 requires-python = ">=3.10"
 dependencies = [
@@ -49,6 +49,10 @@ eval = [
 ]
 
 [[tool.uv.index]]
+url = "https://pypi.flatt.tech/simple/"
+default = true
+
+[[tool.uv.index]]
 name = "torch_cpu"
 url = "https://download.pytorch.org/whl/cpu"
 explicit = true
@@ -60,16 +64,12 @@ torchaudio = { index = "torch_cpu" }
 [tool.uv.dependency-groups]
 eval = {requires-python = "<3.13"}
 
-[tool.black]
-line-length = 90
-
 [tool.ruff]
 line-length = 90
 
-[tool.isort]
-profile = "black"
+[tool.ruff.lint]
+select = ["E", "W", "F", "I"]
 
 [tool.mypy]
 strict = true
 ignore_missing_imports = true
-python_version = "3.10"
