@@ -66,9 +66,7 @@ class WavLabHandler:
             self.__monophone_label[-1].start + padding_duration,
         )
 
-    def get_signal(
-        self, padding_sec: float = 0.0
-    ) -> tuple[NDArray[floating], float]:
+    def get_signal(self, padding_sec: float = 0.0) -> tuple[NDArray[floating], float]:
         padding_samples = self._padding_samples(padding_sec)
         if padding_samples == 0:
             return self.__x, self.__sr
