@@ -5,7 +5,7 @@ build-backend = "flit_core.buildapi"
 [project]
 name = "pysaten"
 description = "Detect silence segment from speech signal."
-version = "2.2.2.post3"
+version = "2.2.2.post4"
 authors = [{name = "Fumiyoshi MATANO", email = "fumiyoshi.matano@gmail.com"}]
 requires-python = ">=3.10"
 dependencies = [
@@ -30,7 +30,10 @@ pysaten_trim = "pysaten.pysaten:cli_runner"
 [dependency-groups]
 dev = [
     "matplotlib>=3.10.3",
+    "mypy>=2.3.1",
     "pandas>=2.2.3",
+    "pyside6>=6.10.0",
+    "ruff>=0.16.6",
     "tqdm>=4.67.1",
 ]
 
@@ -44,6 +47,7 @@ eval = [
     "speechbrain>=1.0.3",
     "webrtcvad>=2.0.10",
     "setuptools<81",
+    "pyside6>=6.10.2",
 ]
 
 [[tool.uv.index]]
