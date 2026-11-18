@@ -10,7 +10,7 @@
 
 This library detects silence segment from speech signal.
 
-![\(alt: Image of Voice Start-End Detection\)](https://gitlab.com/f-matano44/pysaten/-/raw/main/image/signal_graph.svg)
+![\(alt: Image of Voice Start and End Detection\)](https://gitlab.com/f-matano44/pysaten/-/raw/main/image/signal_graph.svg)
 
 ## Installation
 
@@ -76,14 +76,7 @@ You should have received a copy of the GNU General Public License along with thi
 * WhisperX
   * <https://github.com/m-bain/whisperX>
 
-## Cite this
+## Citation
 
-### Library version 2.x (Non-peer-reviewed)
-
-#### Japanese
-
-> 俣野 文義，森勢 将雅，``音声コーパス構築のための仮定を追加した発話区間検出法の改良,'' 日本音響学会第 154 回 (2025 年秋季) 研究発表会, pp.1223--1224 (2025.09).
-
-#### English
-
-> F. Matano, M. Morise, ``An improved method for voice activity detection with additional assumptions for speech corpus construction,'' Proceedings of the 2025 Autumn meeting of the Acoustical Society of Japan, pp.1223--1224 (2025.09) (in Japanese).
+> F. Matano, M. Morise, ``SATEN, A Speech Trimming Method for Speech Corpus Construction in Text-to-Speech," IEICE Transactions on Information and Systems, Advance Publication, 2026.
+> [【DOI】](https://doi.org/10.1587/transinf.2026EDP7101)
