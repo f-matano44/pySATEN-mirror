@@ -31,20 +31,23 @@ pysaten_trim input.wav trimmed.wav
 ### Python
 
 The Python API may change incompatibly between major versions.
+Its design is inspired by `librosa.effects.trim`.
 
 ```python
 import pysaten
 
-# y: Target signal(numpy.ndarray), obtained using libraries such as librosa or soundfile.
-# sr: Sampling rate.
-
-# Get trimmed signal for the speech segment only.
-y_trimmed: numpy.ndarray = pysaten.trim(y, sr)
-
-# If you trim manually or want to get start/end time...
-start_sec, end_sec = pysaten.vsed(y, sr)
-y_trimmed = y[int(start_sec * sr) : int(end_sec * sr)]
+y_trimmed, index = pysaten.trim(y, sr)
 ```
+
+**Parameters:**
+
+- `y` : `numpy.ndarray` - Mono audio signal.
+- `sr` : `float` - Sampling rate in Hz.
+
+**Returns:**
+
+- `y_trimmed` : `numpy.ndarray` - Trimmed audio signal.
+- `index` : `tuple[int, int]` - Start and end sample indices in `y`.
 
 ### For development
 
