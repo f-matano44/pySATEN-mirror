@@ -22,32 +22,32 @@ pip install pysaten
 
 ### Command line
 
+Output is saved as 48 kHz, 24-bit PCM.
+
 ```sh
 pysaten_trim input.wav trimmed.wav
 ```
 
 ### Python
 
+The Python API may change incompatibly between major versions.
+Its design is inspired by `librosa.effects.trim`.
+
 ```python
 import pysaten
 
-# y: Target signal(numpy.ndarray), obtained using libraries such as librosa or soundfile.
-# sr: Sampling rate.
-
-# Get trimmed signal for the speech segment only.
-y_trimmed: numpy.ndarray = pysaten.trim(y, sr)
-
-# If you trim manually or want to get start/end time...
-start_sec, end_sec = pysaten.vsed(y, sr)
-y_trimmed = y[int(start_sec * sr) : int(end_sec * sr)]
+y_trimmed, index = pysaten.trim(y, sr)
 ```
 
-### For development
+**Parameters:**
 
-```sh
-git clone https://gitlab.com/f-matano44/pysaten.git
-uv sync
-```
+* `y` : `numpy.ndarray` - Mono audio signal.
+* `sr` : `float` - Sampling rate in Hz.
+
+**Returns:**
+
+* `y_trimmed` : `numpy.ndarray` - Trimmed audio signal.
+* `index` : `tuple[int, int]` - Start and end sample indices in `y`.
 
 ## License
 
@@ -76,7 +76,7 @@ You should have received a copy of the GNU General Public License along with thi
 * WhisperX
   * <https://github.com/m-bain/whisperX>
 
-## Citation
+## Citation (version 2.0 or later)
 
-> F. Matano, M. Morise, ``SATEN, A Speech Trimming Method for Speech Corpus Construction in Text-to-Speech," IEICE Transactions on Information and Systems, Advance Publication, 2026.
+> F. Matano, M. Morise, ``SATEN, A Speech Trimming Method for Speech Corpus Construction in Text-to-Speech," IEICE Transactions on Information and Systems, Advance online publication, Article 2026EDP7101, Nov. 2026.
 > [【DOI】](https://doi.org/10.1587/transinf.2026EDP7101)

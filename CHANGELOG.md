@@ -1,5 +1,11 @@
 # ChangeLog
 
+## 3.0.0
+
+* update Python API: `trim` now returns indices; remove `vsed`
+* update README
+* update CI Python version
+
 ## 2.2.2
 
 * limit default seed
