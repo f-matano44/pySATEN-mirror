@@ -41,13 +41,13 @@ y_trimmed, index = pysaten.trim(y, sr)
 
 **Parameters:**
 
-- `y` : `numpy.ndarray` - Mono audio signal.
-- `sr` : `float` - Sampling rate in Hz.
+* `y` : `numpy.ndarray` - Mono audio signal.
+* `sr` : `float` - Sampling rate in Hz.
 
 **Returns:**
 
-- `y_trimmed` : `numpy.ndarray` - Trimmed audio signal.
-- `index` : `tuple[int, int]` - Start and end sample indices in `y`.
+* `y_trimmed` : `numpy.ndarray` - Trimmed audio signal.
+* `index` : `tuple[int, int]` - Start and end sample indices in `y`.
 
 ## License
 
