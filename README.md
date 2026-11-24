@@ -22,11 +22,15 @@ pip install pysaten
 
 ### Command line
 
+Output is saved as 48 kHz, 24-bit PCM.
+
 ```sh
 pysaten_trim input.wav trimmed.wav
 ```
 
 ### Python
+
+The Python API may change incompatibly between major versions.
 
 ```python
 import pysaten
@@ -46,7 +50,7 @@ y_trimmed = y[int(start_sec * sr) : int(end_sec * sr)]
 
 ```sh
 git clone https://gitlab.com/f-matano44/pysaten.git
-uv sync
+uv sync --group dev
 ```
 
 ## License
@@ -76,7 +80,7 @@ You should have received a copy of the GNU General Public License along with thi
 * WhisperX
   * <https://github.com/m-bain/whisperX>
 
-## Citation
+## Citation (version 2.0 or later)
 
-> F. Matano, M. Morise, ``SATEN, A Speech Trimming Method for Speech Corpus Construction in Text-to-Speech," IEICE Transactions on Information and Systems, Advance Publication, 2026.
+> F. Matano, M. Morise, ``SATEN, A Speech Trimming Method for Speech Corpus Construction in Text-to-Speech," IEICE Transactions on Information and Systems, Advance online publication, Article 2026EDP7101, Nov. 2026.
 > [【DOI】](https://doi.org/10.1587/transinf.2026EDP7101)
