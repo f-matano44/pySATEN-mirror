@@ -1,1 +1,1 @@
-from pysaten.pysaten import trim  # noqa: F401
+from pysaten.pysaten import trim as trim
