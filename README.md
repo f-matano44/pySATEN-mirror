@@ -49,13 +49,6 @@ y_trimmed, index = pysaten.trim(y, sr)
 - `y_trimmed` : `numpy.ndarray` - Trimmed audio signal.
 - `index` : `tuple[int, int]` - Start and end sample indices in `y`.
 
-### For development
-
-```sh
-git clone https://gitlab.com/f-matano44/pysaten.git
-uv sync --group dev
-```
-
 ## License
 
 Copyright 2024 Fumiyoshi MATANO
