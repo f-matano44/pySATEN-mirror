@@ -17,9 +17,10 @@ lint:
   script:
     - python3 --version
     - python3 -m pip install -U ruff mypy ./
-    - ruff format --check src/pysaten/
-    - ruff check src/pysaten/
-    - mypy src/pysaten/
+    - ruff format --check src/ tests/
+    - ruff check src/ tests/
+    - mypy src/ tests/
+    - python3 -m unittest discover -s tests
 
 markdown-lint:
   stage: md-lint
@@ -44,7 +45,7 @@ build:
     paths:
       - dist/
 
-deploy:  # https://docs.pypi.org/trusted-publishers/using-a-publisher/#gitlab-cicd
+deploy: # https://docs.pypi.org/trusted-publishers/using-a-publisher/#gitlab-cicd
   stage: deploy
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
