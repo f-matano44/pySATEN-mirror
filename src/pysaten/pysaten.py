@@ -9,7 +9,7 @@ from numpy.typing import NDArray
 from .v2 import vsed_debug_v2
 
 
-def cli_runner() -> None:
+def _cli_runner() -> None:
     # parse argument
     parser = argparse.ArgumentParser()
     parser.add_argument("input", type=str)
