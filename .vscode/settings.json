@@ -16,6 +16,5 @@
         "vsed",
         "whisperx",
         "zundamon"
-    ],
-    "editor.defaultFormatter": "ms-python.black-formatter"
+    ]
 }
