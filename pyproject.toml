@@ -4,8 +4,8 @@ build-backend = "flit_core.buildapi"
 
 [project]
 name = "pysaten"
-description = "Detect silence segment from speech signal."
-version = "3.0.0"
+description = 'Implementation of "SATEN, A Speech Trimming Method for Speech Corpus Construction in Text-to-Speech"'
+version = "3.0.0.post1"
 authors = [{ name = "Fumiyoshi MATANO", email = "fumiyoshi.matano@gmail.com" }]
 requires-python = ">=3.10"
 dependencies = [
